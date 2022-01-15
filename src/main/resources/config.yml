@@ -29,6 +29,5 @@ plugins: # 所有的集成小工具
     allow-public: false # 是否允许非管理员设置或删除公用地标点
     allow-private: true # 是否允许玩家设置私有地标点
     broadcast: true # 设置或删除公用地标点后是否在全服广播
-    player-max-warps: 15 # 玩家最多设置地标点 (包括公有和私有) 的数量, 起限制作用
     allow-op-del-private: true # 是否允许管理员删除玩家私有地标
     allow-show: true # 是否允许玩家展示
