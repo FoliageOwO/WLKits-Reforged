@@ -35,7 +35,7 @@ class HomeCommand : CommandExecutor {
     }
 
     private fun getWorldByName(name: String): World? {
-        for (world in Bukkit.getWorlds()) if (world.toString() == name) return world
+        for (world in Bukkit.getWorlds()) if (world.toString() == name || world.name == name) return world
         return null
     }
 }
