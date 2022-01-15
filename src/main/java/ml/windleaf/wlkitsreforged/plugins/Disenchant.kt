@@ -128,7 +128,7 @@ class Disenchant : Plugin, Listener {
                     }
                 }
             }
-        } else Util.disabled(player)
+        }
     }
 
     @EventHandler
