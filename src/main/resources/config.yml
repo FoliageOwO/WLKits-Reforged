@@ -3,7 +3,7 @@
 plugins: # 所有的集成小工具
   anticreeper: # 防止苦力怕爆炸破坏地形
     enabled: true
-    notice: false # 是否在控制台提醒 [true/false]
+    notice: false # 是否在控制台提醒
   disenchant: # 转移附魔到附魔书上
     enabled: true
   joininfo: # 显示玩家加入或离开
