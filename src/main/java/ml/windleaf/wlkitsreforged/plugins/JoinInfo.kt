@@ -24,9 +24,11 @@ class JoinInfo : Plugin, Listener {
         if (enabled) {
             val player = e.player
             e.joinMessage = ""
-            WLKits.log(Util.getPluginMsg(name, "console-join")!!)
             val i = HashMap<String, String>()
             i["playerName"] = player.name
+            i["uuid"] = Util.getUUID(player)
+            i["ip"] = player.address.toString()
+            WLKits.log(Util.insert(Util.getPluginMsg(name, "console-join"), i)!!)
             Util.broadcastPlayers(Util.insert(Util.getPluginMsg(name, "join"), i))
         }
     }
@@ -36,9 +38,11 @@ class JoinInfo : Plugin, Listener {
         if (enabled) {
             val player = e.player
             e.quitMessage = ""
-            WLKits.log(Util.getPluginMsg(name, "console-quit")!!)
             val i = HashMap<String, String>()
             i["playerName"] = player.name
+            i["uuid"] = Util.getUUID(player)
+            i["ip"] = player.address.toString()
+            WLKits.log(Util.insert(Util.getPluginMsg(name, "console-quit"), i)!!)
             Util.broadcastPlayers(Util.insert(Util.getPluginMsg(name, "quit"), i))
         }
     }

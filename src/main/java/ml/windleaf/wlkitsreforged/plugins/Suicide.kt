@@ -30,7 +30,7 @@ class Suicide : Plugin, Listener, CommandExecutor {
             i["playerName"] = player.name
             if (!(Util.getPluginConfig(name, "use-vanilla") as Boolean)) {
                 e.deathMessage = ""
-                Util.broadcastPlayers(Util.getPrefix() + Util.insert(Util.getPluginMsg(name, "msg"), i))
+                Util.broadcastPlayers(Util.withPrefix() + Util.insert(Util.getPluginMsg(name, "msg"), i))
             }
             suicideList.remove(player)
         }

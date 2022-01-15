@@ -12,14 +12,14 @@ import java.io.File
 class Util {
     companion object {
         fun translateColorCode(s: String?) = s?.replace("&", "§")
-        fun getPrefix() = "&a[WLKitsReforged] &b» &r"
+        fun withPrefix() = "&b${WLKits.name} » &r"
         fun getPath() = System.getProperty("user.dir") + File.separator
         fun registerEvent(listener: Listener) = WLKits.instance.server.pluginManager.registerEvents(listener, WLKits.instance)
         fun registerCommand(cmd: String, executor: CommandExecutor) = WLKits.instance.getCommand(cmd)?.setExecutor(executor)
         fun getPluginConfig(pluginName: String, root: String) = WLKits.instance.config.get("plugins.${pluginName.lowercase()}.$root")
         fun getPluginMsg(pluginName: String, root: String) = WLKits.message.getString("${pluginName.lowercase()}.$root")
         fun getPluginMsgAs(pluginName: String, root: String) = WLKits.message.get("${pluginName.lowercase()}.$root")
-        fun send(p: CommandSender, s: String?) = p.sendMessage(translateColorCode(getPrefix() + s)!!)
+        fun send(p: CommandSender, s: String?) = p.sendMessage(translateColorCode(withPrefix() + s)!!)
         fun isEnabled(pluginName: String) = getPluginConfig(pluginName, "enabled") as Boolean
         fun disabled(p: CommandSender) = send(p, getPluginMsg("main", "disabled"))
         fun getUUID(p: Player) = p.uniqueId.toString()

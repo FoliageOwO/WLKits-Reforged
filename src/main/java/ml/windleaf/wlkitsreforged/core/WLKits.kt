@@ -8,10 +8,10 @@ import java.io.File
 
 class WLKits : JavaPlugin() {
     companion object {
-        const val name = "WLKitsReforged"
+        const val name = "WLKits"
         const val version = "0.1"
         val pluginManager = PluginManager()
-        val prefixPath = Util.getPath() + "plugins" + File.separator + name + File.separator
+        val prefixPath = Util.getPath() + "plugins" + File.separator + "WLKitsReforged" + File.separator
         lateinit var instance: WLKits
         val message: FileConfiguration = YamlConfiguration()
 
@@ -19,7 +19,7 @@ class WLKits : JavaPlugin() {
             if (!File(prefixPath + name).exists()) instance.saveResource(name, false)
         }
 
-        fun log(s: String) = println(Util.translateColorCode(Util.getPrefix() + s))
+        fun log(s: String) = println(Util.translateColorCode(Util.withPrefix() + s))
     }
 
     override fun onEnable() {
