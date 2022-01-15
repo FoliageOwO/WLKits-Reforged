@@ -51,12 +51,15 @@ class Warp : Plugin {
         }
 
         fun getWarps(): HashMap<String, WarpType> {
-            val names: Set<Any>? = warps?.getKeys(false)
+            val names = warps?.getStringList("list")
             val map = HashMap<String, WarpType>()
             if (names != null) {
-                for (i in names) {
-                    i as String
-                    if (warps?.get(i) != null) map[i] = WarpType.valueOf(warps?.getString("$i.type")!!)
+                for (name in names) {
+                    name as String
+                    when ('|' in name.toCharArray()) {
+                        true -> if (warps?.get("private.$name") != null) map[name] = WarpType.PRIVATE
+                        false -> if (warps?.get("public.$name") != null) map[name] = WarpType.PUBLIC
+                    }
                 }
             }
             return map

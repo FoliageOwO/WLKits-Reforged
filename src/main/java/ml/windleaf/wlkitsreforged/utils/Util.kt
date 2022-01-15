@@ -2,6 +2,7 @@ package ml.windleaf.wlkitsreforged.utils
 
 import ml.windleaf.wlkitsreforged.core.WLKits
 import org.bukkit.Bukkit
+import org.bukkit.World
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
@@ -44,8 +45,12 @@ class Util {
         }
 
         fun sendHelp(sender: CommandSender, helps: Map<String, String>) {
-            if (sender is Player) for (i in helps.keys) send(sender, "&8» &6$i &f- &a${helps[i]}".replace("|", "&2|&6"))
-            else for (i in helps.keys) send(sender, "&6$i &f- &a${helps[i]}".replace("|", "&2|&6"))
+            for (i in helps.keys) send(sender, "&6$i &f- &a${helps[i]}".replace("|", "&2|&6"))
+        }
+
+        fun getWorldByName(name: String): World? {
+            for (world in Bukkit.getWorlds()) if (world.toString() == name || world.name == name) return world
+            return null
         }
     }
 }

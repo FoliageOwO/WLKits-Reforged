@@ -24,10 +24,10 @@ class WarpCommand : CommandExecutor, TabCompleter {
                     val name = args[0]
                     val i = HashMap<String, String>()
                     i["name"] = name
-                    if (Warp.warpManager.warps?.contains(name) == true) {
+                    if (Warp.warpManager.getWarps().keys.contains(name)) {
                         teleport(sender, name, Warp.WarpType.PUBLIC, i)
-                    } else if (Warp.warpManager.warps?.contains("${Util.getUUID(sender)}.$name") == true) {
-                        teleport(sender, "${Util.getUUID(sender)}.$name", Warp.WarpType.PRIVATE, i)
+                    } else if (Warp.warpManager.getWarps().keys.contains("${Util.getUUID(sender)}|$name")) {
+                        teleport(sender, "${Util.getUUID(sender)}|$name", Warp.WarpType.PRIVATE, i)
                     } else Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "not-found"), i))
                 }
             }
@@ -36,16 +36,17 @@ class WarpCommand : CommandExecutor, TabCompleter {
     }
 
     private fun teleport(sender: Player, name: String, type: Warp.WarpType, i: HashMap<String, String>) {
-        val world = Warp.warpManager.warps?.getString("$name.world")
-        val x = Warp.warpManager.warps?.getDouble("$name.x")
-        val y = Warp.warpManager.warps?.getDouble("$name.y")
-        val z = Warp.warpManager.warps?.getDouble("$name.z")
-        val yaw = Warp.warpManager.warps?.getInt("$name.yaw")
-        val pitch = Warp.warpManager.warps?.getInt("$name.pitch")
+        val sname = if (type == Warp.WarpType.PRIVATE) "private.$name" else "public.$name"
+        val world = Warp.warpManager.warps?.getString("$sname.world")
+        val x = Warp.warpManager.warps?.getDouble("$sname.x")
+        val y = Warp.warpManager.warps?.getDouble("$sname.y")
+        val z = Warp.warpManager.warps?.getDouble("$sname.z")
+        val yaw = Warp.warpManager.warps?.getInt("$sname.yaw")
+        val pitch = Warp.warpManager.warps?.getInt("$sname.pitch")
 
         val location: Location =
-            if (yaw == null || pitch == null) Location(Bukkit.getWorld(world!!), x!!, y!!, z!!)
-            else Location(Bukkit.getWorld(world!!), x!!, y!!, z!!, yaw.toFloat(), pitch.toFloat())
+            if (yaw == null || pitch == null) Location(Util.getWorldByName(world!!), x!!, y!!, z!!)
+            else Location(Util.getWorldByName(world!!), x!!, y!!, z!!, yaw.toFloat(), pitch.toFloat())
 
         when (type) {
             Warp.WarpType.PUBLIC -> {
@@ -53,8 +54,8 @@ class WarpCommand : CommandExecutor, TabCompleter {
                 Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "tp-success"), i))
             }
             Warp.WarpType.PRIVATE -> {
-                val list = listOf(name.split("."))
-                val uuid = UUID.fromString(list[0].toString())
+                val list = name.split("|")
+                val uuid = UUID.fromString(list[0])
                 if (sender == Bukkit.getPlayer(uuid)) {
                     sender.teleport(location)
                     Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "tp-success"), i))
@@ -63,7 +64,7 @@ class WarpCommand : CommandExecutor, TabCompleter {
         }
     }
 
-    override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<String?>): List<String>? {
+    override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<String?>): List<String> {
         val tmp: HashMap<String, Warp.WarpType> = Warp.warpManager.getWarps()
         val filter = Arrays.stream<Any>(tmp.keys.toTypedArray()).filter { s: Any ->
             s.toString().startsWith(args[0]!!)
@@ -72,6 +73,11 @@ class WarpCommand : CommandExecutor, TabCompleter {
         for (name in filter) {
             name as String
             if (tmp[name] == Warp.WarpType.PUBLIC) warps.add(name)
+            if (sender is Player && tmp[name] == Warp.WarpType.PRIVATE) {
+                val s = name.split("|")
+                val uuid = s[0]
+                if (Util.getUUID(sender) == uuid) warps.add(s[1])
+            }
         }
         return warps
     }

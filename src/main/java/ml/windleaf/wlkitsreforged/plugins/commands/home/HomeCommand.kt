@@ -18,7 +18,7 @@ class HomeCommand : CommandExecutor {
                 if (Home.homes.containsKey(Util.getUUID(player))) {
                     val locationString: String = Home.homes[Util.getUUID(player)]!!
                     val array = locationString.split("\\s+".toRegex()).toTypedArray()
-                    val world = getWorldByName(array[0])
+                    val world = Util.getWorldByName(array[0])
                     val x = array[1].toDouble()
                     val y = array[2].toDouble()
                     val z = array[3].toDouble()
@@ -32,10 +32,5 @@ class HomeCommand : CommandExecutor {
             }
         } else Util.disabled(sender)
         return true
-    }
-
-    private fun getWorldByName(name: String): World? {
-        for (world in Bukkit.getWorlds()) if (world.toString() == name || world.name == name) return world
-        return null
     }
 }

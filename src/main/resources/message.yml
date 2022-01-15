@@ -72,4 +72,4 @@ warp:
   del-success: '&a成功删除地标 &6{name}&a!'
   del-broadcast: '&c玩家 &6{playerName} &c删除了地标点 &9{name}&c!'
   del-private: '&c你不是这个私人地标的主人, 无法删除!'
-  del-public: '&c你不是管理员, 无法删除公有地标!'
+  cannot-public: '&c你不是管理员, 无法操作公有地标!'

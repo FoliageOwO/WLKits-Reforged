@@ -5,13 +5,11 @@ import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
-import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import java.io.IOException
 import java.util.*
-import kotlin.collections.ArrayList
 
-class SetwarpCommand : CommandExecutor, TabCompleter {
+class SetwarpCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if (Warp.enabled) {
             if (Util.mustPlayer(sender)) {
@@ -34,7 +32,9 @@ class SetwarpCommand : CommandExecutor, TabCompleter {
                             when (type) {
                                 Warp.WarpType.PUBLIC -> {
                                     if (sender.isOp) set(sender, name, type, i)
-                                    if (!sender.isOp && Util.getPluginConfig("Warp", "allow-public") as Boolean) set(sender, name, type, i)
+                                    else if (!sender.isOp && Util.getPluginConfig("Warp", "allow-public") as Boolean) {
+                                        set(sender, name, type, i)
+                                    } else Util.send(sender, Util.getPluginMsg("Warp", "cannot-public"))
                                 }
                                 Warp.WarpType.PRIVATE -> set(sender, name, type, i)
                             }
@@ -47,10 +47,12 @@ class SetwarpCommand : CommandExecutor, TabCompleter {
     }
 
     private fun set(sender: Player, name: String, type: Warp.WarpType, i: HashMap<String, String>) {
-        val kname = if (type == Warp.WarpType.PRIVATE) "${Util.getUUID(sender)}.$name" else name
-        if (Warp.warpManager.warps?.getKeys(false)?.contains(kname) == true) {
-            Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "already-exists"), i))
-        } else {
+        val kname = if (type == Warp.WarpType.PRIVATE) "${Util.getUUID(sender)}|$name" else name
+        if (Warp.warpManager.getWarps().keys.contains(kname)) Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "already-exists"), i))
+        else {
+            val list = Warp.warpManager.warps?.getStringList("list")!!
+            list.add(kname)
+            Warp.warpManager.warps?.set("list", list)
             val sname = if (type == Warp.WarpType.PRIVATE) "private.$kname" else "public.$kname"
             val location = sender.location
             Warp.warpManager.warps?.set("$sname.x", location.x)
@@ -67,18 +69,13 @@ class SetwarpCommand : CommandExecutor, TabCompleter {
                 if (Util.getPluginConfig("Warp", "broadcast") as Boolean) {
                     i["playerName"] = sender.displayName
                     i["name"] = name
-                    for (line in Util.getPluginMsgAs("Warp", "broadcast-lines") as List<*>) Util.broadcastPlayers(Util.insert(line as String, i))
+                    if (type == Warp.WarpType.PUBLIC)
+                        for (line in Util.getPluginMsgAs("Warp", "broadcast-lines") as List<*>) Util.broadcastPlayers(Util.insert(line as String, i))
                 }
             } catch (e: IOException) {
                 Util.send(sender, Util.getPluginMsg("Warp", "fail"))
                 e.printStackTrace()
             }
         }
-    }
-
-    override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<String>): List<String> {
-        val tab = ArrayList<String>()
-        tab.add("[private/public] [name]")
-        return tab
     }
 }

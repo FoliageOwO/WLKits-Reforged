@@ -2,7 +2,6 @@ package ml.windleaf.wlkitsreforged.plugins.commands.warp
 
 import ml.windleaf.wlkitsreforged.plugins.Warp
 import ml.windleaf.wlkitsreforged.utils.Util
-import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -23,12 +22,10 @@ class DelwarpCommand : CommandExecutor, TabCompleter {
                 val i = HashMap<String, String>()
                 i["name"] = name
                 i["playerName"] = sender.name
-                if (Warp.warpManager.warps?.contains(name) == true) {
+                if (Warp.warpManager.getWarps().keys.contains(name)/* && '|' !in name.toCharArray()*/) {
                     delete(sender, name, Warp.WarpType.PUBLIC, i)
-                } else if (sender is Player) {
-                    if (Warp.warpManager.warps?.contains("${Util.getUUID(sender)}.$name") == true) {
-                        delete(sender, "${Util.getUUID(sender)}.$name", Warp.WarpType.PRIVATE, i)
-                    }
+                } else if (sender is Player && Warp.warpManager.getWarps().keys.contains("${Util.getUUID(sender)}|$name")) {
+                    delete(sender, "${Util.getUUID(sender)}|$name", Warp.WarpType.PRIVATE, i)
                 } else Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "not-found"), i))
                 true
             }
@@ -40,21 +37,29 @@ class DelwarpCommand : CommandExecutor, TabCompleter {
         when (type) {
             Warp.WarpType.PUBLIC -> {
                 if (sender.isOp || Util.getPluginConfig("Warp", "allow-public") as Boolean) {
-                    Warp.warpManager.warps?.set(name, null)
+                    Warp.warpManager.warps?.set("public.$name", null)
                     Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "del-success"), i))
                     if (Util.getPluginConfig("Warp", "broadcast") as Boolean)
                         Util.broadcastPlayers(Util.insert(Util.getPluginMsg("Warp", "del-broadcast"), i))
-                } else Util.send(sender, Util.getPluginMsg("Warp", "del-public"))
+                    val list = Warp.warpManager.warps?.getStringList("list")!!
+                    list.remove(name)
+                    Warp.warpManager.warps?.set("list", list)
+                } else Util.send(sender, Util.getPluginMsg("Warp", "cannot-public"))
             }
             Warp.WarpType.PRIVATE -> {
-                val list = listOf(name.split("."))
-                val uuid = UUID.fromString(list[0].toString())
-                if (sender == Bukkit.getPlayer(uuid)) {
-                    Warp.warpManager.warps?.set(name, null)
+                val p = if ('|' in name.toCharArray()) name else (if (sender is Player) "${Util.getUUID(sender)}|$name" else name)
+                val l = p.split("|")
+                val uuid = l[0]
+                if ((sender is Player && Util.getUUID(sender) == uuid) || sender !is Player) {
+                    Warp.warpManager.warps?.set("private.$p", null)
                     Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "del-success"), i))
+                    val list = Warp.warpManager.warps?.getStringList("list")!!
+                    list.remove(p)
+                    Warp.warpManager.warps?.set("list", list)
                 } else Util.send(sender, Util.getPluginMsg("Warp", "del-private"))
             }
         }
+        Warp.warpManager.warps?.save(Warp.warpManager.file!!)
     }
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<String?>): List<String> {
@@ -65,8 +70,10 @@ class DelwarpCommand : CommandExecutor, TabCompleter {
         val warps: MutableList<String> = ArrayList()
         for (name in filter) {
             name as String
-            if (sender is Player) if (tmp[name] == Warp.WarpType.PRIVATE && !name.startsWith(Util.getUUID(sender))) continue
-            warps.add(name)
+            if (sender is Player) {
+                if (Util.getPluginConfig("Warp", "allow-public") as Boolean || sender.isOp) warps.add(name)
+                if (tmp[name] == Warp.WarpType.PRIVATE && name.startsWith(Util.getUUID(sender))) warps.add(name.split("|")[1])
+            }
         }
         return warps
     }

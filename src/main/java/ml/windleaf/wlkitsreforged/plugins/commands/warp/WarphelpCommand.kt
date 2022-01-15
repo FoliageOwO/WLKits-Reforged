@@ -11,7 +11,7 @@ class WarphelpCommand : CommandExecutor {
         if (Warp.enabled) {
             val helps: MutableMap<String, String> = HashMap()
             helps["/warphelp"] = "查看此帮助"
-            helps["/setwarp [name]"] = "设置地标点"
+            helps["/setwarp [private/public] [name]"] = "设置地标点"
             helps["/delwarp [name]"] = "删除地标点"
             helps["/warp [name]"] = "传送至地标点"
             helps["/warplist"] = "查看所有可用的地标点"
