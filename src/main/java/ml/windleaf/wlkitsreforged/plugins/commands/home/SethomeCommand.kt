@@ -17,7 +17,7 @@ class SethomeCommand : CommandExecutor {
                 else {
                     val sb = StringBuilder()
                     val location = player.location
-                    sb.append(location.world)
+                    sb.append(location.world?.name)
                         .append(" ").append(location.x)
                         .append(" ").append(location.y)
                         .append(" ").append(location.z)

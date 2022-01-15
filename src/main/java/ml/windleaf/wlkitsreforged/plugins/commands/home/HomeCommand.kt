@@ -4,6 +4,7 @@ import ml.windleaf.wlkitsreforged.plugins.Home
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -17,7 +18,7 @@ class HomeCommand : CommandExecutor {
                 if (Home.homes.containsKey(Util.getUUID(player))) {
                     val locationString: String = Home.homes[Util.getUUID(player)]!!
                     val array = locationString.split("\\s+".toRegex()).toTypedArray()
-                    val world = Bukkit.getWorld(array[0])
+                    val world = getWorldByName(array[0])
                     val x = array[1].toDouble()
                     val y = array[2].toDouble()
                     val z = array[3].toDouble()
@@ -31,5 +32,10 @@ class HomeCommand : CommandExecutor {
             }
         } else Util.disabled(sender)
         return true
+    }
+
+    private fun getWorldByName(name: String): World? {
+        for (world in Bukkit.getWorlds()) if (world.toString() == name) return world
+        return null
     }
 }
