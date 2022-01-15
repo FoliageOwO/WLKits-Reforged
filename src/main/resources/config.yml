@@ -1,0 +1,34 @@
+# WLKits-Reforged 配置文件
+
+plugins: # 所有的集成小工具
+  anticreeper: # 防止苦力怕爆炸破坏地形
+    enabled: true
+    notice: false # 是否在控制台提醒 [true/false]
+  disenchant: # 转移附魔到附魔书上
+    enabled: true
+  joininfo: # 显示玩家加入或离开
+    enabled: true # 如果关闭则会显示原版加入离开提示
+  backdeath: # 返回上一次死亡地点
+    enabled: true
+  back: # 返回上一个地点
+    enabled: true
+  home: # 家
+    enabled: true
+    set-more: false # 设置家的时候把玩家的 yaw, pitch (朝向) 同时记录
+  suicide: # 自杀
+    enabled: true
+    use-vanilla: false # 如果开启则会显示玩家掉出世界或被魔法杀死, 而不是显示玩家结束了自己的生命
+  skipnight: # 跳过夜晚
+    enabled: true
+    percent: 0 # 睡觉玩家的占比 (范围 0~100, 表示 0%~100%), 如果为 0 则只要有一名玩家睡觉则会跳过夜晚
+  tpa: # 传送
+    enabled: true
+  warp: # 地标点
+    enabled: true
+    set-more: false # 设置地标点的时候把玩家的 yaw, pitch (朝向) 同时记录
+    allow-public: false # 是否允许非管理员设置或删除公用地标点
+    allow-private: true # 是否允许玩家设置私有地标点
+    broadcast: true # 设置或删除公用地标点后是否在全服广播
+    player-max-warps: 15 # 玩家最多设置地标点 (包括公有和私有) 的数量, 起限制作用
+    allow-op-del-private: true # 是否允许管理员删除玩家私有地标
+    allow-show: true # 是否允许玩家展示

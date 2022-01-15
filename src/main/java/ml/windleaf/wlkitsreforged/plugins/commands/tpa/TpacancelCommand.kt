@@ -1,0 +1,29 @@
+package ml.windleaf.wlkitsreforged.plugins.commands.tpa
+
+import ml.windleaf.wlkitsreforged.plugins.Tpa
+import ml.windleaf.wlkitsreforged.utils.Util
+import org.bukkit.command.Command
+import org.bukkit.command.CommandExecutor
+import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
+
+class TpacancelCommand : CommandExecutor {
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String?>): Boolean {
+        if (Tpa.enabled) {
+            if (Util.mustPlayer(sender)) {
+                val toPlayer: Player? = Tpa.tpaLogs[sender]
+                val player = getKeyByValue(Tpa.tpaLogs, toPlayer)
+                if (toPlayer != null && player != null && player == sender) {
+                    Tpa.tpaLogs.remove(sender)
+                    Util.send(sender, Util.getPluginMsg("Tpa", "cancel"))
+                } else Util.send(sender, Util.getPluginMsg("Tpa", "no-request"))
+            }
+        } else Util.disabled(sender)
+        return true
+    }
+
+    private fun getKeyByValue(map: Map<Player, Player>, value: Player?): Player? {
+        for (i in map.values) if (map[i] === value) return i
+        return null
+    }
+}

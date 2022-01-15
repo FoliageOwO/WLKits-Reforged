@@ -1,0 +1,75 @@
+# WLKits-Reforged 消息文件
+# 使用 & 代替 §
+
+main:
+  must-player: '&c这个命令只能由玩家使用!'
+  confirm: '&a确定'
+  cancel: '&c取消'
+  disabled: '&c此功能已被禁用!'
+  invalid-args: '&c命令参数错误!'
+backdeath:
+  fail: '&c无法返回上一个死亡点!'
+  success: '&a返回成功!'
+disenchant:
+  fail: '&c转移失败!'
+  success: '&a转移成功!'
+  lore: '&a此物品是玩家 &6{playerName} &a转移后的附魔书'
+  menu-display-name: '&bDisenchant 菜单'
+  click-to-confirm: '&a点击以确认转移附魔'
+  click-to-cancel: '&c点击以取消'
+  book-display-name: '&5转移附魔书'
+  book-lore: '&a右键打开转移附魔菜单'
+  cannot-be-empty: '&c主手和副手不能为空! 请将物品放在主手, 附魔书放在副手!'
+  offhand-cannot-be-book: '&c副手物品不能为附魔书!'
+  no-enchantment: '&c物品没有附魔, 无法转移!'
+joininfo:
+  join: '&a[+] 玩家 {playerName} 加入了服务器!'
+  quit: '&c[-] 玩家 {playerName} 离开了服务器!'
+  console-join: '&a玩家 {playerName} ({uuid}) [{ip}] 加入了服务器!'
+  console-quit: '&c玩家 {playerName} ({uuid}) [{ip}] 离开了服务器!'
+back:
+  success: '&a成功返回上一位置!'
+  fail: '&c无法返回上一位置!'
+home:
+  redo: '&c你已经设置过家了, 不能重复设置! 你可以使用 &6/delhome &c删除家!'
+  success: '&a设置家成功, 你以后可以使用 &6/home &a来回家了!'
+  back-home: '&a回家成功!'
+  no-home: '&c你还没有家, 快去使用 &6/sethome &c设置一个吧!'
+  delete: '&a删除家成功!'
+suicide:
+  msg: '&c玩家 &6{playerName} &c结束了自己的生命'
+skipnight:
+  msg-need: '&b当前已有 &a{onBed} &b名玩家睡觉, 还差 &e{needPlayers} &b名玩家.'
+  msg-ok: '&a今晚将在睡梦中度过.'
+tpa:
+  help: '&a请使用 &6/tpahelp &a查看帮助!'
+  self-tpa: '&c你不能给自己发送传送请求!'
+  not-found: '&c玩家 &6{playerName} &c不存在!'
+  receiver-lines:
+    - '&a你有一个待接受的传送请求:'
+    - '&a玩家 {sender} &a想传送到你这里,'
+    - '&a接受请求: &2/tpaccept&a, 拒绝请求: &4/tpadeny&a.'
+  sender-lines:
+    - '&a已向玩家 {receiver} &a发送一个传送请求, 等待对方接受!'
+    - '&a想要取消这个传送请求, 你可以输入 &6/tpacancel&a.'
+  no-request: '&c你没有待处理的传送请求!'
+  accept: '&a传送中...'
+  deny: '&c玩家拒绝传送, 传送失败!'
+  cancel: '&a已取消传送请求!'
+warp:
+  max-string: '&c最大名称上限为 &615 &c个字符!'
+  already-exists: '&c地标 &6{name} &c已存在, 无法重复创建!'
+  success: '&a创建地标点 &6{name} &a成功!'
+  unknown-type: '&c未知的地标类型 &6{type}&c, 请使用 &6/setwarp [public/private] [name] &c设置地标点!'
+  broadcast-lines:
+    - '&a玩家 &6{playerName} &a新建了一个地标点: &9{name}&a,'
+    - '&a使用 &6/warp {name} &a传送到该地标点.'
+  fail: '&c创建地标点失败!'
+  tp-success: '&a成功传送到地标 &6{name}&a!'
+  tp-private: '&c这是一个私人地标, 无法传送!'
+  not-found: '&c没有叫做 &6{name} &c的地标!'
+  no-warps: '&c没有可传送的地标, 快去创建一个地标吧!'
+  del-success: '&a成功删除地标 &6{name}&a!'
+  del-broadcast: '&c玩家 &6{playerName} &c删除了地标点 &9{name}&c!'
+  del-private: '&c你不是这个私人地标的主人, 无法删除!'
+  del-public: '&c你不是管理员, 无法删除公有地标!'

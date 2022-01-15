@@ -1,0 +1,45 @@
+name: WLKitsReforged
+version: '${project.version}'
+main: ml.windleaf.wlkitsreforged.core.WLKits
+api-version: 1.16
+load: STARTUP
+authors: [ WindLeaf_qwq ]
+description: 一个适用于 Minecraft 1.16.x Paper/Spigot 服务端的集成小工具插件
+website: https://windleaf.ml/
+
+commands:
+  backdeath:
+    aliases: [ backd, bd ]
+    description: 返回上一个死亡点
+  back:
+    description: 返回上一个地点
+  sethome:
+    description: 在当前位置设置家
+  home:
+    description: 回家
+  delhome:
+    description: 删除家
+  suicide:
+    description: 自杀
+  tpa:
+    description: 发送传送请求
+  tpaccept:
+    aliases: [ tpac ]
+    description: 接收传送请求
+  tpadeny:
+    aliases: [ tpad ]
+    description: 拒绝传送请求
+  tpacancel:
+    description: 取消传送请求
+  tpahelp:
+    description: 查看 tpa 帮助
+  setwarp:
+    description: 设置地标点
+  warp:
+    description: 传送到地标
+  delwarp:
+    description: 删除地标点
+  warphelp:
+    description: 查看 warp 帮助
+  warplist:
+    description: 查看所有地标点
