@@ -19,19 +19,13 @@ class PluginManager {
         pluginList.add(Tpa())
         pluginList.add(Warp())
         pluginList.add(PlayerTag())
+        pluginList.add(ScheduleNotice())
 
-        for (plugin in pluginList) {
-            WLKits.log("&f加载子插件 &3${plugin.name}&f...")
-            plugin.load()
-        }
+        WLKits.log("&f正在加载子插件, 共 ${pluginList.size} 个...")
+        for (plugin in pluginList) plugin.load()
     }
 
     fun unloadPlugins() {
-        for (plugin in pluginList) {
-            WLKits.log("&f卸载子插件 &3${plugin.name}&f...")
-            plugin.unload()
-        }
+        for (plugin in pluginList) plugin.unload()
     }
-
-    fun getPlugins() = pluginList
 }

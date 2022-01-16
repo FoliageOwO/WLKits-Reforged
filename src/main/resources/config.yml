@@ -34,3 +34,6 @@ plugins: # 所有的集成小工具
   playertag: # 玩家称号
     enabled: true
     format: '{tag} {playerName}' # 称号格式, 例 '[OP] Steve'
+  schedulenotice: # 定时公告 公告请配置 message.yml
+    enabled: false
+    interval: 120 # 定时公告的间隔 (单位: 秒)

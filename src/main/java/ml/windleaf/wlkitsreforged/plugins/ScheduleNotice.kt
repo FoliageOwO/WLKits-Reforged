@@ -1,0 +1,29 @@
+package ml.windleaf.wlkitsreforged.plugins
+
+import ml.windleaf.wlkitsreforged.core.Plugin
+import ml.windleaf.wlkitsreforged.core.WLKits
+import ml.windleaf.wlkitsreforged.utils.Util
+import org.bukkit.scheduler.BukkitRunnable
+
+class ScheduleNotice : Plugin {
+    override var name = "ScheduleNotice"
+    val enabled = Util.isEnabled(name)
+    private lateinit var runnable: BukkitRunnable
+
+    override fun load() {
+        if (enabled) {
+            val interval = Util.getPluginConfig(name, "interval") as Int
+            val lines = Util.getPluginMsgAs(name, "notice-lines") as List<*>
+            runnable = object : BukkitRunnable() {
+                override fun run() {
+                    for (line in lines) Util.broadcastPlayers(line as String)
+                }
+            }
+            runnable.runTaskTimer(WLKits.instance, 0L, (interval * 20).toLong())
+        }
+    }
+
+    override fun unload() {
+        if (enabled) runnable.cancel()
+    }
+}

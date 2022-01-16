@@ -80,3 +80,7 @@ playertag:
   del-success: '&a成功删除玩家 &6{playerName} &a的称号!'
   reset-success: '&a玩家 &6{playerName} &a称号/名称重置成功!'
   get: '&a玩家 &6{playerName} &a的称号为: &r{tag}&a.'
+schedulenotice:
+  notice-lines:
+    - ''
+    - ''
