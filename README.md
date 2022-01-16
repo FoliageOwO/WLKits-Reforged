@@ -4,7 +4,7 @@
 
 ## TODOs
 - [ ] feat: 定时公告
-- [ ] feat: 玩家称号
+- [x] feat: 玩家称号
 - [ ] feat: 兼容 `1.8.x - 1.18.x` 版本
 - [ ] feat: 完善 `Warp`
 - [ ] readme: 完善文档

@@ -43,3 +43,6 @@ commands:
     description: 查看 warp 帮助
   warplist:
     description: 查看所有地标点
+  playertag:
+    aliases: [ ptag ]
+    description: 玩家称号

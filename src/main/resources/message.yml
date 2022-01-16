@@ -73,3 +73,10 @@ warp:
   del-broadcast: '&c玩家 &6{playerName} &c删除了地标点 &9{name}&c!'
   del-private: '&c你不是这个私人地标的主人, 无法删除!'
   cannot-public: '&c你不是管理员, 无法操作公有地标!'
+playertag:
+  no-tag: '&c玩家 &6{playerName} &c没有称号!'
+  no-player: '&c玩家 &6{playerName} &c不存在!'
+  set-success: '&a成功将玩家 &6{playerName} &a的称号设置为 &r{tag}&a!'
+  del-success: '&a成功删除玩家 &6{playerName} &a的称号!'
+  reset-success: '&a玩家 &6{playerName} &a称号/名称重置成功!'
+  get: '&a玩家 &6{playerName} &a的称号为: &r{tag}&a.'

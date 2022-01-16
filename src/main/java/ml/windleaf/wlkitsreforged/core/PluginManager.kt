@@ -18,6 +18,7 @@ class PluginManager {
         pluginList.add(SkipNight())
         pluginList.add(Tpa())
         pluginList.add(Warp())
+        pluginList.add(PlayerTag())
 
         for (plugin in pluginList) {
             WLKits.log("&f加载子插件 &3${plugin.name}&f...")
