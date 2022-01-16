@@ -9,7 +9,7 @@ import java.io.File
 class WLKits : JavaPlugin() {
     companion object {
         const val name = "WLKits"
-        const val version = "0.1"
+        const val version = "0.2"
         val pluginManager = PluginManager()
         val prefixPath = Util.getPath() + "plugins" + File.separator + "WLKitsReforged" + File.separator
         lateinit var instance: WLKits
