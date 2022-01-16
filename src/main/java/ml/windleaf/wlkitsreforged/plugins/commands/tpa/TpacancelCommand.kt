@@ -24,7 +24,7 @@ class TpacancelCommand : CommandExecutor {
     }
 
     private fun getKeyByValue(map: Map<Player, Player>, value: Player?): Player? {
-        for (i in map.values) if (map[i] === value) return i
+        for (i in map.values) if (map[i] == value || Util.getUUID(map[i]!!) == value?.let { Util.getUUID(it) }) return i
         return null
     }
 }

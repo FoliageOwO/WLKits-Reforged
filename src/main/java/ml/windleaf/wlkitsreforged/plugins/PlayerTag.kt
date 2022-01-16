@@ -10,7 +10,9 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
+import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerJoinEvent
 import java.util.*
 import java.util.stream.Collectors
 
@@ -34,7 +36,6 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
         if (enabled && Util.needPermission(sender, "playertag", PermissionType.COMMAND)) {
             if (args.isEmpty()) Util.invalidArgs(sender) else {
                 val i = HashMap<String, String>()
-                i["playerName"] = name
                 when (args[0]) {
                     "help" -> {
                         val helps = HashMap<String, String>()
@@ -46,58 +47,51 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
                         Util.sendHelp(sender, helps)
                     }
                     "set" -> {
-                        if (args.size < 3) Util.invalidArgs(sender)
+                        if (args.size != 3) Util.invalidArgs(sender)
                         else {
                             val n = args[1]!!
+                            i["playerName"] = n
                             val tag = args[2]!!
                             val player = Bukkit.getPlayer(n)
                             if (player == null) noPlayer(sender, i)
                             else {
                                 i["tag"] = Util.translateColorCode(tag)!!
-                                playerTags[Util.getUUID(player)] = Util.insert(Util.getPluginConfig(name, "format") as String, i)!!
-                                player.setDisplayName(Util.translateColorCode(tag)!!)
+                                val displayName = Util.insert(Util.getPluginConfig(name, "format") as String, i)!!
+                                playerTags[Util.getUUID(player)] = tag
+                                player.setDisplayName(displayName)
                                 FileUtil.saveHashMap(playerTags, path)
                                 Util.send(sender, Util.insert(Util.getPluginMsg(name, "set-success"), i))
                             }
                         }
                     }
-                    "remove" -> {
-                        if (args.size < 2) Util.invalidArgs(sender)
-                        else {
-                            val n = args[1]!!
-                            val player = Bukkit.getPlayer(n)
-                            if (player == null) noPlayer(sender, i)
-                            else {
-                                playerTags.remove(Util.getUUID(player))
-                                FileUtil.saveHashMap(playerTags, path)
-                                Util.send(sender, Util.insert(Util.getPluginMsg(name, "del-success"), i))
-                            }
-                        }
-                    }
                     "check" -> {
-                        if (args.size < 2) Util.invalidArgs(sender)
+                        if (args.size != 2) Util.invalidArgs(sender)
                         else {
                             val n = args[1]!!
+                            i["playerName"] = n
                             val player = Bukkit.getPlayer(n)
                             if (player == null) noPlayer(sender, i)
                             else {
-                                val tag = playerTags[Util.getUUID(player)]
-                                i["tag"] = tag!!
-                                when (tag) {
+                                when (val tag = playerTags[Util.getUUID(player)]) {
                                     null -> noTag(sender, i)
                                     "" -> noTag(sender, i)
-                                    else -> Util.send(sender, Util.insert(Util.getPluginMsg(name, "get"), i))
+                                    else -> {
+                                        i["tag"] = tag
+                                        Util.send(sender, Util.insert(Util.getPluginMsg(name, "get"), i))
+                                    }
                                 }
                             }
                         }
                     }
                     "reset" -> {
-                        if (args.size < 2) Util.invalidArgs(sender)
+                        if (args.size != 2) Util.invalidArgs(sender)
                         else {
-                            val n = args[1]!!
+                            val n = args[1]
+                            i["playerName"] = n!!
                             val player = Bukkit.getPlayer(n)
                             if (player == null) noPlayer(sender, i)
                             else {
+                                i["playerName"] = n
                                 playerTags.remove(Util.getUUID(player))
                                 player.setDisplayName(player.name)
                                 FileUtil.saveHashMap(playerTags, path)
@@ -116,7 +110,7 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
     private fun noPlayer(sender: CommandSender, i: HashMap<String, String>) = Util.send(sender, Util.insert(Util.getPluginMsg(name, "no-player"), i))
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<String?>): List<String> {
-        val subCommands = arrayOf("help", "set", "remove", "check", "reset")
+        val subCommands = arrayOf("help", "set", "check", "reset")
         if (args.size > 1) {
             val list = ArrayList<String>()
             for (p in Bukkit.getOnlinePlayers()) list.add(p.name)
@@ -125,5 +119,18 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
         return Arrays.stream(subCommands).filter { s: String ->
             s.startsWith(args[0]!!)
         }.collect(Collectors.toList())
+    }
+
+    @EventHandler
+    fun event(e: PlayerJoinEvent) {
+        if (enabled) {
+            val player = e.player
+            val uuid = Util.getUUID(player)
+            if (playerTags.containsKey(uuid)) {
+                val tag = playerTags[uuid]!!
+                val displayName = Util.insert(Util.getPluginConfig(name, "format") as String, hashMapOf("playerName" to player.name, "tag" to tag))!!
+                player.setDisplayName(displayName)
+            }
+        }
     }
 }

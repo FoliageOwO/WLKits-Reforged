@@ -14,12 +14,13 @@ class ScheduleNotice : Plugin {
         if (enabled) {
             val interval = Util.getPluginConfig(name, "interval") as Int
             val lines = Util.getPluginMsgAs(name, "notice-lines") as List<*>
+            val ticks = (interval * 20).toLong()
             runnable = object : BukkitRunnable() {
                 override fun run() {
                     for (line in lines) Util.broadcastPlayers(line as String)
                 }
             }
-            runnable.runTaskTimer(WLKits.instance, 0L, (interval * 20).toLong())
+            runnable.runTaskTimer(WLKits.instance, ticks, ticks)
         }
     }
 
