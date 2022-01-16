@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.utils
 
+import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.core.WLKits
 import org.bukkit.Bukkit
 import org.bukkit.World
@@ -25,6 +26,7 @@ class Util {
         fun disabled(p: CommandSender) = send(p, getPluginMsg("main", "disabled"))
         fun getUUID(p: Player) = p.uniqueId.toString()
         fun invalidArgs(p: CommandSender) = send(p, getPluginMsg("main", "invalid-args"))
+        fun hasPermission(p: CommandSender, name: String, type: PermissionType) = p.hasPermission("wlkits.${type.string}.$name")
 
         fun mustPlayer(p: CommandSender): Boolean {
             return if (p is Player && p !is ConsoleCommandSender) true
@@ -51,6 +53,12 @@ class Util {
         fun getWorldByName(name: String): World? {
             for (world in Bukkit.getWorlds()) if (world.toString() == name || world.name == name) return world
             return null
+        }
+
+        fun needPermission(p: CommandSender, name: String, type: PermissionType): Boolean {
+            if (hasPermission(p, name, type)) return true
+            else send(p, getPluginMsg("main", "no-permission"))
+            return false
         }
     }
 }

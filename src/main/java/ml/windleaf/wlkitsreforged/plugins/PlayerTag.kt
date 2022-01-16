@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.utils.FileUtil
@@ -30,7 +31,7 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String?>): Boolean {
-        if (enabled) {
+        if (enabled && Util.needPermission(sender, "playertag", PermissionType.COMMAND)) {
             if (args.isEmpty()) Util.invalidArgs(sender) else {
                 val i = HashMap<String, String>()
                 i["playerName"] = name

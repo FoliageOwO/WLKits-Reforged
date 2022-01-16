@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins.commands.warp
 
+import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.plugins.Warp
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.command.Command
@@ -13,11 +14,9 @@ import kotlin.collections.HashMap
 
 class DelwarpCommand : CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
-        if (Warp.enabled) {
-            return if (args.isEmpty()) {
-                Util.invalidArgs(sender)
-                false
-            } else {
+        if (Warp.enabled && Util.needPermission(sender, "warp", PermissionType.COMMAND)) {
+            if (args.isEmpty()) Util.invalidArgs(sender)
+            else {
                 val name = args[0]
                 val i = HashMap<String, String>()
                 i["name"] = name
@@ -27,7 +26,6 @@ class DelwarpCommand : CommandExecutor, TabCompleter {
                 } else if (sender is Player && Warp.warpManager.getWarps().keys.contains("${Util.getUUID(sender)}|$name")) {
                     delete(sender, "${Util.getUUID(sender)}|$name", Warp.WarpType.PRIVATE, i)
                 } else Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "not-found"), i))
-                true
             }
         } else Util.disabled(sender)
         return true

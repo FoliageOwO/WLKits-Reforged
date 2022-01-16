@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins.commands.tpa
 
+import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.plugins.Tpa
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Bukkit
@@ -16,7 +17,7 @@ import kotlin.collections.HashMap
 class TpaCommand : CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if (Tpa.enabled) {
-            if (Util.mustPlayer(sender)) {
+            if (Util.mustPlayer(sender) && Util.needPermission(sender, "tpa", PermissionType.COMMAND)) {
                 sender as Player
                 if (args.isEmpty()) {
                     Util.send(sender, Util.getPluginMsg("Tpa", "help"))

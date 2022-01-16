@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.command.Command
@@ -24,20 +25,22 @@ class Suicide : Plugin, Listener, CommandExecutor {
 
     @EventHandler
     fun event(e: PlayerDeathEvent) {
-        val player = e.entity
-        if (player in suicideList) {
-            val i = HashMap<String, String>()
-            i["playerName"] = player.name
-            if (!(Util.getPluginConfig(name, "use-vanilla") as Boolean)) {
-                e.deathMessage = ""
-                Util.broadcastPlayers(Util.insert(Util.getPluginMsg(name, "msg"), i))
+        if (Util.hasPermission(e.entity, "suicide", PermissionType.ACTION)) {
+            val player = e.entity
+            if (player in suicideList) {
+                val i = HashMap<String, String>()
+                i["playerName"] = player.name
+                if (!(Util.getPluginConfig(name, "use-vanilla") as Boolean)) {
+                    e.deathMessage = ""
+                    Util.broadcastPlayers(Util.insert(Util.getPluginMsg(name, "msg"), i))
+                }
+                suicideList.remove(player)
             }
-            suicideList.remove(player)
         }
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String?>): Boolean {
-        if (Util.mustPlayer(sender)) {
+        if (Util.mustPlayer(sender) && Util.needPermission(sender, "suicide", PermissionType.COMMAND)) {
             sender as Player
             suicideList.add(sender)
             sender.health = 0.0

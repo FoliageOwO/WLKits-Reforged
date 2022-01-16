@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.utils.Util
@@ -25,7 +26,10 @@ class SkipNight : Plugin, Listener {
 
     @EventHandler
     fun onPlayerBedEnterEvent(e: PlayerBedEnterEvent) {
-        if (enabled && (e.player.world.time >= 12010 || e.player.world.isThundering)) {
+        if (enabled
+            && (e.player.world.time >= 12010 || e.player.world.isThundering)
+            && Util.hasPermission(e.player, "skipnight", PermissionType.ACTION)
+        ) {
             if (!onBed.contains(e.player)) onBed.add(e.player)
             val percent = Util.getPluginConfig(name, "percent") as Int
             if (percent < 0 || percent > 100)
@@ -49,6 +53,6 @@ class SkipNight : Plugin, Listener {
 
     @EventHandler
     fun onPlayerBedLeaveEvent(e: PlayerBedLeaveEvent) {
-        if (enabled) onBed.remove(e.player)
+        if (enabled && Util.hasPermission(e.player, "skipnight", PermissionType.ACTION)) onBed.remove(e.player)
     }
 }

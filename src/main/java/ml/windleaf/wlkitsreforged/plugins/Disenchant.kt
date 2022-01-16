@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.utils.Util
@@ -63,7 +64,6 @@ class Disenchant : Plugin, Listener {
     }
 
     private fun registerRecipe() {
-        // 确认按钮 (confirm)
         confirm = ItemStack(Material.ENCHANTED_BOOK, 1)
         val confirmMeta: ItemMeta = confirm!!.itemMeta!!
         confirmMeta.setDisplayName(Util.translateColorCode(Util.getPluginMsg("main", "confirm")))
@@ -72,7 +72,6 @@ class Disenchant : Plugin, Listener {
         confirmMeta.lore = confirmLore
         confirm?.itemMeta = confirmMeta
 
-        // 取消按钮 (cancel)
         cancel = ItemStack(Material.BARRIER, 1)
         val cancelMeta: ItemMeta = cancel?.itemMeta!!
         cancelMeta.setDisplayName(Util.translateColorCode(Util.getPluginMsg("main", "cancel")))
@@ -81,7 +80,6 @@ class Disenchant : Plugin, Listener {
         cancelMeta.lore = cancelLore
         cancel?.itemMeta = cancelMeta
 
-        // 附魔书
         disenchantBook = ItemStack(Material.ENCHANTED_BOOK)
         val bookMeta: ItemMeta = disenchantBook?.itemMeta!!
         bookMeta.setDisplayName(Util.translateColorCode(Util.getPluginMsg(name, "book-display-name")))
@@ -90,7 +88,6 @@ class Disenchant : Plugin, Listener {
         bookMeta.lore = bookLore
         disenchantBook?.itemMeta = bookMeta
 
-        // 附魔书配方
         val disenchantBookRecipe =
             ShapedRecipe(NamespacedKey(WLKits.instance, "disenchantmentbook"), disenchantBook!!)
         disenchantBookRecipe.shape("###", "#@#", "###")
@@ -117,8 +114,10 @@ class Disenchant : Plugin, Listener {
                                         else {
                                             if (offhand.enchantments.isEmpty() || !offhand.hasItemMeta()) Util.send(player, Util.getPluginMsg(name, "no-enchantment"))
                                             else {
-                                                loadInventory(player)
-                                                player.openInventory(menu)
+                                                if (Util.needPermission(player, "disenchant", PermissionType.ACTION)) {
+                                                    loadInventory(player)
+                                                    player.openInventory(menu)
+                                                }
                                             }
                                         }
                                     }
@@ -133,7 +132,7 @@ class Disenchant : Plugin, Listener {
 
     @EventHandler
     fun onInventoryClickEvent(e: InventoryClickEvent) {
-        if (enabled) {
+        if (enabled && Util.needPermission(e.whoClicked, "disenchant", PermissionType.ACTION)) {
             val inventory = e.inventory
             if (inventory == menu) {
                 val player = e.whoClicked as Player

@@ -25,13 +25,8 @@ class AntiCreeper : Plugin, Listener {
         if (enabled && e.entity is Creeper) {
             e.isCancelled = true
             if (notice) {
-                val location = e.location
-                WLKits.log(
-                    "&a成功阻止 &fCreeper &a爆炸破坏地形! 爆炸坐标: " +
-                            "&3X:" + location.blockX + "&f, " +
-                            "&aY:" + location.blockY + "&f, " +
-                            "&cZ:" + location.blockZ + "&f."
-                )
+                val loc = e.location
+                WLKits.log("&a成功阻止 &fCreeper &a爆炸破坏地形! 爆炸坐标: &3X:${loc.blockX}&f, &aY:${loc.blockY}&f, &cZ:${loc.blockZ}&f.")
             }
         }
     }

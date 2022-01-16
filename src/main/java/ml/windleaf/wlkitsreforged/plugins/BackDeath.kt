@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Location
@@ -31,7 +32,7 @@ class BackDeath : Plugin, Listener, CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String?>): Boolean {
         if (enabled) {
-            if (Util.mustPlayer(sender)) {
+            if (Util.mustPlayer(sender) && Util.needPermission(sender, "backdeath", PermissionType.COMMAND)) {
                 sender as Player
                 val location = tpLogs[sender]
                 if (location == null) Util.send(sender, Util.getPluginMsg(name, "fail")) else {

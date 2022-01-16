@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins.commands.warp
 
+import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.plugins.Warp
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.command.Command
@@ -12,7 +13,7 @@ import java.util.*
 class SetwarpCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if (Warp.enabled) {
-            if (Util.mustPlayer(sender)) {
+            if (Util.mustPlayer(sender) && Util.needPermission(sender, "warp", PermissionType.COMMAND)) {
                 if (args.isEmpty() || args.size < 2) Util.invalidArgs(sender)
                 else {
                     if (args[0].length > 15) Util.send(sender, Util.getPluginMsg("Warp", "max-string"))

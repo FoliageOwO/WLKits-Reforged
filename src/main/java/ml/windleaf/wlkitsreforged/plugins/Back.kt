@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Location
@@ -31,7 +32,7 @@ class Back : Plugin, Listener, CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String?>): Boolean {
         if (enabled) {
-            if (Util.mustPlayer(sender)) {
+            if (Util.mustPlayer(sender) && Util.needPermission(sender, "back", PermissionType.COMMAND)) {
                 sender as Player
                 if (tpLogs.containsKey(sender)) {
                     sender.teleport(tpLogs[sender]!!)

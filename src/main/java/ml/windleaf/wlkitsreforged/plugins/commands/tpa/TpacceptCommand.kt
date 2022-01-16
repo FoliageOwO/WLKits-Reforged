@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins.commands.tpa
 
+import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.plugins.Tpa
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.command.Command
@@ -10,7 +11,7 @@ import org.bukkit.entity.Player
 class TpacceptCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String?>): Boolean {
         if (Tpa.enabled) {
-            if (Util.mustPlayer(sender)) {
+            if (Util.mustPlayer(sender) && Util.needPermission(sender, "tpa", PermissionType.COMMAND)) {
                 val toPlayer: Player? = Tpa.tpaLogs[sender]
                 if (toPlayer != null) {
                     toPlayer.teleport((sender as Player?)!!)

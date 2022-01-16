@@ -11,38 +11,117 @@ commands:
   backdeath:
     aliases: [ backd, bd ]
     description: 返回上一个死亡点
+    permission: wlkits.cmd.backdeath
   back:
     description: 返回上一个地点
+    permission: wlkits.cmd.back
   sethome:
     description: 在当前位置设置家
+    permission: wlkits.cmd.home
   home:
     description: 回家
+    permission: wlkits.cmd.home
   delhome:
     description: 删除家
+    permission: wlkits.cmd.home
   suicide:
     description: 自杀
+    permission: wlkits.cmd.suicide
   tpa:
     description: 发送传送请求
+    permission: wlkits.cmd.tpa
   tpaccept:
     aliases: [ tpac ]
     description: 接收传送请求
+    permission: wlkits.cmd.tpa
   tpadeny:
     aliases: [ tpad ]
     description: 拒绝传送请求
+    permission: wlkits.cmd.tpa
   tpacancel:
     description: 取消传送请求
+    permission: wlkits.cmd.tpa
   tpahelp:
     description: 查看 tpa 帮助
+    permission: wlkits.cmd.tpa
   setwarp:
     description: 设置地标点
+    permission: wlkits.cmd.warp
   warp:
     description: 传送到地标
+    permission: wlkits.cmd.warp
   delwarp:
     description: 删除地标点
+    permission: wlkits.cmd.warp
   warphelp:
     description: 查看 warp 帮助
+    permission: wlkits.cmd.warp
   warplist:
     description: 查看所有地标点
+    permission: wlkits.cmd.warplist
   playertag:
     aliases: [ ptag ]
     description: 玩家称号
+    permission: wlkits.cmd.playertag
+
+permissions:
+  wlkits.*:
+    description: 'WL-Kits 中的所有权限'
+    default: op
+    children:
+      - wlkits.command.*
+      - wlkits.action.*
+
+  wlkits.command.*:
+    description: 'WL-Kits 中的所有命令权限'
+    default: op
+    children:
+      - wlkits.cmd.backdeath
+      - wlkits.cmd.back
+      - wlkits.cmd.home
+      - wlkits.cmd.suicide
+      - wlkits.cmd.tpa
+      - wlkits.cmd.warp
+      - wlkits.cmd.warplist
+      - wlkits.cmd.playertag
+
+  wlkits.cmd.backdeath:
+    default: true
+
+  wlkits.cmd.back:
+    default: true
+
+  wlkits.cmd.home:
+    default: true
+
+  wlkits.cmd.suicide:
+    default: true
+
+  wlkits.cmd.tpa:
+    default: true
+
+  wlkits.cmd.warp:
+    default: true
+
+  wlkits.cmd.warplist:
+    default: op
+
+  wlkits.cmd.playertag:
+    default: op
+
+  wlkits.action.*:
+    description: 'WL-Kits 中的所有命令权限'
+    default: op
+    children:
+      - wlkits.action.disenchant
+      - wlkits.action.skipnight
+      - wlkits.action.suicide
+
+  wlkits.action.disenchant:
+    default: true
+
+  wlkits.action.skipnight:
+    default: true
+
+  wlkits.action.suicide:
+    default: true
