@@ -33,7 +33,7 @@ plugins: # 所有的集成小工具
     allow-show: true # 是否允许玩家展示
   playertag: # 玩家称号
     enabled: true
-    format: '{tag} {playerName}' # 称号格式, 例 '[OP] Steve'
+    format: '{tag} ' # 称号格式, 例 '[OP] Steve'
   schedulenotice: # 定时公告 公告请配置 message.yml
     enabled: false
     interval: 120 # 定时公告的间隔 (单位: 秒)

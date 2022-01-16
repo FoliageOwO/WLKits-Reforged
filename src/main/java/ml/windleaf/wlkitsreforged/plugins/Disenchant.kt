@@ -136,16 +136,15 @@ class Disenchant : Plugin, Listener {
             val inventory = e.inventory
             if (inventory == menu) {
                 val player = e.whoClicked as Player
+                e.isCancelled = true
                 when (e.currentItem) {
                     confirm -> {
-                        e.isCancelled = true
                         player.closeInventory()
                         disenchant(player, player.inventory.itemInOffHand)
                         player.inventory.remove(confirm!!)
                         player.updateInventory()
                     }
                     cancel -> {
-                        e.isCancelled = true
                         player.closeInventory()
                         player.inventory.remove(cancel!!)
                         player.updateInventory()

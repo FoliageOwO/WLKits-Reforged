@@ -10,6 +10,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -22,11 +23,13 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
         var path: String = WLKits.prefixPath + "playertags.data"
         var playerTags = FileUtil.loadHashMap(path) as HashMap<String, String>
         var enabled = Util.isEnabled("PlayerTag")
+        var scoreboard = Bukkit.getScoreboardManager()?.mainScoreboard!!
     }
 
     override fun load() {
         Util.registerEvent(this)
         Util.registerCommand("playertag", this)
+        for (p in Bukkit.getOnlinePlayers()) setDisplayName(p)
     }
 
     override fun unload() {
@@ -41,8 +44,7 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
                         val helps = HashMap<String, String>()
                         helps["/playertag help"] = "查看此帮助"
                         helps["/playertag set [player] [tag]"] = "设置一个玩家的称号"
-                        helps["/playertag remove [player]"] = "删除一个玩家的称号"
-                        helps["/playertag check [player]"] = "查看一个玩家的称号"
+                        helps["/playertag get [player]"] = "查看一个玩家的称号"
                         helps["/playertag reset [player]"] = "重置一个玩家的称号/名称"
                         Util.sendHelp(sender, helps)
                     }
@@ -55,16 +57,19 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
                             val player = Bukkit.getPlayer(n)
                             if (player == null) noPlayer(sender, i)
                             else {
-                                i["tag"] = Util.translateColorCode(tag)!!
-                                val displayName = Util.insert(Util.getPluginConfig(name, "format") as String, i)!!
-                                playerTags[Util.getUUID(player)] = tag
+                                val coloredTag = Util.translateColorCode(tag)!!
+                                i["tag"] = coloredTag
+                                val formatted = Util.insert(Util.getPluginConfig(name, "format") as String, i)!!
+                                playerTags[Util.getUUID(player)] = coloredTag
+                                val displayName = formatted + player.name
                                 player.setDisplayName(displayName)
+                                setNameTag(player, formatted)
                                 FileUtil.saveHashMap(playerTags, path)
                                 Util.send(sender, Util.insert(Util.getPluginMsg(name, "set-success"), i))
                             }
                         }
                     }
-                    "check" -> {
+                    "get" -> {
                         if (args.size != 2) Util.invalidArgs(sender)
                         else {
                             val n = args[1]!!
@@ -91,9 +96,9 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
                             val player = Bukkit.getPlayer(n)
                             if (player == null) noPlayer(sender, i)
                             else {
-                                i["playerName"] = n
                                 playerTags.remove(Util.getUUID(player))
                                 player.setDisplayName(player.name)
+                                resetNameTag(player)
                                 FileUtil.saveHashMap(playerTags, path)
                                 Util.send(sender, Util.insert(Util.getPluginMsg(name, "reset-success"), i))
                             }
@@ -110,7 +115,7 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
     private fun noPlayer(sender: CommandSender, i: HashMap<String, String>) = Util.send(sender, Util.insert(Util.getPluginMsg(name, "no-player"), i))
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<String?>): List<String> {
-        val subCommands = arrayOf("help", "set", "check", "reset")
+        val subCommands = arrayOf("help", "set", "get", "reset")
         if (args.size > 1) {
             val list = ArrayList<String>()
             for (p in Bukkit.getOnlinePlayers()) list.add(p.name)
@@ -123,14 +128,24 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
 
     @EventHandler
     fun event(e: PlayerJoinEvent) {
-        if (enabled) {
-            val player = e.player
-            val uuid = Util.getUUID(player)
-            if (playerTags.containsKey(uuid)) {
-                val tag = playerTags[uuid]!!
-                val displayName = Util.insert(Util.getPluginConfig(name, "format") as String, hashMapOf("playerName" to player.name, "tag" to tag))!!
-                player.setDisplayName(displayName)
-            }
+        if (enabled) setDisplayName(e.player)
+    }
+
+    private fun setDisplayName(p: Player) {
+        val uuid = Util.getUUID(p)
+        if (playerTags.containsKey(uuid)) {
+            val tag = playerTags[uuid]!!
+            val displayName = Util.insert(Util.getPluginConfig(name, "format") as String, hashMapOf("tag" to tag))!! + p.name
+            p.setDisplayName(displayName)
         }
     }
+
+    private fun setNameTag(p: Player, tag: String) {
+        var team = scoreboard.getTeam(p.hashCode().toString())
+        if (team == null) team = scoreboard.registerNewTeam(p.hashCode().toString())
+        team.prefix = tag
+        team.addEntry(p.name)
+    }
+
+    private fun resetNameTag(p: Player) = scoreboard.getTeam(p.hashCode().toString())?.unregister()
 }
