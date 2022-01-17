@@ -1,6 +1,8 @@
 package ml.windleaf.wlkitsreforged.utils
 
 import ml.windleaf.wlkitsreforged.core.PermissionType
+import ml.windleaf.wlkitsreforged.core.Plugin
+import ml.windleaf.wlkitsreforged.core.PluginManager
 import ml.windleaf.wlkitsreforged.core.WLKits
 import org.bukkit.Bukkit
 import org.bukkit.World
@@ -59,6 +61,15 @@ class Util {
             if (hasPermission(p, name, type)) return true
             else send(p, getPluginMsg("main", "no-permission"))
             return false
+        }
+
+        fun send(p: CommandSender, vararg s: String?) {
+            for (i in s) send(p, i)
+        }
+
+        fun getPluginByName(name: String): Plugin? {
+            for (plugin in PluginManager.pluginList) if (plugin.name == name) return plugin
+            return null
         }
     }
 }

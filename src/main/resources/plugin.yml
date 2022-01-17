@@ -63,16 +63,19 @@ commands:
     aliases: [ ptag ]
     description: 玩家称号
     permission: wlkits.cmd.playertag
+  wlkits:
+    description: 本体命令
+    permission: wlkits.cmd.wlkits
 
 permissions:
   wlkits.*:
     description: 'WL-Kits 中的所有权限'
     default: op
     children:
-      - wlkits.command.*
+      - wlkits.cmd.*
       - wlkits.action.*
 
-  wlkits.command.*:
+  wlkits.cmd.*:
     description: 'WL-Kits 中的所有命令权限'
     default: op
     children:
@@ -84,6 +87,7 @@ permissions:
       - wlkits.cmd.warp
       - wlkits.cmd.warplist
       - wlkits.cmd.playertag
+      - wlkits.cmd.wlkits
 
   wlkits.cmd.backdeath:
     default: true
@@ -107,6 +111,9 @@ permissions:
     default: op
 
   wlkits.cmd.playertag:
+    default: op
+
+  wlkits.cmd.wlkits:
     default: op
 
   wlkits.action.*:

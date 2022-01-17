@@ -12,7 +12,8 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 
 class Suicide : Plugin, Listener, CommandExecutor {
-    override var name = "Suicide"
+    override val name = "Suicide"
+    override val enabled = Util.isEnabled(name)
     private var suicideList = ArrayList<Player>()
 
     override fun load() {
@@ -25,7 +26,7 @@ class Suicide : Plugin, Listener, CommandExecutor {
 
     @EventHandler
     fun event(e: PlayerDeathEvent) {
-        if (Util.hasPermission(e.entity, "suicide", PermissionType.ACTION)) {
+        if (enabled && Util.hasPermission(e.entity, "suicide", PermissionType.ACTION)) {
             val player = e.entity
             if (player in suicideList) {
                 val i = HashMap<String, String>()
@@ -40,11 +41,11 @@ class Suicide : Plugin, Listener, CommandExecutor {
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String?>): Boolean {
-        if (Util.mustPlayer(sender) && Util.needPermission(sender, "suicide", PermissionType.COMMAND)) {
+        if (enabled && Util.mustPlayer(sender) && Util.needPermission(sender, "suicide", PermissionType.COMMAND)) {
             sender as Player
             suicideList.add(sender)
             sender.health = 0.0
-        }
+        } else Util.disabled(sender)
         return true
     }
 }

@@ -13,8 +13,8 @@ import org.bukkit.event.player.PlayerBedEnterEvent
 import org.bukkit.event.player.PlayerBedLeaveEvent
 
 class SkipNight : Plugin, Listener {
-    override var name = "SkipNight"
-    private var enabled = Util.isEnabled(name)
+    override val name = "SkipNight"
+    override val enabled = Util.isEnabled(name)
     private var onBed = ArrayList<Player>()
 
     override fun load() {

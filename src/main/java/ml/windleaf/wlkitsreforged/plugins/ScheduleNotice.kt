@@ -6,8 +6,8 @@ import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.scheduler.BukkitRunnable
 
 class ScheduleNotice : Plugin {
-    override var name = "ScheduleNotice"
-    val enabled = Util.isEnabled(name)
+    override val name = "ScheduleNotice"
+    override val enabled = Util.isEnabled(name)
     private lateinit var runnable: BukkitRunnable
 
     override fun load() {

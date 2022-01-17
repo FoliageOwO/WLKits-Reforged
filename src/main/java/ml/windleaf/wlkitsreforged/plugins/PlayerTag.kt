@@ -18,7 +18,8 @@ import java.util.*
 import java.util.stream.Collectors
 
 class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
-    override var name = "PlayerTag"
+    override val name = "PlayerTag"
+    override val enabled = Util.isEnabled(name)
     companion object {
         var path: String = WLKits.prefixPath + "playertags.data"
         var playerTags = FileUtil.loadHashMap(path) as HashMap<String, String>
@@ -121,6 +122,7 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
             for (p in Bukkit.getOnlinePlayers()) list.add(p.name)
             return list
         } else if (args.isEmpty()) return listOf(*subCommands)
+        else if (args.size > 2) return emptyList()
         return Arrays.stream(subCommands).filter { s: String ->
             s.startsWith(args[0]!!)
         }.collect(Collectors.toList())

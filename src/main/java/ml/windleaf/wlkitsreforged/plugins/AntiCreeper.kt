@@ -9,8 +9,8 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityExplodeEvent
 
 class AntiCreeper : Plugin, Listener {
-    override var name = "AntiCreeper"
-    private var enabled = Util.isEnabled(name)
+    override val name = "AntiCreeper"
+    override val enabled = Util.isEnabled(name)
     private var notice = Util.getPluginConfig(name, "notice") as Boolean
 
     override fun load() {

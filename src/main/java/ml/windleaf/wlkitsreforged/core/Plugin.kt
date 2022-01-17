@@ -1,7 +1,8 @@
 package ml.windleaf.wlkitsreforged.core
 
 interface Plugin {
-    var name: String
+    val name: String
+    val enabled: Boolean
     fun load()
     fun unload()
 }

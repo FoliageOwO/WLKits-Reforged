@@ -20,12 +20,12 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.ItemMeta
 
 class Disenchant : Plugin, Listener {
-    override var name = "Disenchant"
+    override val name = "Disenchant"
     private var menu = Bukkit.createInventory(null, 9, Util.translateColorCode(Util.getPluginMsg(name, "menu-display-name"))!!)
     private var disenchantBook: ItemStack? = null
     private var confirm: ItemStack? = null
     private var cancel: ItemStack? = null
-    private var enabled = Util.isEnabled(name)
+    override val enabled = Util.isEnabled(name)
 
     override fun load() {
         registerRecipe()
@@ -88,12 +88,14 @@ class Disenchant : Plugin, Listener {
         bookMeta.lore = bookLore
         disenchantBook?.itemMeta = bookMeta
 
-        val disenchantBookRecipe =
-            ShapedRecipe(NamespacedKey(WLKits.instance, "disenchantmentbook"), disenchantBook!!)
-        disenchantBookRecipe.shape("###", "#@#", "###")
-        disenchantBookRecipe.setIngredient('#', Material.GLOWSTONE_DUST)
-        disenchantBookRecipe.setIngredient('@', Material.BOOK)
-        Bukkit.addRecipe(disenchantBookRecipe)
+        try {
+            val disenchantBookRecipe =
+                ShapedRecipe(NamespacedKey(WLKits.instance, "disenchantmentbook"), disenchantBook!!)
+            disenchantBookRecipe.shape("###", "#@#", "###")
+            disenchantBookRecipe.setIngredient('#', Material.GLOWSTONE_DUST)
+            disenchantBookRecipe.setIngredient('@', Material.BOOK)
+            Bukkit.addRecipe(disenchantBookRecipe)
+        } catch (ignored: IllegalStateException) { }
     }
 
     @EventHandler

@@ -7,6 +7,9 @@ main:
   cancel: '&c取消'
   disabled: '&c此功能已被禁用!'
   invalid-args: '&c命令参数错误!'
+  reload: '&a重载成功!'
+  status: '&f子插件 &6{pluginName} &f的开启状态: {status}'
+  no-plugin: '&c没有叫做 &6{pluginName} &c的子插件!'
 backdeath:
   fail: '&c无法返回上一个死亡点!'
   success: '&a返回成功!'

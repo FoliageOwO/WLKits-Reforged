@@ -9,11 +9,12 @@ import ml.windleaf.wlkitsreforged.utils.FileUtil
 import ml.windleaf.wlkitsreforged.utils.Util
 
 class Home : Plugin {
-    override var name = "Home"
+    override val name = "Home"
+    override val enabled = Util.isEnabled(name)
     companion object {
         var path: String = WLKits.prefixPath + "homes.data"
         var homes = FileUtil.loadHashMap(path) as HashMap<String, String>
-        var enabled = Util.isEnabled("Home")
+        val enabled = Util.isEnabled("Home")
     }
 
     override fun load() {

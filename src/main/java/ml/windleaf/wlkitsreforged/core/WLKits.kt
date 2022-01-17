@@ -20,6 +20,10 @@ class WLKits : JavaPlugin() {
         }
 
         fun log(s: String) = println(Util.translateColorCode(Util.withPrefix() + s))
+        fun reload() {
+            instance.reloadConfig()
+            message.load(File(prefixPath + "message.yml"))
+        }
     }
 
     override fun onEnable() {
@@ -29,16 +33,15 @@ class WLKits : JavaPlugin() {
 
         Companion.saveResource("config.yml")
         Companion.saveResource("message.yml")
-        message.load(File(prefixPath + "message.yml"))
         Companion.saveResource("warps.yml")
+        reload()
 
         pluginManager.loadPlugins()
+        log("&f已加载子插件, 共 ${PluginManager.pluginList.size} 个...")
 
         val endTime = System.currentTimeMillis()
         log("加载完毕, 用时 &e${endTime - startTime}ms&r!")
     }
 
-    override fun onDisable() {
-        pluginManager.unloadPlugins()
-    }
+    override fun onDisable() = pluginManager.unloadPlugins()
 }

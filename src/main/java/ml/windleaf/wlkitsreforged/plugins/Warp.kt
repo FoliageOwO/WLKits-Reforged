@@ -11,7 +11,8 @@ import java.io.File
 import java.io.IOException
 
 class Warp : Plugin {
-    override var name = "Warp"
+    override val name = "Warp"
+    override val enabled = Util.isEnabled(name)
     companion object {
         private var path: String = WLKits.prefixPath + "warps.yml"
         val warpManager = WarpManager()

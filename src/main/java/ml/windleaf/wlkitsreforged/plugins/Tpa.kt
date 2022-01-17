@@ -6,7 +6,8 @@ import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.entity.Player
 
 class Tpa : Plugin {
-    override var name = "Tpa"
+    override val name = "Tpa"
+    override val enabled = Util.isEnabled(name)
     companion object {
         var tpaLogs = HashMap<Player, Player>()
         val enabled = Util.isEnabled("Tpa")
