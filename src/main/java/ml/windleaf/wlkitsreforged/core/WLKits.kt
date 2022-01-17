@@ -9,7 +9,7 @@ import java.io.File
 class WLKits : JavaPlugin() {
     companion object {
         const val name = "WLKits"
-        const val version = "0.2"
+        const val version = "0.2-fix1"
         val pluginManager = PluginManager()
         val prefixPath = Util.getPath() + "plugins" + File.separator + "WLKitsReforged" + File.separator
         lateinit var instance: WLKits
@@ -36,12 +36,9 @@ class WLKits : JavaPlugin() {
         Companion.saveResource("warps.yml")
         reload()
 
-        pluginManager.loadPlugins()
-        log("&f已加载子插件, 共 ${PluginManager.pluginList.size} 个...")
+        Util.registerEvent(pluginManager)
 
         val endTime = System.currentTimeMillis()
         log("加载完毕, 用时 &e${endTime - startTime}ms&r!")
     }
-
-    override fun onDisable() = pluginManager.unloadPlugins()
 }

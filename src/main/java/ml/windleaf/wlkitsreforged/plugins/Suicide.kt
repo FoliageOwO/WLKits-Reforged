@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.LoadType
 import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.utils.Util
@@ -14,6 +15,7 @@ import org.bukkit.event.entity.PlayerDeathEvent
 class Suicide : Plugin, Listener, CommandExecutor {
     override val name = "Suicide"
     override val enabled = Util.isEnabled(name)
+    override val type = LoadType.ON_STARTUP
     private var suicideList = ArrayList<Player>()
 
     override fun load() {

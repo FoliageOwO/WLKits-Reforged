@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.LoadType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.utils.Util
@@ -11,6 +12,7 @@ import org.bukkit.event.entity.EntityExplodeEvent
 class AntiCreeper : Plugin, Listener {
     override val name = "AntiCreeper"
     override val enabled = Util.isEnabled(name)
+    override val type = LoadType.ON_STARTUP
     private var notice = Util.getPluginConfig(name, "notice") as Boolean
 
     override fun load() {

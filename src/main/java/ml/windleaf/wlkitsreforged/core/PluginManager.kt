@@ -1,34 +1,54 @@
 package ml.windleaf.wlkitsreforged.core
 
 import ml.windleaf.wlkitsreforged.plugins.*
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.server.PluginDisableEvent
+import org.bukkit.event.server.PluginEnableEvent
+import org.bukkit.event.world.WorldLoadEvent
 
-class PluginManager {
+class PluginManager : Listener {
     companion object {
-        var pluginList: ArrayList<Plugin> = arrayListOf(
-            AntiCreeper(),
-            Back(), BackDeath(),
-            Disenchant(),
-            Home(),
-            JoinInfo(),
-            PlayerTag(),
-            ScheduleNotice(), SkipNight(), Suicide(),
-            Tpa(),
-            Warp(),
-            WLKitsPlugin()
-        )
+        lateinit var pluginList: ArrayList<Plugin>
     }
 
-    fun loadPlugins() {
-        for (plugin in pluginList) plugin.load()
+    @EventHandler
+    fun onEnable(e: PluginEnableEvent) {
+        if (e.plugin == WLKits.instance) {
+            pluginList = arrayListOf(
+                AntiCreeper(),
+                Back(), BackDeath(),
+                Disenchant(),
+                Home(),
+                JoinInfo(),
+                PlayerTag(),
+                ScheduleNotice(), SkipNight(), Suicide(),
+                Tpa(),
+                Warp(),
+                WLKitsPlugin()
+            )
+            loadStartupPlugins()
+        }
     }
 
-    fun unloadPlugins() {
-        for (plugin in pluginList) plugin.unload()
+    @EventHandler
+    fun onDisable(e: PluginDisableEvent) {
+        if (e.plugin == WLKits.instance) unloadPlugins()
+    }
+
+    @EventHandler
+    fun onLoadWorld(e: WorldLoadEvent) = loadLoadWorldPlugins()
+
+    private fun loadStartupPlugins() = pluginList.forEach { if (it.type == LoadType.ON_STARTUP) it.load() }
+    private fun loadLoadWorldPlugins() = pluginList.forEach { if (it.type == LoadType.ON_LOAD_WORLD) it.load() }
+    private fun unloadPlugins() {
+        pluginList.forEach { it.unload() }
         pluginList.clear()
     }
 
     fun reload() {
         unloadPlugins()
-        loadPlugins()
+        loadStartupPlugins()
+        loadLoadWorldPlugins()
     }
 }

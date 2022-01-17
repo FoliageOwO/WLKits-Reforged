@@ -140,4 +140,4 @@
 - [ ] feat: 完善 `Warp`
 - [x] readme: 完善文档
 - [x] code: 将非必要的 `HashMap/ArrayList` 替换为 `hashMapOf()/arrayListOf()`
-- [ ] fix: [fatal] 开服触发 `ExceptionInInitializerError` 异常 (暂时解决办法: 开服后 `reload`)
+- [x] fix: [fatal] 开服触发 `ExceptionInInitializerError` 异常 (暂时解决办法: 开服后 `reload`)

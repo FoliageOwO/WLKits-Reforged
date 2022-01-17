@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.LoadType
 import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.core.WLKits
@@ -14,20 +15,23 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.scoreboard.Scoreboard
 import java.util.*
 import java.util.stream.Collectors
 
 class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
     override val name = "PlayerTag"
     override val enabled = Util.isEnabled(name)
+    override val type = LoadType.ON_LOAD_WORLD
     companion object {
         var path: String = WLKits.prefixPath + "playertags.data"
         var playerTags = FileUtil.loadHashMap(path) as HashMap<String, String>
         var enabled = Util.isEnabled("PlayerTag")
-        var scoreboard = Bukkit.getScoreboardManager()?.mainScoreboard!!
+        lateinit var scoreboard: Scoreboard
     }
 
     override fun load() {
+        scoreboard = Bukkit.getScoreboardManager()?.mainScoreboard!!
         Util.registerEvent(this)
         Util.registerCommand("playertag", this)
         for (p in Bukkit.getOnlinePlayers()) setDisplayName(p)

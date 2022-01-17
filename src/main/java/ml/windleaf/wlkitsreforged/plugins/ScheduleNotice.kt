@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.LoadType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.utils.Util
@@ -8,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable
 class ScheduleNotice : Plugin {
     override val name = "ScheduleNotice"
     override val enabled = Util.isEnabled(name)
+    override val type = LoadType.ON_LOAD_WORLD
     private lateinit var runnable: BukkitRunnable
 
     override fun load() {

@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.LoadType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.utils.Util
@@ -11,6 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 class JoinInfo : Plugin, Listener {
     override val name = "JoinInfo"
     override val enabled = Util.isEnabled(name)
+    override val type = LoadType.ON_STARTUP
 
     override fun load() {
         Util.registerEvent(this)

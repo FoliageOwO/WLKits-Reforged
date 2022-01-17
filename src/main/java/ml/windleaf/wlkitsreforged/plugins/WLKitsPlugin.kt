@@ -1,9 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
-import ml.windleaf.wlkitsreforged.core.PermissionType
-import ml.windleaf.wlkitsreforged.core.Plugin
-import ml.windleaf.wlkitsreforged.core.PluginManager
-import ml.windleaf.wlkitsreforged.core.WLKits
+import ml.windleaf.wlkitsreforged.core.*
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -15,6 +12,7 @@ import java.util.stream.Collectors
 class WLKitsPlugin : Plugin, CommandExecutor, TabCompleter {
     override val name = "WLKitsPlugin"
     override val enabled = true
+    override val type = LoadType.ON_STARTUP
 
     override fun load() {
         Util.registerCommand("wlkits", this)
@@ -41,8 +39,8 @@ class WLKitsPlugin : Plugin, CommandExecutor, TabCompleter {
                         if (args.size != 2) Util.invalidArgs(sender) else {
                             val n = args[1]
                             val plugin = Util.getPluginByName(n)
-                            if (plugin == null) Util.send(sender, Util.insert(Util.getPluginMsg("main", "no-plugin"), "playerName" to n))
-                            else Util.send(sender, Util.insert(Util.getPluginMsg("main", "status"), "playerName" to n, "status" to if (plugin.enabled) "&aTRUE" else "&cFALSE"))
+                            if (plugin == null) Util.send(sender, Util.insert(Util.getPluginMsg("main", "no-plugin"), "pluginName" to n))
+                            else Util.send(sender, Util.insert(Util.getPluginMsg("main", "status"), "pluginName" to n, "status" to if (plugin.enabled) "&aTRUE" else "&cFALSE"))
                         }
                     }
                     "info" -> {

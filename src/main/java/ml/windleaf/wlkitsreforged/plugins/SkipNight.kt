@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.LoadType
 import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.core.WLKits
@@ -15,6 +16,7 @@ import org.bukkit.event.player.PlayerBedLeaveEvent
 class SkipNight : Plugin, Listener {
     override val name = "SkipNight"
     override val enabled = Util.isEnabled(name)
+    override val type = LoadType.ON_STARTUP
     private var onBed = ArrayList<Player>()
 
     override fun load() {

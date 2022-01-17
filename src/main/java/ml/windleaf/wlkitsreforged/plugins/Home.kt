@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.LoadType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.plugins.commands.home.DelhomeCommand
@@ -11,6 +12,7 @@ import ml.windleaf.wlkitsreforged.utils.Util
 class Home : Plugin {
     override val name = "Home"
     override val enabled = Util.isEnabled(name)
+    override val type = LoadType.ON_STARTUP
     companion object {
         var path: String = WLKits.prefixPath + "homes.data"
         var homes = FileUtil.loadHashMap(path) as HashMap<String, String>

@@ -6,7 +6,7 @@
 
     <groupId>ml.windleaf</groupId>
     <artifactId>WLKitsReforged</artifactId>
-    <version>0.2</version>
+    <version>0.2-fix1</version>
     <packaging>jar</packaging>
 
     <name>WLKitsReforged</name>

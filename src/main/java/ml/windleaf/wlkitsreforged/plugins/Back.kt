@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.LoadType
 import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.utils.Util
@@ -14,8 +15,9 @@ import org.bukkit.event.player.PlayerTeleportEvent
 
 class Back : Plugin, Listener, CommandExecutor {
     override val name = "Back"
-    private var tpLogs = HashMap<Player, Location>()
     override val enabled = Util.isEnabled(name)
+    override val type = LoadType.ON_STARTUP
+    private var tpLogs = HashMap<Player, Location>()
 
     override fun load() {
         Util.registerEvent(this)

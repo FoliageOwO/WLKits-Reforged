@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.plugins
 
+import ml.windleaf.wlkitsreforged.core.LoadType
 import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.core.WLKits
@@ -14,6 +15,7 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
@@ -21,13 +23,15 @@ import org.bukkit.inventory.meta.ItemMeta
 
 class Disenchant : Plugin, Listener {
     override val name = "Disenchant"
-    private var menu = Bukkit.createInventory(null, 9, Util.translateColorCode(Util.getPluginMsg(name, "menu-display-name"))!!)
-    private var disenchantBook: ItemStack? = null
-    private var confirm: ItemStack? = null
-    private var cancel: ItemStack? = null
     override val enabled = Util.isEnabled(name)
+    override val type = LoadType.ON_LOAD_WORLD
+    private lateinit var menu: Inventory
+    private lateinit var disenchantBook: ItemStack
+    private lateinit var confirm: ItemStack
+    private lateinit var cancel: ItemStack
 
     override fun load() {
+        menu = Bukkit.createInventory(null, 9, Util.translateColorCode(Util.getPluginMsg(name, "menu-display-name"))!!)
         registerRecipe()
         Util.registerEvent(this)
     }
@@ -61,32 +65,32 @@ class Disenchant : Plugin, Listener {
 
     private fun registerRecipe() {
         confirm = ItemStack(Material.ENCHANTED_BOOK, 1)
-        val confirmMeta: ItemMeta = confirm!!.itemMeta!!
+        val confirmMeta: ItemMeta = confirm.itemMeta!!
         confirmMeta.setDisplayName(Util.translateColorCode(Util.getPluginMsg("main", "confirm")))
         val confirmLore = java.util.ArrayList<String>()
         confirmLore.add(Util.translateColorCode(Util.getPluginMsg(name, "click-to-confirm"))!!)
         confirmMeta.lore = confirmLore
-        confirm?.itemMeta = confirmMeta
+        confirm.itemMeta = confirmMeta
 
         cancel = ItemStack(Material.BARRIER, 1)
-        val cancelMeta: ItemMeta = cancel?.itemMeta!!
+        val cancelMeta: ItemMeta = cancel.itemMeta!!
         cancelMeta.setDisplayName(Util.translateColorCode(Util.getPluginMsg("main", "cancel")))
         val cancelLore = java.util.ArrayList<String>()
         cancelLore.add(Util.translateColorCode(Util.getPluginMsg(name, "click-to-cancel"))!!)
         cancelMeta.lore = cancelLore
-        cancel?.itemMeta = cancelMeta
+        cancel.itemMeta = cancelMeta
 
         disenchantBook = ItemStack(Material.ENCHANTED_BOOK)
-        val bookMeta: ItemMeta = disenchantBook?.itemMeta!!
+        val bookMeta: ItemMeta = disenchantBook.itemMeta!!
         bookMeta.setDisplayName(Util.translateColorCode(Util.getPluginMsg(name, "book-display-name")))
         val bookLore = java.util.ArrayList<String>()
         bookLore.add(Util.translateColorCode(Util.getPluginMsg(name, "book-lore"))!!)
         bookMeta.lore = bookLore
-        disenchantBook?.itemMeta = bookMeta
+        disenchantBook.itemMeta = bookMeta
 
         try {
             val disenchantBookRecipe =
-                ShapedRecipe(NamespacedKey(WLKits.instance, "disenchantmentbook"), disenchantBook!!)
+                ShapedRecipe(NamespacedKey(WLKits.instance, "disenchantmentbook"), disenchantBook)
             disenchantBookRecipe.shape("###", "#@#", "###")
             disenchantBookRecipe.setIngredient('#', Material.GLOWSTONE_DUST)
             disenchantBookRecipe.setIngredient('@', Material.BOOK)
@@ -139,12 +143,12 @@ class Disenchant : Plugin, Listener {
                     confirm -> {
                         player.closeInventory()
                         disenchant(player, player.inventory.itemInOffHand)
-                        player.inventory.remove(confirm!!)
+                        player.inventory.remove(confirm)
                         player.updateInventory()
                     }
                     cancel -> {
                         player.closeInventory()
-                        player.inventory.remove(cancel!!)
+                        player.inventory.remove(cancel)
                         player.updateInventory()
                     }
                 }
