@@ -49,15 +49,11 @@ class Disenchant : Plugin, Listener {
             val enchants = offhand.enchantments
             for ((key, value) in enchants) meta.addStoredEnchant(key!!, value!!, true)
             val lore = ArrayList<String>()
-            val i = HashMap<String, String>()
-            i["playerName"] = player.name
-            lore.add(Util.insert(Util.translateColorCode(Util.getPluginMsg(name, "lore")), i)!!)
+            lore.add(Util.insert(Util.translateColorCode(Util.getPluginMsg(name, "lore")), "playerName" to player.name)!!)
             meta.lore = lore
             book.itemMeta = meta
             player.inventory.setItemInMainHand(book)
-            val z = HashMap<String, String>()
-            z["item"] = player.inventory.itemInOffHand.type.name
-            Util.send(player, Util.insert(Util.getPluginMsg(name, "success")!!, z))
+            Util.send(player, Util.insert(Util.getPluginMsg(name, "success")!!, "item" to player.inventory.itemInOffHand.type.name))
             player.inventory.setItemInOffHand(null)
             player.updateInventory()
         }

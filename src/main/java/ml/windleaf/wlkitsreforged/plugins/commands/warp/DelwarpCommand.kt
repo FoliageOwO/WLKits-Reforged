@@ -18,27 +18,26 @@ class DelwarpCommand : CommandExecutor, TabCompleter {
             if (args.isEmpty()) Util.invalidArgs(sender)
             else {
                 val name = args[0]
-                val i = HashMap<String, String>()
-                i["name"] = name
-                i["playerName"] = sender.name
+                val n = "name" to name
+                val pn = "playerName" to sender.name
                 if (Warp.warpManager.getWarps().keys.contains(name)/* && '|' !in name.toCharArray()*/) {
-                    delete(sender, name, Warp.WarpType.PUBLIC, i)
+                    delete(sender, name, Warp.WarpType.PUBLIC, n, pn)
                 } else if (sender is Player && Warp.warpManager.getWarps().keys.contains("${Util.getUUID(sender)}|$name")) {
-                    delete(sender, "${Util.getUUID(sender)}|$name", Warp.WarpType.PRIVATE, i)
-                } else Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "not-found"), i))
+                    delete(sender, "${Util.getUUID(sender)}|$name", Warp.WarpType.PRIVATE, n, pn)
+                } else Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "not-found"), n, pn))
             }
         } else Util.disabled(sender)
         return true
     }
 
-    private fun delete(sender: CommandSender, name: String, type: Warp.WarpType, i: HashMap<String, String>) {
+    private fun delete(sender: CommandSender, name: String, type: Warp.WarpType, vararg pairs: Pair<String, String>) {
         when (type) {
             Warp.WarpType.PUBLIC -> {
                 if (sender.isOp || Util.getPluginConfig("Warp", "allow-public") as Boolean) {
                     Warp.warpManager.warps?.set("public.$name", null)
-                    Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "del-success"), i))
+                    Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "del-success"), *pairs))
                     if (Util.getPluginConfig("Warp", "broadcast") as Boolean)
-                        Util.broadcastPlayers(Util.insert(Util.getPluginMsg("Warp", "del-broadcast"), i))
+                        Util.broadcastPlayers(Util.insert(Util.getPluginMsg("Warp", "del-broadcast"), *pairs))
                     val list = Warp.warpManager.warps?.getStringList("list")!!
                     list.remove(name)
                     Warp.warpManager.warps?.set("list", list)
@@ -50,7 +49,7 @@ class DelwarpCommand : CommandExecutor, TabCompleter {
                 val uuid = l[0]
                 if ((sender is Player && Util.getUUID(sender) == uuid) || sender !is Player) {
                     Warp.warpManager.warps?.set("private.$p", null)
-                    Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "del-success"), i))
+                    Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "del-success"), *pairs))
                     val list = Warp.warpManager.warps?.getStringList("list")!!
                     list.remove(p)
                     Warp.warpManager.warps?.set("list", list)

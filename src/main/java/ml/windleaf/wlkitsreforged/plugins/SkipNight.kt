@@ -40,12 +40,9 @@ class SkipNight : Plugin, Listener {
                     val world: World = e.player.world
                     world.time = 100
                 } else {
-                    val i = HashMap<String, String>()
-                    i["onBed"] = onBed.size.toString()
                     var fakePlayers = 0
                     while ((fakePlayers / Bukkit.getOnlinePlayers().size) < (percent / 100)) fakePlayers += 1
-                    i["needPlayers"] = fakePlayers.toString()
-                    Util.broadcastPlayers(Util.insert(Util.getPluginMsg(name, "msg-need"), i))
+                    Util.broadcastPlayers(Util.insert(Util.getPluginMsg(name, "msg-need"), "onBed" to onBed.size.toString(), "needPlayers" to fakePlayers.toString()))
                 }
             }
         }

@@ -39,34 +39,28 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String?>): Boolean {
         if (enabled && Util.needPermission(sender, "playertag", PermissionType.COMMAND)) {
             if (args.isEmpty()) Util.invalidArgs(sender) else {
-                val i = HashMap<String, String>()
                 when (args[0]) {
-                    "help" -> {
-                        val helps = HashMap<String, String>()
-                        helps["/playertag help"] = "查看此帮助"
-                        helps["/playertag set [player] [tag]"] = "设置一个玩家的称号"
-                        helps["/playertag get [player]"] = "查看一个玩家的称号"
-                        helps["/playertag reset [player]"] = "重置一个玩家的称号/名称"
-                        Util.sendHelp(sender, helps)
-                    }
+                    "help" -> Util.sendHelp(sender,
+                            "/playertag help" to "查看此帮助",
+                            "/playertag set [player] [tag]" to "设置一个玩家的称号",
+                            "/playertag get [player]" to "查看一个玩家的称号",
+                            "/playertag reset [player]" to "重置一个玩家的称号/名称")
                     "set" -> {
                         if (args.size != 3) Util.invalidArgs(sender)
                         else {
                             val n = args[1]!!
-                            i["playerName"] = n
                             val tag = args[2]!!
                             val player = Bukkit.getPlayer(n)
-                            if (player == null) noPlayer(sender, i)
+                            if (player == null) noPlayer(sender, "playerName" to n, "tag" to tag)
                             else {
                                 val coloredTag = Util.translateColorCode(tag)!!
-                                i["tag"] = coloredTag
-                                val formatted = Util.insert(Util.getPluginConfig(name, "format") as String, i)!!
+                                val formatted = Util.insert(Util.getPluginConfig(name, "format") as String, "playerName" to n, "tag" to coloredTag)!!
                                 playerTags[Util.getUUID(player)] = coloredTag
                                 val displayName = formatted + player.name
                                 player.setDisplayName(displayName)
                                 setNameTag(player, formatted)
                                 FileUtil.saveHashMap(playerTags, path)
-                                Util.send(sender, Util.insert(Util.getPluginMsg(name, "set-success"), i))
+                                Util.send(sender, Util.insert(Util.getPluginMsg(name, "set-success"), "playerName" to n, "tag" to coloredTag))
                             }
                         }
                     }
@@ -74,17 +68,13 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
                         if (args.size != 2) Util.invalidArgs(sender)
                         else {
                             val n = args[1]!!
-                            i["playerName"] = n
                             val player = Bukkit.getPlayer(n)
-                            if (player == null) noPlayer(sender, i)
+                            if (player == null) noPlayer(sender, "playerName" to n)
                             else {
                                 when (val tag = playerTags[Util.getUUID(player)]) {
-                                    null -> noTag(sender, i)
-                                    "" -> noTag(sender, i)
-                                    else -> {
-                                        i["tag"] = tag
-                                        Util.send(sender, Util.insert(Util.getPluginMsg(name, "get"), i))
-                                    }
+                                    null -> noTag(sender, "playerName" to n)
+                                    "" -> noTag(sender, "playerName" to n)
+                                    else -> Util.send(sender, Util.insert(Util.getPluginMsg(name, "get"), "playerName" to n, "tag" to tag))
                                 }
                             }
                         }
@@ -92,16 +82,15 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
                     "reset" -> {
                         if (args.size != 2) Util.invalidArgs(sender)
                         else {
-                            val n = args[1]
-                            i["playerName"] = n!!
+                            val n = args[1]!!
                             val player = Bukkit.getPlayer(n)
-                            if (player == null) noPlayer(sender, i)
+                            if (player == null) noPlayer(sender, "playerName" to n)
                             else {
                                 playerTags.remove(Util.getUUID(player))
                                 player.setDisplayName(player.name)
                                 resetNameTag(player)
                                 FileUtil.saveHashMap(playerTags, path)
-                                Util.send(sender, Util.insert(Util.getPluginMsg(name, "reset-success"), i))
+                                Util.send(sender, Util.insert(Util.getPluginMsg(name, "reset-success"), "playerName" to n))
                             }
                         }
                     }
@@ -112,8 +101,8 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
         return false
     }
 
-    private fun noTag(sender: CommandSender, i: HashMap<String, String>) = Util.send(sender, Util.insert(Util.getPluginMsg(name, "no-tag"), i))
-    private fun noPlayer(sender: CommandSender, i: HashMap<String, String>) = Util.send(sender, Util.insert(Util.getPluginMsg(name, "no-player"), i))
+    private fun noTag(sender: CommandSender, vararg pairs: Pair<String, String>) = Util.send(sender, Util.insert(Util.getPluginMsg(name, "no-tag"), *pairs))
+    private fun noPlayer(sender: CommandSender, vararg pairs: Pair<String, String>) = Util.send(sender, Util.insert(Util.getPluginMsg(name, "no-player"), *pairs))
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<String?>): List<String> {
         val subCommands = arrayOf("help", "set", "get", "reset")
@@ -137,7 +126,7 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
         val uuid = Util.getUUID(p)
         if (playerTags.containsKey(uuid)) {
             val tag = playerTags[uuid]!!
-            val displayName = Util.insert(Util.getPluginConfig(name, "format") as String, hashMapOf("tag" to tag))!! + p.name
+            val displayName = Util.insert(Util.getPluginConfig(name, "format") as String, "tag" to tag)!! + p.name
             p.setDisplayName(displayName)
         }
     }

@@ -26,19 +26,15 @@ class TpaCommand : CommandExecutor, TabCompleter {
                     if (player === sender) {
                         Util.send(sender, Util.getPluginMsg("Tpa", "self-tpa"))
                     } else {
-                        if (player == null) {
-                            val i = HashMap<String, String>()
-                            i["playerName"] = args[0]
-                            Util.send(sender, Util.insert(Util.getPluginMsg("Tpa", "not-found"), i))
-                        } else {
+                        if (player == null) Util.send(sender, Util.insert(Util.getPluginMsg("Tpa", "not-found"), "playerName" to args[0]))
+                        else {
                             Tpa.tpaLogs[player] = sender
                             val receiverLines = Util.getPluginMsgAs("Tpa", "receiver-lines") as List<*>
                             val senderLines = Util.getPluginMsgAs("Tpa", "sender-lines") as List<*>
-                            val i = HashMap<String, String>()
-                            i["receiver"] = player.displayName
-                            i["sender"] = sender.displayName
-                            for (rl in receiverLines) Util.send(player, Util.insert(rl as String, i))
-                            for (sl in senderLines) Util.send(sender, Util.insert(sl as String, i))
+                            val rc = "receiver" to player.displayName
+                            val sd = "sender" to sender.displayName
+                            for (rl in receiverLines) Util.send(player, Util.insert(rl as String, rc, sd))
+                            for (sl in senderLines) Util.send(sender, Util.insert(sl as String, rc, sd))
                         }
                     }
                 }

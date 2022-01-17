@@ -38,18 +38,18 @@ class Util {
             }
         }
 
-        fun insert(string: String?, insertMap: Map<String, String>): String? {
-            var s = string
-            for (i in insertMap.keys) s = s?.replace("{$i}", insertMap[i]!!)
-            return s
+        fun insert(s: String?, vararg pairs: Pair<String, String>): String? {
+            var result = s
+            for (pair in pairs) result = result?.replace("{${pair.first}}", pair.second)
+            return result
         }
 
         fun broadcastPlayers(string: String?) {
             for (player in Bukkit.getOnlinePlayers()) send(player, string)
         }
 
-        fun sendHelp(sender: CommandSender, helps: Map<String, String>) {
-            for (i in helps.keys) send(sender, "&6$i &f- &a${helps[i]}".replace("|", "&2|&6"))
+        fun sendHelp(s: CommandSender, vararg pairs: Pair<String, String>) {
+            for (pair in pairs) send(s, "&6${pair.first} &f- &a${pair.second}".replace("|", "&2|&6"))
         }
 
         fun getWorldByName(name: String): World? {

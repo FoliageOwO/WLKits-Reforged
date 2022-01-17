@@ -23,20 +23,19 @@ class WarpCommand : CommandExecutor, TabCompleter {
                 else {
                     sender as Player
                     val name = args[0]
-                    val i = HashMap<String, String>()
-                    i["name"] = name
+                    val n = "name" to name
                     if (Warp.warpManager.getWarps().keys.contains(name)) {
-                        teleport(sender, name, Warp.WarpType.PUBLIC, i)
+                        teleport(sender, name, Warp.WarpType.PUBLIC, n)
                     } else if (Warp.warpManager.getWarps().keys.contains("${Util.getUUID(sender)}|$name")) {
-                        teleport(sender, "${Util.getUUID(sender)}|$name", Warp.WarpType.PRIVATE, i)
-                    } else Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "not-found"), i))
+                        teleport(sender, "${Util.getUUID(sender)}|$name", Warp.WarpType.PRIVATE, n)
+                    } else Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "not-found"), n))
                 }
             }
         } else Util.disabled(sender)
         return true
     }
 
-    private fun teleport(sender: Player, name: String, type: Warp.WarpType, i: HashMap<String, String>) {
+    private fun teleport(sender: Player, name: String, type: Warp.WarpType, pair: Pair<String, String>) {
         val sname = if (type == Warp.WarpType.PRIVATE) "private.$name" else "public.$name"
         val world = Warp.warpManager.warps?.getString("$sname.world")
         val x = Warp.warpManager.warps?.getDouble("$sname.x")
@@ -52,14 +51,14 @@ class WarpCommand : CommandExecutor, TabCompleter {
         when (type) {
             Warp.WarpType.PUBLIC -> {
                 sender.teleport(location)
-                Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "tp-success"), i))
+                Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "tp-success"), pair))
             }
             Warp.WarpType.PRIVATE -> {
                 val list = name.split("|")
                 val uuid = UUID.fromString(list[0])
                 if (sender == Bukkit.getPlayer(uuid)) {
                     sender.teleport(location)
-                    Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "tp-success"), i))
+                    Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "tp-success"), pair))
                 } else Util.send(sender, Util.getPluginMsg("Warp", "tp-private"))
             }
         }

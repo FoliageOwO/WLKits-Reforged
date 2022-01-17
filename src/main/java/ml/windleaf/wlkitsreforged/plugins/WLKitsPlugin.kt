@@ -27,14 +27,11 @@ class WLKitsPlugin : Plugin, CommandExecutor, TabCompleter {
         if (Util.needPermission(sender, "wlkits", PermissionType.COMMAND)) {
             if (args.isEmpty()) Util.invalidArgs(sender) else {
                 when (args[0]) {
-                    "help" -> {
-                        val helps = HashMap<String, String>()
-                        helps["/wlkits help"] = "查看此帮助"
-                        helps["/wlkits reload"] = "重载插件"
-                        helps["/wlkits status [pluginName]"] = "查看子插件开启状态"
-                        helps["/wlkits info"] = "查看插件信息"
-                        Util.sendHelp(sender, helps)
-                    }
+                    "help" -> Util.sendHelp(sender,
+                            "/wlkits help" to "查看此帮助",
+                            "/wlkits reload" to "重载插件",
+                            "/wlkits status [pluginName]" to "查看子插件开启状态",
+                            "/wlkits info" to "查看插件信息")
                     "reload" -> {
                         WLKits.reload()
                         WLKits.pluginManager.reload()
@@ -42,15 +39,10 @@ class WLKitsPlugin : Plugin, CommandExecutor, TabCompleter {
                     }
                     "status" -> {
                         if (args.size != 2) Util.invalidArgs(sender) else {
-                            val i = HashMap<String, String>()
                             val n = args[1]
-                            i["pluginName"] = n
                             val plugin = Util.getPluginByName(n)
-                            if (plugin == null) Util.send(sender, Util.insert(Util.getPluginMsg("main", "no-plugin"), i))
-                            else {
-                                i["status"] = if (plugin.enabled) "&aTRUE" else "&cFALSE"
-                                Util.send(sender, Util.insert(Util.getPluginMsg("main", "status"), i))
-                            }
+                            if (plugin == null) Util.send(sender, Util.insert(Util.getPluginMsg("main", "no-plugin"), "playerName" to n))
+                            else Util.send(sender, Util.insert(Util.getPluginMsg("main", "status"), "playerName" to n, "status" to if (plugin.enabled) "&aTRUE" else "&cFALSE"))
                         }
                     }
                     "info" -> {

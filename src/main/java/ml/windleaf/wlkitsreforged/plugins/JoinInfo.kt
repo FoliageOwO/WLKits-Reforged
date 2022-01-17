@@ -24,12 +24,11 @@ class JoinInfo : Plugin, Listener {
         if (enabled) {
             val player = e.player
             e.joinMessage = ""
-            val i = HashMap<String, String>()
-            i["playerName"] = player.name
-            i["uuid"] = Util.getUUID(player)
-            i["ip"] = player.address.toString()
-            WLKits.log(Util.insert(Util.getPluginMsg(name, "console-join"), i)!!)
-            Util.broadcastPlayers(Util.insert(Util.getPluginMsg(name, "join"), i))
+            val pn = "playerName" to player.name
+            val uuid = "uuid" to Util.getUUID(player)
+            val ip = "ip" to player.address.toString()
+            WLKits.log(Util.insert(Util.getPluginMsg(name, "console-join"), pn, uuid, ip)!!)
+            Util.broadcastPlayers(Util.insert(Util.getPluginMsg(name, "join"), pn, uuid, ip))
         }
     }
 
@@ -38,12 +37,11 @@ class JoinInfo : Plugin, Listener {
         if (enabled) {
             val player = e.player
             e.quitMessage = ""
-            val i = HashMap<String, String>()
-            i["playerName"] = player.name
-            i["uuid"] = Util.getUUID(player)
-            i["ip"] = player.address.toString()
-            WLKits.log(Util.insert(Util.getPluginMsg(name, "console-quit"), i)!!)
-            Util.broadcastPlayers(Util.insert(Util.getPluginMsg(name, "quit"), i))
+            val pn = "playerName" to player.name
+            val uuid = "uuid" to Util.getUUID(player)
+            val ip = "ip" to player.address.toString()
+            WLKits.log(Util.insert(Util.getPluginMsg(name, "console-quit"), pn, uuid, ip)!!)
+            Util.broadcastPlayers(Util.insert(Util.getPluginMsg(name, "quit"), pn, uuid, ip))
         }
     }
 }

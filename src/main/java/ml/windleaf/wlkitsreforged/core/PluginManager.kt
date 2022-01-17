@@ -4,23 +4,21 @@ import ml.windleaf.wlkitsreforged.plugins.*
 
 class PluginManager {
     companion object {
-        var pluginList: ArrayList<Plugin> = ArrayList()
+        var pluginList: ArrayList<Plugin> = arrayListOf(
+            AntiCreeper(),
+            Back(), BackDeath(),
+            Disenchant(),
+            Home(),
+            JoinInfo(),
+            PlayerTag(),
+            ScheduleNotice(), SkipNight(), Suicide(),
+            Tpa(),
+            Warp(),
+            WLKitsPlugin()
+        )
     }
 
     fun loadPlugins() {
-        pluginList.add(AntiCreeper())
-        pluginList.add(BackDeath())
-        pluginList.add(Disenchant())
-        pluginList.add(JoinInfo())
-        pluginList.add(Back())
-        pluginList.add(Home())
-        pluginList.add(Suicide())
-        pluginList.add(SkipNight())
-        pluginList.add(Tpa())
-        pluginList.add(Warp())
-        pluginList.add(PlayerTag())
-        pluginList.add(ScheduleNotice())
-        pluginList.add(WLKitsPlugin())
         for (plugin in pluginList) plugin.load()
     }
 

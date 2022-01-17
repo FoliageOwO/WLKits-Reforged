@@ -9,13 +9,12 @@ import org.bukkit.command.CommandSender
 class TpahelpCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if (Tpa.enabled) {
-            val helps: MutableMap<String, String> = HashMap()
-            helps["/tpahelp"] = "查看此帮助"
-            helps["/tpa [player]"] = "给玩家发送一个传送请求"
-            helps["/tpaccept"] = "同意传送请求"
-            helps["/tpadeny"] = "拒绝传送请求"
-            helps["/tpacancel"] = "取消传送请求"
-            Util.sendHelp(sender, helps)
+            Util.sendHelp(sender,
+            "/tpahelp" to "查看此帮助",
+                "/tpa [player]" to "给玩家发送一个传送请求",
+                "/tpaccept" to "同意传送请求",
+                "/tpadeny" to "拒绝传送请求",
+                "/tpacancel" to "取消传送请求")
         } else Util.disabled(sender)
         return true
     }

@@ -21,23 +21,21 @@ class SetwarpCommand : CommandExecutor {
                         sender as Player
                         var type: Any = args[0]
                         val name = args[1]
-                        val i = HashMap<String, String>()
-                        i["name"] = name
                         val types = HashMap<String, Warp.WarpType>()
                         for (t: Warp.WarpType in Warp.WarpType.values()) types[t.string] = t
-
-                        i["type"] = type as String
-                        if (type !in types.keys) Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "unknown-type"), i))
+                        val n = "name" to name
+                        val t = "type" to type.toString()
+                        if (type !in types.keys) Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "unknown-type"), n, t))
                         else {
                             type = types[type]!!
                             when (type) {
                                 Warp.WarpType.PUBLIC -> {
-                                    if (sender.isOp) set(sender, name, type, i)
+                                    if (sender.isOp) set(sender, name, type, n, t)
                                     else if (!sender.isOp && Util.getPluginConfig("Warp", "allow-public") as Boolean) {
-                                        set(sender, name, type, i)
+                                        set(sender, name, type, n, t)
                                     } else Util.send(sender, Util.getPluginMsg("Warp", "cannot-public"))
                                 }
-                                Warp.WarpType.PRIVATE -> set(sender, name, type, i)
+                                Warp.WarpType.PRIVATE -> set(sender, name, type, n, t)
                             }
                         }
                     }
@@ -47,9 +45,9 @@ class SetwarpCommand : CommandExecutor {
         return true
     }
 
-    private fun set(sender: Player, name: String, type: Warp.WarpType, i: HashMap<String, String>) {
+    private fun set(sender: Player, name: String, type: Warp.WarpType, vararg pairs: Pair<String, String>) {
         val kname = if (type == Warp.WarpType.PRIVATE) "${Util.getUUID(sender)}|$name" else name
-        if (Warp.warpManager.getWarps().keys.contains(kname)) Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "already-exists"), i))
+        if (Warp.warpManager.getWarps().keys.contains(kname)) Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "already-exists"), *pairs))
         else {
             val list = Warp.warpManager.warps?.getStringList("list")!!
             list.add(kname)
@@ -66,12 +64,12 @@ class SetwarpCommand : CommandExecutor {
             }
             try {
                 Warp.warpManager.warps?.save(Warp.warpManager.file!!)
-                Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "success"), i))
+                Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "success"), *pairs))
                 if (Util.getPluginConfig("Warp", "broadcast") as Boolean) {
-                    i["playerName"] = sender.displayName
-                    i["name"] = name
+                    val p = "playerName" to sender.displayName
+                    val n = "name" to name
                     if (type == Warp.WarpType.PUBLIC)
-                        for (line in Util.getPluginMsgAs("Warp", "broadcast-lines") as List<*>) Util.broadcastPlayers(Util.insert(line as String, i))
+                        for (line in Util.getPluginMsgAs("Warp", "broadcast-lines") as List<*>) Util.broadcastPlayers(Util.insert(line as String, p, n))
                 }
             } catch (e: IOException) {
                 Util.send(sender, Util.getPluginMsg("Warp", "fail"))

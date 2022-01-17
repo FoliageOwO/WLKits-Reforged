@@ -9,13 +9,12 @@ import org.bukkit.command.CommandSender
 class WarphelpCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String?>): Boolean {
         if (Warp.enabled) {
-            val helps: MutableMap<String, String> = HashMap()
-            helps["/warphelp"] = "查看此帮助"
-            helps["/setwarp [private/public] [name]"] = "设置地标点"
-            helps["/delwarp [name]"] = "删除地标点"
-            helps["/warp [name]"] = "传送至地标点"
-            helps["/warplist"] = "查看所有可用的地标点"
-            Util.sendHelp(sender, helps)
+            Util.sendHelp(sender,
+            "/warphelp" to "查看此帮助",
+                "/setwarp [private/public] [name]" to "设置地标点",
+                "/delwarp [name]" to "删除地标点",
+                "/warp [name]" to "传送至地标点",
+                "/warplist" to "查看所有可用的地标点")
         } else Util.disabled(sender)
         return true
     }
