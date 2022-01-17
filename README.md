@@ -18,6 +18,7 @@
   * [Suicide](#Suicide)
   * [Tpa](#Tpa)
   * [Warp](#Warp)
+  * [WLKitsPlugin](#WLKitsPlugin)
 - [待办 (TODOs)](#待办-TODOs)
 
 ## 功能 (Features)
@@ -117,7 +118,19 @@
 - **创建地标点**: `/setwarp [private/public] [name]`
 - **删除地标点**: `/delwarp [name]`
 - **查看帮助**: `/warphelp`
-- **查看所有地标点**(仅拥有权限的玩家可以使用): `/warplist`
+- **查看所有地标点** (仅拥有权限的玩家可以使用): `/warplist`
+
+### WLKitsPlugin
+*[permission: wlkits.cmd.wlkits]*
+
+插件本体命令集合
+
+#### 用法
+
+- **查看帮助**: `/wlkits help`
+- **重载插件**: `/wlkits reload`
+- **查看子插件开启状态**: `/wlkits status [pluginName]`
+- **查看插件信息**: `/wlkits info`
 
 ## 待办 (TODOs)
 - [x] feat: 定时公告
@@ -126,3 +139,5 @@
 - [ ] feat: 兼容 `1.8.x - 1.18.x` 版本
 - [ ] feat: 完善 `Warp`
 - [x] readme: 完善文档
+- [ ] code: 将非必要的 `HashMap/ArrayList` 替换为 `hashMapOf()/arrayListOf()`
+- [ ] fix: [fatal] 开服触发 `ExceptionInInitializerError` 异常 (暂时解决办法: 开服后 `reload`)
