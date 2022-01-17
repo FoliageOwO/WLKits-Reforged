@@ -19,7 +19,6 @@
   * [Tpa](#Tpa)
   * [Warp](#Warp)
   * [WLKitsPlugin](#WLKitsPlugin)
-- [待办 (TODOs)](#待办-TODOs)
 
 ## 功能 (Features)
 
@@ -131,13 +130,3 @@
 - **重载插件**: `/wlkits reload`
 - **查看子插件开启状态**: `/wlkits status [pluginName]`
 - **查看插件信息**: `/wlkits info`
-
-## 待办 (TODOs)
-- [x] feat: 定时公告
-- [x] feat: 玩家称号
-- [ ] feat: 自定义计分板
-- [ ] feat: 兼容 `1.8.x - 1.18.x` 版本
-- [ ] feat: 完善 `Warp`
-- [x] readme: 完善文档
-- [x] code: 将非必要的 `HashMap/ArrayList` 替换为 `hashMapOf()/arrayListOf()`
-- [x] fix: [fatal] 开服触发 `ExceptionInInitializerError` 异常 (暂时解决办法: 开服后 `reload`)
