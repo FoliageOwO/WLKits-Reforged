@@ -22,8 +22,6 @@ disenchant:
   click-to-cancel: '&c点击以取消'
   book-display-name: '&5转移附魔书'
   book-lore: '&a右键打开转移附魔菜单'
-  cannot-be-empty: '&c主手和副手不能为空! 请将物品放在副手, 附魔书放在主手!'
-  offhand-cannot-be-book: '&c副手物品不能为附魔书!'
   no-enchantment: '&c物品没有附魔, 无法转移!'
 joininfo:
   join: '&a[+] 玩家 {playerName} 加入了服务器!'
