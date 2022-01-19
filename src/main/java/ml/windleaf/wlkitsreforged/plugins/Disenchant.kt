@@ -14,10 +14,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.inventory.EquipmentSlot
-import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.ShapedRecipe
+import org.bukkit.inventory.*
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.ItemMeta
 
@@ -52,13 +49,12 @@ class Disenchant : Plugin, Listener {
         else {
             val enchants = offhand.enchantments
             for ((key, value) in enchants) meta.addStoredEnchant(key!!, value!!, true)
-            val lore = ArrayList<String>()
-            lore.add(Util.insert(Util.translateColorCode(Util.getPluginMsg(name, "lore")), "playerName" to player.name)!!)
-            meta.lore = lore
+            meta.lore = listOf(Util.insert(Util.translateColorCode(Util.getPluginMsg(name, "lore")), "playerName" to player.name))
             book.itemMeta = meta
             player.inventory.setItemInMainHand(book)
             Util.send(player, Util.insert(Util.getPluginMsg(name, "success")!!, "item" to player.inventory.itemInOffHand.type.name))
-            player.inventory.setItemInOffHand(null)
+            // 抹除武器附魔
+            offhand.itemMeta?.enchants?.forEach { offhand.removeEnchantment(it.key) }
             player.updateInventory()
         }
     }
@@ -102,31 +98,16 @@ class Disenchant : Plugin, Listener {
     fun onPlayerInteractEvent(e: PlayerInteractEvent) {
         val player = e.player
         if (enabled) {
-            val mainhand = e.item
-            if (e.hand == EquipmentSlot.HAND) {
-                if (mainhand != null) {
-                    if (e.action == Action.RIGHT_CLICK_AIR || e.action == Action.RIGHT_CLICK_BLOCK) {
-                        val offhand = player.inventory.itemInOffHand
-                        if (!((mainhand == disenchantBook) and (offhand == disenchantBook))) {
-                            if (mainhand == disenchantBook) {
-                                if (mainhand.type.isAir || offhand.type.isAir) Util.send(player, Util.getPluginMsg(name, "cannot-be-empty"))
-                                else {
-                                    if (!(offhand.type == Material.ENCHANTED_BOOK || mainhand.type != Material.ENCHANTED_BOOK)) {
-                                        if (offhand == disenchantBook) Util.send(player, Util.getPluginMsg(name, "offhand-cannot-be-book"))
-                                        else {
-                                            if (offhand.enchantments.isEmpty() || !offhand.hasItemMeta()) Util.send(player, Util.getPluginMsg(name, "no-enchantment"))
-                                            else {
-                                                if (Util.needPermission(player, "disenchant", PermissionType.ACTION)) {
-                                                    loadInventory(player)
-                                                    player.openInventory(menu)
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+            if (e.action == Action.RIGHT_CLICK_AIR || e.action == Action.RIGHT_CLICK_BLOCK) {
+                // 若主手持有物品非转移附魔书则终止
+                if(player.inventory.itemInMainHand.type != disenchantBook.type) return
+                // 判断物品是否有附魔
+                if(player.inventory.itemInOffHand.enchantments.isNotEmpty()) {
+                    // 打开 gui 确认操作
+                    loadInventory(player)
+                    player.openInventory(menu)
+                } else {
+                    Util.send(player, Util.translateColorCode(Util.getPluginMsg(name, "no-enchantment"))!!)
                 }
             }
         }
