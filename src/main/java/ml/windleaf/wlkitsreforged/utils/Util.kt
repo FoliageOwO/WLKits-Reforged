@@ -11,11 +11,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
-import sun.misc.BASE64Decoder
-import sun.misc.BASE64Encoder
 import java.io.File
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 import java.util.*
 
 class Util {
