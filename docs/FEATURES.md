@@ -13,6 +13,7 @@
   * [Tpa](#Tpa)
   * [Warp](#Warp)
   * [WLKitsPlugin](#WLKitsPlugin)
+  * [HttpApi](#HttpApi)
 
 ## 功能 (Features)
 
@@ -125,3 +126,55 @@
 - **查看子插件开启状态**: `/wlkits status [pluginName]`
 - **查看插件信息**: `/wlkits info`
 
+### HttpApi
+
+管理服务器的 HttpApi
+
+#### 用法
+
+- `/api/player/info`
+
+| API 路径            | 说明               |
+| ------------------ | ------------------ |
+| /api/player/info   | 查看玩家的各项信息    |
+
+| 参数        | 类型   | 说明     | 可能的值 |
+| ---------- | ------ | ------- | ------- |
+| token      | String | Token   | *       |
+| playerName | String | 玩家名称 | *       |
+
+- `/api/player/manage`
+
+| API 路径            | 说明    |
+| ------------------ | ------- |
+| /api/player/manage | 操作玩家 |
+
+
+| 参数        | 类型   | 说明     | 可能的值 |
+| ---------- | ------ | ------- | ------- |
+| token      | String | Token   | *       |
+| playerName | String | 玩家名称 | *       |
+| action     | String | 操作类型 | kick, kill, ban, pardon, clear, tp, msg (见 [Action.kt](https://github.com/WindLeaf233/WLKits-Reforged/blob/master/src/main/java/ml/windleaf/wlkitsreforged/plugins/httpapi/handlers/player/Action.kt)) |
+
+- `/api/server/info`
+
+| API 路径          | 说明              |
+| ---------------- | ----------------- |
+| /api/server/info | 查看服务器的各项信息 |
+
+| 参数   | 类型   | 说明   | 可能的值 |
+| ----- | ------ | ----- | ------- |
+| token | String | Token | *       |
+
+
+- `/api/server/execute`
+
+| API 路径             | 说明         |
+| ------------------- | ------------ |
+| /api/server/execute | 执行服务器命令 |
+
+| 参数      | 类型   | 说明      | 可能的值 |
+| -------- | ------ | -------- | ------- |
+| token    | String | Token    | *       |
+| command  | String | 执行的命令 | *       |
+| executor | String | 执行者    | (空字符串 -> 控制台) 或 (* -> 玩家) |
