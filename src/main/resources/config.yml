@@ -34,3 +34,8 @@ plugins: # 所有的集成小工具
   schedulenotice: # 定时公告 公告请配置 message.yml
     enabled: false
     interval: 120 # 定时公告的间隔 (单位: 秒)
+  httpapi: # HTTP API
+    enabled: true
+    port: 8080 # 端口
+    pool: 10 # 线程池
+    token: '' # 固定 Token, 填空代表随机生成

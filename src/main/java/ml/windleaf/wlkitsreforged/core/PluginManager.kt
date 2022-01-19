@@ -1,6 +1,7 @@
 package ml.windleaf.wlkitsreforged.core
 
 import ml.windleaf.wlkitsreforged.plugins.*
+import ml.windleaf.wlkitsreforged.plugins.httpapi.HttpApi
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.server.PluginDisableEvent
@@ -19,7 +20,7 @@ class PluginManager : Listener {
                 AntiCreeper(),
                 Back(), BackDeath(),
                 Disenchant(),
-                Home(),
+                Home(), HttpApi(),
                 JoinInfo(),
                 PlayerTag(),
                 ScheduleNotice(), SkipNight(), Suicide(),

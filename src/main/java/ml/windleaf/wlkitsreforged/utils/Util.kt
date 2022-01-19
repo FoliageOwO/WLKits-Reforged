@@ -11,7 +11,12 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
+import sun.misc.BASE64Decoder
+import sun.misc.BASE64Encoder
 import java.io.File
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import java.util.*
 
 class Util {
     companion object {
@@ -29,6 +34,7 @@ class Util {
         fun getUUID(p: Player) = p.uniqueId.toString()
         fun invalidArgs(p: CommandSender) = send(p, getPluginMsg("main", "invalid-args"))
         fun hasPermission(p: CommandSender, name: String, type: PermissionType) = p.hasPermission("wlkits.${type.string}.$name")
+        fun generateRandomToken() = UUID.randomUUID().toString().replace("-", "")
 
         fun mustPlayer(p: CommandSender): Boolean {
             return if (p is Player && p !is ConsoleCommandSender) true
