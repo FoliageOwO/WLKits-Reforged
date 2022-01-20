@@ -100,15 +100,13 @@ class Disenchant : Plugin, Listener {
         if (enabled) {
             if (e.action == Action.RIGHT_CLICK_AIR || e.action == Action.RIGHT_CLICK_BLOCK) {
                 // 若主手持有物品非转移附魔书则终止
-                if(player.inventory.itemInMainHand.type != disenchantBook.type) return
+                if (player.inventory.itemInMainHand != disenchantBook) return
                 // 判断物品是否有附魔
-                if(player.inventory.itemInOffHand.enchantments.isNotEmpty()) {
-                    // 打开 gui 确认操作
+                if (player.inventory.itemInOffHand.enchantments.isNotEmpty()) {
+                    // 打开 GUI 确认操作
                     loadInventory(player)
                     player.openInventory(menu)
-                } else {
-                    Util.send(player, Util.translateColorCode(Util.getPluginMsg(name, "no-enchantment"))!!)
-                }
+                } else Util.send(player, Util.translateColorCode(Util.getPluginMsg(name, "no-enchantment"))!!)
             }
         }
     }

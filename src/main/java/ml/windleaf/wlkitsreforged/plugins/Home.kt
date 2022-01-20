@@ -15,13 +15,14 @@ class Home : Plugin {
     override var enabled = false
     override val type = LoadType.ON_STARTUP
     companion object {
-        var path: String = WLKits.prefixPath + "homes.data"
+        lateinit var path: String
         lateinit var homes: HashMap<String, String>
         var enabled by Delegates.notNull<Boolean>()
     }
 
     override fun load() {
         enabled = Util.isEnabled(name)
+        path = WLKits.prefixPath + "homes.data"
         homes = FileUtil.loadHashMap(path) as HashMap<String, String>
         Companion.enabled = enabled
     }

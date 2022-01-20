@@ -25,7 +25,7 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
     override var enabled = false
     override val type = LoadType.ON_LOAD_WORLD
     companion object {
-        var path: String = WLKits.prefixPath + "playertags.data"
+        lateinit var path: String
         lateinit var playerTags: HashMap<String, String>
         var enabled by Delegates.notNull<Boolean>()
         lateinit var scoreboard: Scoreboard
@@ -33,6 +33,7 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
 
     override fun load() {
         enabled = Util.isEnabled(name)
+        path = WLKits.prefixPath + "playertags.data"
         playerTags = FileUtil.loadHashMap(path) as HashMap<String, String>
         scoreboard = Bukkit.getScoreboardManager()?.mainScoreboard!!
         Companion.enabled = enabled

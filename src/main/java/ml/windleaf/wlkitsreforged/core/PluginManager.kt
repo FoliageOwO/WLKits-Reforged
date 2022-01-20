@@ -11,12 +11,7 @@ import org.bukkit.event.world.WorldLoadEvent
 
 class PluginManager : Listener {
     companion object {
-        lateinit var pluginList: ArrayList<Plugin>
-        val loadedPlugins = arrayListOf<Plugin>()
-    }
-
-    private fun initPluginList() {
-        pluginList = arrayListOf(
+        val pluginList = arrayListOf(
             AntiCreeper(),
             Back(), BackDeath(),
             Disenchant(),
@@ -29,11 +24,11 @@ class PluginManager : Listener {
             Warp(),
             WLKitsPlugin()
         )
+        val loadedPlugins = arrayListOf<Plugin>()
     }
 
     @EventHandler
     fun onServerLoadEvent(e: ServerLoadEvent) {
-        initPluginList()
         when (e.type) {
             STARTUP -> {
                 pluginList.forEach { it.registers() }
@@ -45,10 +40,7 @@ class PluginManager : Listener {
     }
 
     @EventHandler
-    fun onWorldLoadEvent(e: WorldLoadEvent) {
-        initPluginList()
-        loadLoadWorldPlugins()
-    }
+    fun onWorldLoadEvent(e: WorldLoadEvent) = loadLoadWorldPlugins()
 
     private fun loadStartupPlugins() = pluginList.forEach {
         if (it.type == LoadType.ON_STARTUP && it !in loadedPlugins) {
@@ -64,12 +56,14 @@ class PluginManager : Listener {
         }
     }
 
-    fun unloadPlugins() = pluginList.forEach { it.unload() }
+    fun unloadPlugins() {
+        pluginList.forEach { it.unload() }
+        loadedPlugins.clear()
+    }
 
     fun reload() {
         WLKits.reload()
         unloadPlugins()
-        initPluginList()
         loadStartupPlugins()
         loadLoadWorldPlugins()
         reloadEnabled()

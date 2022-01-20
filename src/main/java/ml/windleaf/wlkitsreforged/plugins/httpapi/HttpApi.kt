@@ -41,13 +41,16 @@ class HttpApi : Plugin {
             ServerExecuteCommandHandler()
 
             server.start()
-            WLKits.log("&aHTTP API Server: &b${server.address}")
+            WLKits.log("&aHTTP API Server started: &b${server.address}")
             WLKits.log("&aToken: $token")
         }
     }
 
     override fun unload() {
-        if (enabled) server.stop(0)
+        if (enabled) {
+            server.stop(0)
+            WLKits.log("&aHTTP API Server stopped.")
+        }
     }
 
     override fun registers() = Unit

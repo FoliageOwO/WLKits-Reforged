@@ -17,13 +17,14 @@ class Warp : Plugin {
     override var enabled = false
     override val type = LoadType.ON_STARTUP
     companion object {
-        private var path: String = WLKits.prefixPath + "warps.yml"
+        lateinit var path: String
         val warpManager = WarpManager()
         var enabled by Delegates.notNull<Boolean>()
     }
 
     override fun load() {
         enabled = Util.isEnabled(name)
+        path = WLKits.prefixPath + "warps.yml"
         Companion.enabled = enabled
         warpManager.init()
     }
