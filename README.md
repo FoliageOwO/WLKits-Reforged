@@ -7,3 +7,4 @@
 - [目录](#目录)
 - [功能 (Features)](docs/FEATURES.md)
 - [待办 (Todos)](/../../issues/1)
+- [已知问题 (Known Bugs)](/../../issues/3)
