@@ -39,3 +39,13 @@ plugins: # 所有的集成小工具
     port: 8080 # 端口
     pool: 10 # 线程池
     token: '' # 固定 Token, 填空代表随机生成
+  mention: # 提到玩家高亮
+    enabled: true
+    prefix: '@' # 前缀
+    to-style: '&6&l' # 给被提到的玩家显示的样式
+    other-style: '&6' # 给其他玩家显示的高亮样式
+    all: true # 是否开启提到全员
+    all-msg: '{prefix}ALL' # 提到全员
+    all-style: '&b&l' # 全员提到的高亮样式
+    all-op: true # 提到全员是否需要 op
+    sound-notice: true # 提到玩家时是否播放声音提醒

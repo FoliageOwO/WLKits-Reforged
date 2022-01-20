@@ -22,6 +22,7 @@ class PluginManager : Listener {
                 Disenchant(),
                 Home(), HttpApi(),
                 JoinInfo(),
+                Mention(),
                 PlayerTag(),
                 ScheduleNotice(), SkipNight(), Suicide(),
                 Tpa(),
