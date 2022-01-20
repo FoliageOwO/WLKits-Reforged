@@ -11,19 +11,23 @@ import ml.windleaf.wlkitsreforged.plugins.httpapi.handlers.server.ServerInfoHand
 import ml.windleaf.wlkitsreforged.utils.Util
 import java.net.InetSocketAddress
 import java.util.concurrent.Executors
+import kotlin.properties.Delegates
 
 class HttpApi : Plugin {
     override val name = "HttpApi"
-    override val enabled = Util.isEnabled(name)
+    override var enabled = false
     override val type = LoadType.ON_STARTUP
     companion object {
-        val port = Util.getPluginConfig("HttpApi", "port") as Int
-        val pool = Util.getPluginConfig("HttpApi", "pool") as Int
+        var port by Delegates.notNull<Int>()
+        var pool by Delegates.notNull<Int>()
         lateinit var token: String
         lateinit var server: HttpServer
     }
 
     override fun load() {
+        enabled = Util.isEnabled(name)
+        port = Util.getPluginConfig("HttpApi", "port") as Int
+        pool = Util.getPluginConfig("HttpApi", "pool") as Int
         if (enabled) {
             val configToken = Util.getPluginConfig("HttpApi", "token") as String
             token = if (configToken == "") Util.generateRandomToken() else configToken
@@ -45,4 +49,6 @@ class HttpApi : Plugin {
     override fun unload() {
         if (enabled) server.stop(0)
     }
+
+    override fun registers() = Unit
 }

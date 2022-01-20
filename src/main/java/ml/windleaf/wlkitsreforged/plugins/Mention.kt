@@ -10,24 +10,31 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
+import kotlin.properties.Delegates
 
 class Mention : Plugin, Listener {
     override val name = "Mention"
-    override val enabled = Util.isEnabled(name)
+    override var enabled = false
     override val type = LoadType.ON_STARTUP
-    private val prefix = Util.getPluginConfig(name, "prefix") as String
-    private val styleTo = Util.translateColorCode(Util.getPluginConfig(name, "to-style") as String)
-    private val styleOther = Util.translateColorCode(Util.getPluginConfig(name, "other-style") as String)
-    private val styleAll = Util.translateColorCode(Util.getPluginConfig(name, "all-style") as String)
-    private val allMsg = Util.insert(Util.getPluginConfig(name, "all-msg") as String, "prefix" to prefix)!!
-    private val soundNotice = Util.getPluginConfig(name, "sound-notice") as Boolean
+    private lateinit var prefix: String
+    private lateinit var styleTo: String
+    private lateinit var styleOther: String
+    private lateinit var styleAll: String
+    private lateinit var allMsg: String
+    private var soundNotice by Delegates.notNull<Boolean>()
 
     override fun load() {
-        Util.registerEvent(this)
+        enabled = Util.isEnabled(name)
+        prefix = Util.getPluginConfig(name, "prefix") as String
+        styleTo = Util.translateColorCode(Util.getPluginConfig(name, "to-style") as String)!!
+        styleOther = Util.translateColorCode(Util.getPluginConfig(name, "other-style") as String)!!
+        styleAll = Util.translateColorCode(Util.getPluginConfig(name, "all-style") as String)!!
+        allMsg = Util.insert(Util.getPluginConfig(name, "all-msg") as String, "prefix" to prefix)!!
+        soundNotice = Util.getPluginConfig(name, "sound-notice") as Boolean
     }
 
-    override fun unload() {
-    }
+    override fun unload() = Unit
+    override fun registers() = Util.registerEvent(this)
 
     @EventHandler
     fun event(e: AsyncPlayerChatEvent) {

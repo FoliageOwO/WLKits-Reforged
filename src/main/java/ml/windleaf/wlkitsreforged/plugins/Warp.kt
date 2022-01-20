@@ -10,27 +10,31 @@ import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.io.IOException
+import kotlin.properties.Delegates
 
 class Warp : Plugin {
     override val name = "Warp"
-    override val enabled = Util.isEnabled(name)
+    override var enabled = false
     override val type = LoadType.ON_STARTUP
     companion object {
         private var path: String = WLKits.prefixPath + "warps.yml"
         val warpManager = WarpManager()
-        val enabled = Util.isEnabled("Warp")
+        var enabled by Delegates.notNull<Boolean>()
     }
 
     override fun load() {
+        enabled = Util.isEnabled(name)
+        Companion.enabled = enabled
         warpManager.init()
+    }
+
+    override fun unload() = Unit
+    override fun registers() {
         Util.registerCommand("setwarp", SetwarpCommand())
         Util.registerCommand("warp", WarpCommand())
         Util.registerCommand("delwarp", DelwarpCommand())
         Util.registerCommand("warphelp", WarphelpCommand())
         Util.registerCommand("warplist", WarplistCommand())
-    }
-
-    override fun unload() {
     }
 
     class WarpManager {

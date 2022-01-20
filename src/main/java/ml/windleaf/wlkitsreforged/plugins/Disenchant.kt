@@ -20,7 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta
 
 class Disenchant : Plugin, Listener {
     override val name = "Disenchant"
-    override val enabled = Util.isEnabled(name)
+    override var enabled = false
     override val type = LoadType.ON_LOAD_WORLD
     private lateinit var menu: Inventory
     private lateinit var disenchantBook: ItemStack
@@ -28,13 +28,13 @@ class Disenchant : Plugin, Listener {
     private lateinit var cancel: ItemStack
 
     override fun load() {
+        enabled = Util.isEnabled(name)
         menu = Bukkit.createInventory(null, 9, Util.translateColorCode(Util.getPluginMsg(name, "menu-display-name"))!!)
         registerRecipe()
-        Util.registerEvent(this)
     }
 
-    override fun unload() {
-    }
+    override fun unload() = Unit
+    override fun registers() = Util.registerEvent(this)
 
     private fun loadInventory(player: Player) {
         menu.setItem(3, confirm)

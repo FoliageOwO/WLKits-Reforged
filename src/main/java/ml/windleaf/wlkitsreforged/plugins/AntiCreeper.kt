@@ -8,19 +8,21 @@ import org.bukkit.entity.Creeper
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityExplodeEvent
+import kotlin.properties.Delegates
 
 class AntiCreeper : Plugin, Listener {
     override val name = "AntiCreeper"
-    override val enabled = Util.isEnabled(name)
+    override var enabled = false
     override val type = LoadType.ON_STARTUP
-    private var notice = Util.getPluginConfig(name, "notice") as Boolean
+    private var notice by Delegates.notNull<Boolean>()
 
     override fun load() {
-        if (enabled) Util.registerEvent(this)
+        enabled = Util.isEnabled(name)
+        notice = Util.getPluginConfig(name, "notice") as Boolean
     }
 
-    override fun unload() {
-    }
+    override fun unload() = Unit
+    override fun registers() = Util.registerEvent(this)
 
     @EventHandler
     fun event(e: EntityExplodeEvent) {

@@ -14,16 +14,18 @@ import org.bukkit.event.entity.PlayerDeathEvent
 
 class Suicide : Plugin, Listener, CommandExecutor {
     override val name = "Suicide"
-    override val enabled = Util.isEnabled(name)
+    override var enabled = false
     override val type = LoadType.ON_STARTUP
     private var suicideList = ArrayList<Player>()
 
     override fun load() {
-        Util.registerEvent(this)
-        Util.registerCommand("suicide", this)
+        enabled = Util.isEnabled(name)
     }
 
-    override fun unload() {
+    override fun unload() = Unit
+    override fun registers() {
+        Util.registerEvent(this)
+        Util.registerCommand("suicide", this)
     }
 
     @EventHandler

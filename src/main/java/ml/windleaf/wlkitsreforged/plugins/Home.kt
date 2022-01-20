@@ -8,23 +8,28 @@ import ml.windleaf.wlkitsreforged.plugins.commands.home.HomeCommand
 import ml.windleaf.wlkitsreforged.plugins.commands.home.SethomeCommand
 import ml.windleaf.wlkitsreforged.utils.FileUtil
 import ml.windleaf.wlkitsreforged.utils.Util
+import kotlin.properties.Delegates
 
 class Home : Plugin {
     override val name = "Home"
-    override val enabled = Util.isEnabled(name)
+    override var enabled = false
     override val type = LoadType.ON_STARTUP
     companion object {
         var path: String = WLKits.prefixPath + "homes.data"
-        var homes = FileUtil.loadHashMap(path) as HashMap<String, String>
-        val enabled = Util.isEnabled("Home")
+        lateinit var homes: HashMap<String, String>
+        var enabled by Delegates.notNull<Boolean>()
     }
 
     override fun load() {
+        enabled = Util.isEnabled(name)
+        homes = FileUtil.loadHashMap(path) as HashMap<String, String>
+        Companion.enabled = enabled
+    }
+
+    override fun unload() = Unit
+    override fun registers() {
         Util.registerCommand("sethome", SethomeCommand())
         Util.registerCommand("home", HomeCommand())
         Util.registerCommand("delhome", DelhomeCommand())
-    }
-
-    override fun unload() {
     }
 }

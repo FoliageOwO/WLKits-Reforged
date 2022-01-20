@@ -9,7 +9,7 @@ import java.io.File
 class WLKits : JavaPlugin() {
     companion object {
         const val name = "WLKits"
-        const val version = "0.2-fix1"
+        const val version = "0.2.1"
         val pluginManager = PluginManager()
         val prefixPath = Util.getPath() + "plugins" + File.separator + "WLKitsReforged" + File.separator
         lateinit var instance: WLKits
@@ -29,7 +29,8 @@ class WLKits : JavaPlugin() {
     override fun onEnable() {
         val startTime = System.currentTimeMillis()
         instance = this
-        log("正在加载 &aWLKits-Reforged &f[v$version]&r...")
+        println("path: $prefixPath")
+        log("正在加载 &aWLKits-Reforged &fv$version&r...")
 
         Companion.saveResource("config.yml")
         Companion.saveResource("message.yml")
@@ -41,4 +42,6 @@ class WLKits : JavaPlugin() {
         val endTime = System.currentTimeMillis()
         log("加载完毕, 用时 &e${endTime - startTime}ms&r!")
     }
+
+    override fun onDisable() = pluginManager.unloadPlugins()
 }

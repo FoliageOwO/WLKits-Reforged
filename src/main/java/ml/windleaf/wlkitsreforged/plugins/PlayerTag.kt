@@ -18,26 +18,31 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.scoreboard.Scoreboard
 import java.util.*
 import java.util.stream.Collectors
+import kotlin.properties.Delegates
 
 class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
     override val name = "PlayerTag"
-    override val enabled = Util.isEnabled(name)
+    override var enabled = false
     override val type = LoadType.ON_LOAD_WORLD
     companion object {
         var path: String = WLKits.prefixPath + "playertags.data"
-        var playerTags = FileUtil.loadHashMap(path) as HashMap<String, String>
-        var enabled = Util.isEnabled("PlayerTag")
+        lateinit var playerTags: HashMap<String, String>
+        var enabled by Delegates.notNull<Boolean>()
         lateinit var scoreboard: Scoreboard
     }
 
     override fun load() {
+        enabled = Util.isEnabled(name)
+        playerTags = FileUtil.loadHashMap(path) as HashMap<String, String>
         scoreboard = Bukkit.getScoreboardManager()?.mainScoreboard!!
-        Util.registerEvent(this)
-        Util.registerCommand("playertag", this)
-        for (p in Bukkit.getOnlinePlayers()) setDisplayName(p)
+        Companion.enabled = enabled
+        Bukkit.getOnlinePlayers().forEach { setDisplayName(it) }
     }
 
-    override fun unload() {
+    override fun unload() = Unit
+    override fun registers() {
+        Util.registerEvent(this)
+        Util.registerCommand("playertag", this)
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String?>): Boolean {
@@ -57,7 +62,7 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
                             val player = Bukkit.getPlayer(n)
                             if (player == null) noPlayer(sender, "playerName" to n, "tag" to tag)
                             else {
-                                val coloredTag = Util.translateColorCode(tag)!!
+                                val coloredTag = Util.translateColorCode(tag + "&r")!!
                                 val formatted = Util.insert(Util.getPluginConfig(name, "format") as String, "playerName" to n, "tag" to coloredTag)!!
                                 playerTags[Util.getUUID(player)] = coloredTag
                                 val displayName = formatted + player.name
@@ -112,8 +117,8 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
         val subCommands = arrayOf("help", "set", "get", "reset")
         if (args.size > 1) {
             val list = ArrayList<String>()
-            for (p in Bukkit.getOnlinePlayers()) list.add(p.name)
-            return list
+            Bukkit.getOnlinePlayers().forEach { list.add(it.name) }
+            return list.filter { s: String -> s.startsWith(args[1]!!) }
         } else if (args.isEmpty()) return listOf(*subCommands)
         else if (args.size > 2) return emptyList()
         return Arrays.stream(subCommands).filter { s: String ->

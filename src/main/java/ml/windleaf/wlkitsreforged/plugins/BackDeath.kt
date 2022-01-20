@@ -15,16 +15,18 @@ import org.bukkit.event.entity.PlayerDeathEvent
 
 class BackDeath : Plugin, Listener, CommandExecutor {
     override val name = "BackDeath"
-    override val enabled = Util.isEnabled(name)
+    override var enabled = false
     override val type = LoadType.ON_STARTUP
     private var tpLogs = HashMap<Player, Location>()
 
     override fun load() {
-        Util.registerEvent(this)
-        Util.registerCommand("backdeath", this)
+        enabled = Util.isEnabled(name)
     }
 
-    override fun unload() {
+    override fun unload() = Unit
+    override fun registers() {
+        Util.registerEvent(this)
+        Util.registerCommand("backdeath", this)
     }
 
     @EventHandler

@@ -8,11 +8,12 @@ import org.bukkit.scheduler.BukkitRunnable
 
 class ScheduleNotice : Plugin {
     override val name = "ScheduleNotice"
-    override val enabled = Util.isEnabled(name)
+    override var enabled = false
     override val type = LoadType.ON_LOAD_WORLD
     private lateinit var runnable: BukkitRunnable
 
     override fun load() {
+        enabled = Util.isEnabled(name)
         if (enabled) {
             val interval = Util.getPluginConfig(name, "interval") as Int
             val lines = Util.getPluginMsgAs(name, "notice-lines") as List<*>
@@ -29,4 +30,6 @@ class ScheduleNotice : Plugin {
     override fun unload() {
         if (enabled) runnable.cancel()
     }
+
+    override fun registers() = Unit
 }
