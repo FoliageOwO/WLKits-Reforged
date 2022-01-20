@@ -14,6 +14,7 @@
   * [Warp](#Warp)
   * [WLKitsPlugin](#WLKitsPlugin)
   * [HttpApi](#HttpApi)
+  * [Mention](#Mention)
 
 ## 功能 (Features)
 
@@ -178,3 +179,13 @@
 | token    | String | Token    | *       |
 | command  | String | 执行的命令 | *       |
 | executor | String | 执行者    | (空字符串 -> 控制台) 或 (* -> 玩家) |
+
+### Mention
+
+提到玩家时高亮并提醒
+
+#### 用法
+
+使用 `前缀 (prefix)` + `玩家名/ALL` 提到玩家或所有人, 如
+
+`@WindLeaf`, `@ALL`
