@@ -29,7 +29,6 @@ class WLKits : JavaPlugin() {
     override fun onEnable() {
         val startTime = System.currentTimeMillis()
         instance = this
-        println("path: $prefixPath")
         log("正在加载 &aWLKits-Reforged &fv$version&r...")
 
         Companion.saveResource("config.yml")
