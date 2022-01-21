@@ -23,12 +23,11 @@ class WarpCommand : CommandExecutor, TabCompleter {
                 else {
                     sender as Player
                     val name = args[0]
-                    val n = "name" to name
                     if (Warp.warpManager.getWarps().keys.contains(name)) {
-                        teleport(sender, name, Warp.WarpType.PUBLIC, n)
+                        teleport(sender, name, Warp.WarpType.PUBLIC, "name" to name)
                     } else if (Warp.warpManager.getWarps().keys.contains("${Util.getUUID(sender)}|$name")) {
-                        teleport(sender, "${Util.getUUID(sender)}|$name", Warp.WarpType.PRIVATE, n)
-                    } else Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "not-found"), n))
+                        teleport(sender, "${Util.getUUID(sender)}|$name", Warp.WarpType.PRIVATE, "name" to name)
+                    } else Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "not-found"), "name" to name))
                 }
             }
         } else Util.disabled(sender)
