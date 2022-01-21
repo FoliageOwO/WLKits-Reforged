@@ -4,6 +4,7 @@ import ml.windleaf.wlkitsreforged.core.LoadType
 import ml.windleaf.wlkitsreforged.core.PermissionType
 import ml.windleaf.wlkitsreforged.core.Plugin
 import ml.windleaf.wlkitsreforged.core.WLKits
+import ml.windleaf.wlkitsreforged.utils.GuiUtil
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -22,25 +23,20 @@ class Disenchant : Plugin, Listener {
     override val name = "Disenchant"
     override var enabled = false
     override val type = LoadType.ON_LOAD_WORLD
-    private lateinit var menu: Inventory
+    private lateinit var gui: GuiUtil
     private lateinit var disenchantBook: ItemStack
     private lateinit var confirm: ItemStack
     private lateinit var cancel: ItemStack
 
     override fun load() {
         enabled = Util.isEnabled(name)
-        menu = Bukkit.createInventory(null, 9, Util.translateColorCode(Util.getPluginMsg(name, "menu-display-name"))!!)
+        gui = GuiUtil(Util.getPluginMsg(name, "menu-display-name")!!, 9)
         registerRecipe()
     }
 
     override fun unload() = Unit
     override fun registers() = Util.registerEvent(this)
-
-    private fun loadInventory(player: Player) {
-        menu.setItem(3, confirm)
-        menu.setItem(4, player.inventory.itemInOffHand)
-        menu.setItem(5, cancel)
-    }
+    private fun loadInventory(player: Player) = gui.setItems(3 to confirm, 4 to player.inventory.itemInOffHand, 5 to cancel)
 
     private fun disenchant(player: Player, offhand: ItemStack) {
         val book = ItemStack(Material.ENCHANTED_BOOK)
@@ -105,7 +101,7 @@ class Disenchant : Plugin, Listener {
                 if (player.inventory.itemInOffHand.enchantments.isNotEmpty()) {
                     // 打开 GUI 确认操作
                     loadInventory(player)
-                    player.openInventory(menu)
+                    gui.openGui(player)
                 } else Util.send(player, Util.translateColorCode(Util.getPluginMsg(name, "no-enchantment"))!!)
             }
         }
@@ -115,7 +111,7 @@ class Disenchant : Plugin, Listener {
     fun onInventoryClickEvent(e: InventoryClickEvent) {
         if (enabled && Util.needPermission(e.whoClicked, "disenchant", PermissionType.ACTION)) {
             val inventory = e.inventory
-            if (inventory == menu) {
+            if (gui.equals(inventory)) {
                 val player = e.whoClicked as Player
                 e.isCancelled = true
                 when (e.currentItem) {
