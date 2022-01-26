@@ -1,9 +1,46 @@
 package ml.windleaf.wlkitsreforged.utils
 
+import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
+import com.alibaba.fastjson.JSONReader
+import com.alibaba.fastjson.JSONWriter
 import java.io.*
 
 class FileUtil {
     companion object {
+        fun loadHashMapJSON(path: String): HashMap<*, *> {
+            try {
+                return if (File(path).exists()) {
+                    val os = JSONReader(InputStreamReader(FileInputStream(path), "UTF-8"))
+                    os.readObject(HashMap::class.java)
+                } else {
+                    makeFile(path)
+                    saveHashMapJSON(HashMap<Any, Any>(), path)
+                    loadHashMapJSON(path)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return HashMap<Any, Any>()
+        }
+
+        fun saveHashMapJSON(map: HashMap<*, *>, path: String) {
+            try {
+                if (File(path).exists()) {
+                    val os = OutputStreamWriter(FileOutputStream(path), "UTF-8")
+                    os.write(JSON.toJSONString(map))
+                    os.flush()
+                    os.close()
+                } else {
+                    val file = File(path)
+                    file.parentFile.mkdirs()
+                    file.createNewFile()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
         fun loadHashMap(path: String): HashMap<*, *> {
             try {
                 return if (File(path).exists()) {
