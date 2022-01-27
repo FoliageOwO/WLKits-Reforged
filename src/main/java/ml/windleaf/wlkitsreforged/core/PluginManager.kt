@@ -1,7 +1,8 @@
 package ml.windleaf.wlkitsreforged.core
 
-import ml.windleaf.wlkitsreforged.plugins.*
-import ml.windleaf.wlkitsreforged.plugins.httpapi.HttpApi
+import ml.windleaf.wlkitsreforged.core.enums.LoadType
+import ml.windleaf.wlkitsreforged.modules.*
+import ml.windleaf.wlkitsreforged.modules.HttpApi
 import ml.windleaf.wlkitsreforged.utils.Util
 
 class PluginManager {
@@ -19,7 +20,7 @@ class PluginManager {
             Warp(),
             WLKitsPlugin()
         )
-        private val loadedPlugins = arrayListOf<Plugin>()
+        private val loadedPlugins = arrayListOf<Module>()
 
         fun loadStartupPlugins(registers: Boolean = true) = pluginList.forEach {
             if (it.type == LoadType.ON_STARTUP && it !in loadedPlugins) {

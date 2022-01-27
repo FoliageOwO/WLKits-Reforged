@@ -1,6 +1,6 @@
 package ml.windleaf.wlkitsreforged.core.reflect;
 
-import ml.windleaf.wlkitsreforged.core.LoadType;
+import ml.windleaf.wlkitsreforged.core.enums.LoadType;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;

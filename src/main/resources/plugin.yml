@@ -9,73 +9,73 @@ website: https://windleaf.ml/
 commands:
   backdeath:
     aliases: [ backd, bd ]
-    description: 返回上一个死亡点
+    description: Back to last death location
     permission: wlkits.cmd.backdeath
   back:
-    description: 返回上一个地点
+    description: Back to last location
     permission: wlkits.cmd.back
   sethome:
-    description: 在当前位置设置家
+    description: Set location as home
     permission: wlkits.cmd.home
   home:
-    description: 回家
+    description: Back to home
     permission: wlkits.cmd.home
   delhome:
-    description: 删除家
+    description: Delete home location
     permission: wlkits.cmd.home
   suicide:
-    description: 自杀
+    description: Kill yourself
     permission: wlkits.cmd.suicide
   tpa:
-    description: 发送传送请求
+    description: Send teleport request
     permission: wlkits.cmd.tpa
   tpaccept:
     aliases: [ tpac ]
-    description: 接收传送请求
+    description: Accept the teleport request
     permission: wlkits.cmd.tpa
   tpadeny:
     aliases: [ tpad ]
-    description: 拒绝传送请求
+    description: Deny the teleport request
     permission: wlkits.cmd.tpa
   tpacancel:
-    description: 取消传送请求
+    description: Cancel the teleport request
     permission: wlkits.cmd.tpa
   tpahelp:
-    description: 查看 tpa 帮助
+    description: Show the help of tpa module
     permission: wlkits.cmd.tpa
   setwarp:
-    description: 设置地标点
+    description: Set warp
     permission: wlkits.cmd.warp
   warp:
-    description: 传送到地标
+    description: Teleport to warp
     permission: wlkits.cmd.warp
   delwarp:
-    description: 删除地标点
+    description: Delete the warp
     permission: wlkits.cmd.warp
   warphelp:
-    description: 查看 warp 帮助
+    description: Show the help of warp module
     permission: wlkits.cmd.warp
   warplist:
-    description: 查看所有地标点
+    description: Show all warps
     permission: wlkits.cmd.warplist
   playertag:
     aliases: [ ptag ]
-    description: 玩家称号
+    description: Manage player tag
     permission: wlkits.cmd.playertag
   wlkits:
-    description: 本体命令
+    description: WLKits plugin commands
     permission: wlkits.cmd.wlkits
 
 permissions:
   wlkits.*:
-    description: 'WL-Kits 中的所有权限'
+    description: 'The global permission of WLKits plugin'
     default: op
     children:
       - wlkits.cmd.*
       - wlkits.action.*
 
   wlkits.cmd.*:
-    description: 'WL-Kits 中的所有命令权限'
+    description: 'The global command permission of WLKits plugin'
     default: op
     children:
       - wlkits.cmd.backdeath
@@ -116,7 +116,7 @@ permissions:
     default: op
 
   wlkits.action.*:
-    description: 'WL-Kits 中的所有命令权限'
+    description: 'The global action permission of WLKits plugin'
     default: op
     children:
       - wlkits.action.disenchant

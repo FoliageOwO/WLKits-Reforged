@@ -1,6 +1,6 @@
 # WLKits-Reforged 配置文件
 
-plugins: # 所有的集成小工具
+modules: # 所有的模块
   main: # WLKits
     debug: false # 启用 WLKits 的 debug 模式
   anticreeper: # 防止苦力怕爆炸破坏地形
