@@ -38,8 +38,8 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
 
     override fun load() {
         enabled = Util.isEnabled(name)
-        path = WLKits.prefixPath + "playertags.data"
-        playerTags = FileUtil.loadHashMap(path) as HashMap<String, String>
+        path = WLKits.prefixPath + "playertags.json"
+        playerTags = FileUtil.loadHashMapJSON(path) as HashMap<String, String>
         scoreboard = Bukkit.getScoreboardManager()?.mainScoreboard!!
         Companion.enabled = enabled
         Bukkit.getOnlinePlayers().forEach { setDisplayName(it) }
@@ -74,7 +74,7 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
                                 val displayName = formatted + player.name
                                 player.setDisplayName(displayName)
                                 setNameTag(player, formatted)
-                                FileUtil.saveHashMap(playerTags, path)
+                                FileUtil.saveHashMapJSON(playerTags, path)
                                 Util.send(sender, Util.insert(Util.getPluginMsg(name, "set-success"), "playerName" to n, "tag" to coloredTag))
                             }
                         }
@@ -104,7 +104,7 @@ class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
                                 playerTags.remove(Util.getUUID(player))
                                 player.setDisplayName(player.name)
                                 resetNameTag(player)
-                                FileUtil.saveHashMap(playerTags, path)
+                                FileUtil.saveHashMapJSON(playerTags, path)
                                 Util.send(sender, Util.insert(Util.getPluginMsg(name, "reset-success"), "playerName" to n))
                             }
                         }
