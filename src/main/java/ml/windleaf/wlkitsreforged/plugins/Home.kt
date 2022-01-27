@@ -11,13 +11,18 @@ import ml.windleaf.wlkitsreforged.utils.Util
 import kotlin.properties.Delegates
 
 class Home : Plugin {
-    override val name = "Home"
-    override var enabled = false
-    override val type = LoadType.ON_STARTUP
+    private var enabled = false
+    override fun getName() = "Home"
+    override fun getEnabled() = enabled
+    override fun getType() = LoadType.ON_STARTUP
     companion object {
         lateinit var path: String
         lateinit var homes: HashMap<String, String>
         var enabled by Delegates.notNull<Boolean>()
+    }
+
+    override fun setEnabled(target: Boolean) {
+        enabled = target
     }
 
     override fun load() {

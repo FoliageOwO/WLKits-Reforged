@@ -20,13 +20,18 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.ItemMeta
 
 class Disenchant : Plugin, Listener {
-    override val name = "Disenchant"
-    override var enabled = false
-    override val type = LoadType.ON_LOAD_WORLD
+    private var enabled = false
+    override fun getName() = "Disenchant"
+    override fun getEnabled() = enabled
+    override fun getType() = LoadType.ON_LOAD_WORLD
     private lateinit var gui: GuiUtil
     private lateinit var disenchantBook: ItemStack
     private lateinit var confirm: ItemStack
     private lateinit var cancel: ItemStack
+
+    override fun setEnabled(target: Boolean) {
+        enabled = target
+    }
 
     override fun load() {
         enabled = Util.isEnabled(name)

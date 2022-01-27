@@ -14,10 +14,15 @@ import org.bukkit.event.player.PlayerBedEnterEvent
 import org.bukkit.event.player.PlayerBedLeaveEvent
 
 class SkipNight : Plugin, Listener {
-    override val name = "SkipNight"
-    override var enabled = false
-    override val type = LoadType.ON_STARTUP
+    private var enabled = false
+    override fun getName() = "SkipNight"
+    override fun getEnabled() = enabled
+    override fun getType() = LoadType.ON_STARTUP
     private var onBed = ArrayList<Player>()
+
+    override fun setEnabled(target: Boolean) {
+        enabled = target
+    }
 
     override fun load() {
         enabled = Util.isEnabled(name)
@@ -35,7 +40,7 @@ class SkipNight : Plugin, Listener {
             if (!onBed.contains(e.player)) onBed.add(e.player)
             val percent = Util.getPluginConfig(name, "percent") as Int
             if (percent < 0 || percent > 100)
-                WLKits.log("&c错误: 配置文件中 &6plugins.skipnight.percent &c数值小于 0 或大于 100, 请重新进行配置!")
+                WLKits.log("&cError config &6plugins.skipnight.percent&c!")
             else {
                 if ((onBed.size / Bukkit.getOnlinePlayers().size) >= (percent / 100)) {
                     Util.broadcastPlayers(Util.getPluginMsg(name, "msg-ok"))

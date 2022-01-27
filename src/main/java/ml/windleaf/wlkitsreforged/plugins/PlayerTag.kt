@@ -21,14 +21,19 @@ import java.util.stream.Collectors
 import kotlin.properties.Delegates
 
 class PlayerTag : Plugin, Listener, CommandExecutor, TabCompleter {
-    override val name = "PlayerTag"
-    override var enabled = false
-    override val type = LoadType.ON_LOAD_WORLD
+    private var enabled = false
+    override fun getName() = "PlayerTag"
+    override fun getEnabled() = enabled
+    override fun getType() = LoadType.ON_LOAD_WORLD
     companion object {
         lateinit var path: String
         lateinit var playerTags: HashMap<String, String>
         var enabled by Delegates.notNull<Boolean>()
         lateinit var scoreboard: Scoreboard
+    }
+
+    override fun setEnabled(target: Boolean) {
+        enabled = target
     }
 
     override fun load() {

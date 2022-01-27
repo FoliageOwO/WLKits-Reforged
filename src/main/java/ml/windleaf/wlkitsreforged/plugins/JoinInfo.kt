@@ -10,9 +10,14 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
 class JoinInfo : Plugin, Listener {
-    override val name = "JoinInfo"
-    override var enabled = false
-    override val type = LoadType.ON_STARTUP
+    private var enabled = false
+    override fun getName() = "JoinInfo"
+    override fun getEnabled() = enabled
+    override fun getType() = LoadType.ON_STARTUP
+
+    override fun setEnabled(target: Boolean) {
+        enabled = target
+    }
 
     override fun load() {
         enabled = Util.isEnabled(name)

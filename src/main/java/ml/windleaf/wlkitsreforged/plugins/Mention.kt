@@ -13,15 +13,20 @@ import org.bukkit.event.player.AsyncPlayerChatEvent
 import kotlin.properties.Delegates
 
 class Mention : Plugin, Listener {
-    override val name = "Mention"
-    override var enabled = false
-    override val type = LoadType.ON_STARTUP
+    private var enabled = false
+    override fun getName() = "Mention"
+    override fun getEnabled() = enabled
+    override fun getType() = LoadType.ON_STARTUP
     private lateinit var prefix: String
     private lateinit var styleTo: String
     private lateinit var styleOther: String
     private lateinit var styleAll: String
     private lateinit var allMsg: String
     private var soundNotice by Delegates.notNull<Boolean>()
+
+    override fun setEnabled(target: Boolean) {
+        enabled = target
+    }
 
     override fun load() {
         enabled = Util.isEnabled(name)

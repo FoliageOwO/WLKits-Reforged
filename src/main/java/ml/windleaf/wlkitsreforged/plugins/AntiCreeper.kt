@@ -11,10 +11,15 @@ import org.bukkit.event.entity.EntityExplodeEvent
 import kotlin.properties.Delegates
 
 class AntiCreeper : Plugin, Listener {
-    override val name = "AntiCreeper"
-    override var enabled = false
-    override val type = LoadType.ON_STARTUP
+    private var enabled = false
+    override fun getName() = "AntiCreeper"
+    override fun getEnabled() = enabled
+    override fun getType() = LoadType.ON_STARTUP
     private var notice by Delegates.notNull<Boolean>()
+
+    override fun setEnabled(target: Boolean) {
+        enabled = target
+    }
 
     override fun load() {
         enabled = Util.isEnabled(name)
@@ -30,7 +35,7 @@ class AntiCreeper : Plugin, Listener {
             e.isCancelled = true
             if (notice) {
                 val loc = e.location
-                WLKits.log("&a成功阻止 &fCreeper &a爆炸破坏地形! 爆炸坐标: &3X:${loc.blockX}&f, &aY:${loc.blockY}&f, &cZ:${loc.blockZ}&f.")
+                WLKits.log("&aCreeper exploded at &3X:${loc.blockX}&f, &aY:${loc.blockY}&f, &cZ:${loc.blockZ}&f.")
             }
         }
     }

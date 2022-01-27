@@ -2,6 +2,7 @@ package ml.windleaf.wlkitsreforged.plugins
 
 import ml.windleaf.wlkitsreforged.core.*
 import ml.windleaf.wlkitsreforged.utils.Util
+import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -10,9 +11,14 @@ import java.util.*
 import java.util.stream.Collectors
 
 class WLKitsPlugin : Plugin, CommandExecutor, TabCompleter {
-    override val name = "WLKitsPlugin"
-    override var enabled = false
-    override val type = LoadType.ON_STARTUP
+    private var enabled = false
+    override fun getName() = "WLKitsPlugin"
+    override fun getEnabled() = enabled
+    override fun getType() = LoadType.ON_STARTUP
+
+    override fun setEnabled(target: Boolean) {
+        enabled = target
+    }
 
     override fun load() {
         enabled = Util.isEnabled(name)
@@ -32,8 +38,7 @@ class WLKitsPlugin : Plugin, CommandExecutor, TabCompleter {
                             "/wlkits status [pluginName]" to "查看子插件开启状态",
                             "/wlkits info" to "查看插件信息")
                         "reload" -> {
-                            WLKits.reload()
-                            WLKits.pluginManager.reload()
+                            PluginManager.reload()
                             Util.send(sender, Util.getPluginMsg("main", "reload"))
                         }
                         "status" -> {
@@ -46,11 +51,12 @@ class WLKitsPlugin : Plugin, CommandExecutor, TabCompleter {
                         }
                         "info" -> {
                             Util.send(sender,
-                                "&aWLKits-Reforged &fv${WLKits.version}",
+                                "&a${WLKits.name} &fv${WLKits.version} &arunning on bukkit &c${Bukkit.getBukkitVersion()} &6[using Reflector: ${WLKits.reflector.nms}]",
                                 "&agithub: &ehttps://github.com/WindLeaf233/WLKits-Reforged",
                                 "&aplugins: &b(${PluginManager.pluginList.size}) [${
                                     PluginManager.pluginList.stream().map { if (it.enabled) "&a${it.name}&r" else "&c${it.name}&r" }.collect(Collectors.joining(", "))
-                                }]")
+                                }]",
+                                "&adebugMode: ${if (WLKits.debug) "&aTRUE" else "&cFALSE"}")
                         }
                         else -> Util.invalidArgs(sender)
                     }

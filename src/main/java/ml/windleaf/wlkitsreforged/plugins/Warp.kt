@@ -13,13 +13,18 @@ import java.io.IOException
 import kotlin.properties.Delegates
 
 class Warp : Plugin {
-    override val name = "Warp"
-    override var enabled = false
-    override val type = LoadType.ON_STARTUP
+    private var enabled = false
+    override fun getName() = "Warp"
+    override fun getEnabled() = enabled
+    override fun getType() = LoadType.ON_STARTUP
     companion object {
         lateinit var path: String
         val warpManager = WarpManager()
         var enabled by Delegates.notNull<Boolean>()
+    }
+
+    override fun setEnabled(target: Boolean) {
+        enabled = target
     }
 
     override fun load() {

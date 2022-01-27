@@ -1,6 +1,8 @@
 # WLKits-Reforged 配置文件
 
 plugins: # 所有的集成小工具
+  main: # WLKits
+    debug: false # 启用 WLKits 的 debug 模式
   anticreeper: # 防止苦力怕爆炸破坏地形
     enabled: true
     notice: false # 是否在控制台提示
@@ -35,7 +37,7 @@ plugins: # 所有的集成小工具
     enabled: false
     interval: 120 # 定时公告的间隔 (单位: 秒)
   httpapi: # HTTP API
-    enabled: true
+    enabled: false
     port: 8080 # 端口
     pool: 10 # 线程池
     token: '' # 固定 Token, 填空代表随机生成

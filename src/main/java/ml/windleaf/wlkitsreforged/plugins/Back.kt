@@ -14,10 +14,15 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerTeleportEvent
 
 class Back : Plugin, Listener, CommandExecutor {
-    override val name = "Back"
-    override var enabled = false
-    override val type = LoadType.ON_STARTUP
+    private var enabled = false
+    override fun getName() = "Back"
+    override fun getEnabled() = enabled
+    override fun getType() = LoadType.ON_STARTUP
     private var tpLogs = HashMap<Player, Location>()
+
+    override fun setEnabled(target: Boolean) {
+        enabled = target
+    }
 
     override fun load() {
         enabled = Util.isEnabled(name)

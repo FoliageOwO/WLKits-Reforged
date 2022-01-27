@@ -6,12 +6,12 @@
 
     <groupId>ml.windleaf</groupId>
     <artifactId>WLKitsReforged</artifactId>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
     <packaging>jar</packaging>
 
     <name>WLKitsReforged</name>
 
-    <description>一个适用于 Minecraft 1.16.x Paper/Spigot 服务端的集成小工具插件</description>
+    <description>一个适用于 Minecraft 1.12.x-1.18.x Paper/Spigot 服务端的集成小工具插件</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

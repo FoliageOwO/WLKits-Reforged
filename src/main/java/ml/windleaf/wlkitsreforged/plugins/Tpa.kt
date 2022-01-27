@@ -8,12 +8,17 @@ import org.bukkit.entity.Player
 import kotlin.properties.Delegates
 
 class Tpa : Plugin {
-    override val name = "Tpa"
-    override var enabled = false
-    override val type = LoadType.ON_STARTUP
+    private var enabled = false
+    override fun getName() = "Tpa"
+    override fun getEnabled() = enabled
+    override fun getType() = LoadType.ON_STARTUP
     companion object {
         var tpaLogs = HashMap<Player, Player>()
         var enabled by Delegates.notNull<Boolean>()
+    }
+
+    override fun setEnabled(target: Boolean) {
+        enabled = target
     }
 
     override fun load() {

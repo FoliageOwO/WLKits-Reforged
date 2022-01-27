@@ -14,14 +14,19 @@ import java.util.concurrent.Executors
 import kotlin.properties.Delegates
 
 class HttpApi : Plugin {
-    override val name = "HttpApi"
-    override var enabled = false
-    override val type = LoadType.ON_STARTUP
+    private var enabled = false
+    override fun getName() = "HttpApi"
+    override fun getEnabled() = enabled
+    override fun getType() = LoadType.ON_STARTUP
     companion object {
         var port by Delegates.notNull<Int>()
         var pool by Delegates.notNull<Int>()
         lateinit var token: String
         lateinit var server: HttpServer
+    }
+
+    override fun setEnabled(target: Boolean) {
+        enabled = target
     }
 
     override fun load() {
