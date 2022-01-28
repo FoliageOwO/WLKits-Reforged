@@ -40,6 +40,7 @@ class WLKits : JavaPlugin() {
         val startTime = System.currentTimeMillis()
         instance = this
 
+        reflector = Util.getReflector()
         debug = Util.getPluginConfig("main", "debug") as Boolean
         debug("Data folder: ${FileUtil.path}")
 
@@ -50,7 +51,6 @@ class WLKits : JavaPlugin() {
         reload()
         PluginManager()
 
-        reflector = Util.getReflector()
         Util.registerEvent(reflector)
         log("Loading &aWLKits-Reforged &fv$version&r...")
 
