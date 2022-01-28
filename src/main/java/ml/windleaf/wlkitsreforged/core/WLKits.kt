@@ -39,18 +39,20 @@ class WLKits : JavaPlugin() {
     override fun onEnable() {
         val startTime = System.currentTimeMillis()
         instance = this
-        debug("Data folder: ${FileUtil.path}")
+
         debug = Util.getPluginConfig("main", "debug") as Boolean
-        reflector = Util.getReflector()
-        message = YamlData("message")
-        PluginManager()
-        Util.registerEvent(reflector)
-        log("Loading &aWLKits-Reforged &fv$version&r...")
+        debug("Data folder: ${FileUtil.path}")
 
         FileUtil.saveResource("config.yml")
         FileUtil.saveResource("message.yml")
         FileUtil.saveResource("warps.json")
+        message = YamlData("message")
         reload()
+        PluginManager()
+
+        reflector = Util.getReflector()
+        Util.registerEvent(reflector)
+        log("Loading &aWLKits-Reforged &fv$version&r...")
 
         val endTime = System.currentTimeMillis()
         log("Successfully loaded in &e${endTime - startTime}ms&r!")
