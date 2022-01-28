@@ -49,6 +49,7 @@ class WLKits : JavaPlugin() {
 
         FileUtil.saveResource("config.yml")
         FileUtil.saveResource("message.yml")
+        FileUtil.saveResource("warps.json")
         reload()
 
         val endTime = System.currentTimeMillis()
