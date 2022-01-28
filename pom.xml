@@ -11,7 +11,7 @@
 
     <name>WLKitsReforged</name>
 
-    <description>一个适用于 Minecraft 1.12.x-1.18.x Paper/Spigot 服务端的集成小工具插件</description>
+    <description>A well-built modular essential plugin for Minecraft 1.12.x-1.18.x Paper/Spigot server</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -3,7 +3,7 @@ version: '${project.version}'
 main: ml.windleaf.wlkitsreforged.core.WLKits
 load: STARTUP
 authors: [ WindLeaf_qwq, kuaizi, Nzzz964 ]
-description: 一个适用于 Minecraft 1.12.x-1.18.x Paper/Spigot 服务端的集成小工具插件
+description: A well-built modular essential plugin for Minecraft 1.12.x-1.18.x Paper/Spigot server
 website: https://windleaf.ml/
 
 commands:
