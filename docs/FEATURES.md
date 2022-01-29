@@ -1,4 +1,4 @@
-- [目录](../README.md)
+- [目录 (Contents)](../README.md)
 - [功能 (Features)](#功能-Features)
   * [AntiCreeper](#AntiCreeper)
   * [Back](#Back)
@@ -15,6 +15,7 @@
   * [WLKitsPlugin](#WLKitsPlugin)
   * [HttpApi](#HttpApi)
   * [Mention](#Mention)
+  * [Macro](#Macro)
 
 ## 功能 (Features)
 
@@ -129,56 +130,32 @@
 
 ### HttpApi
 
-管理服务器的 HttpApi
+管理服务器的对外 HTTP API
 
 #### 用法
 
-- `/api/player/info`
+- `/api/macro/run`
 
-| API 路径            | 说明               |
-| ------------------ | ------------------ |
-| /api/player/info   | 查看玩家的各项信息    |
+| API 路径       | 说明   | 方法      |
+| -------------- | ----- | -------- |
+| /api/macro/run | 执行宏 | GET/POST |
 
-| 参数        | 类型   | 说明     | 可能的值 |
-| ---------- | ------ | ------- | ------- |
-| token      | String | Token   | *       |
-| playerName | String | 玩家名称 | *       |
+| 参数    | 类型            | 说明   | 可能的值 |
+| ------ | --------------- | ----- | ------- |
+| token  | String          | Token | *       |
+| macro  | String          | 宏路径 | *       |
+| params | Dictionary(Map) | 参数   | *       |
 
-- `/api/player/manage`
+- `/api/macro/list`
 
-| API 路径            | 说明    |
-| ------------------ | ------- |
-| /api/player/manage | 操作玩家 |
-
-
-| 参数        | 类型   | 说明     | 可能的值 |
-| ---------- | ------ | ------- | ------- |
-| token      | String | Token   | *       |
-| playerName | String | 玩家名称 | *       |
-| playerAction     | String | 操作类型 | kick, kill, ban, pardon, clear, tp, msg (见 [PlayerAction.kt](https://github.com/WindLeaf233/WLKits-Reforged/blob/master/src/main/java/ml/windleaf/wlkitsreforged/plugins/httpapi/handlers/player/Action.kt)) |
-
-- `/api/server/info`
-
-| API 路径          | 说明              |
-| ---------------- | ----------------- |
-| /api/server/info | 查看服务器的各项信息 |
-
-| 参数   | 类型   | 说明   | 可能的值 |
-| ----- | ------ | ----- | ------- |
-| token | String | Token | *       |
+| API 路径         | 说明         | 方法      |
+| --------------- | ------------ | -------- |
+| /api/macro/list | 查看所有可用宏 | GET/POST |
 
 
-- `/api/server/execute`
-
-| API 路径             | 说明         |
-| ------------------- | ------------ |
-| /api/server/execute | 执行服务器命令 |
-
-| 参数      | 类型   | 说明      | 可能的值 |
-| -------- | ------ | -------- | ------- |
-| token    | String | Token    | *       |
-| command  | String | 执行的命令 | *       |
-| executor | String | 执行者    | (空字符串 -> 控制台) 或 (* -> 玩家) |
+| 参数    | 类型            | 说明   | 可能的值 |
+| ------ | --------------- | ----- | ------- |
+| token  | String          | Token | *       |
 
 ### Mention
 
@@ -189,3 +166,26 @@
 使用 `前缀 (prefix)` + `玩家名/ALL` 提到玩家或所有人, 如
 
 `@WindLeaf`, `@ALL`
+
+### Macro
+
+管理服务器的命令宏
+
+#### 用法
+
+- 使用内部命令:
+  * **执行宏**: `/macro run [macro] [{params}]` (注: **`{params}` 代表此处应用 `JSON 文本` 格式表示参数**, 例如: `{"player":"Steve"}`)
+  * **查看所有可用宏**: `/macro list`
+- 使用 [`Http Api`](#HttpApi)
+  * **执行宏**: `GET/POST /api/macro/run`
+  * **查看所有可用宏**: `GET/POST /api/macro/list`
+
+#### 可用宏
+
+- `player.info`[player]: 查看玩家的各项信息
+- `player.manage`[player, action]: 管理玩家 (action 见 [Action.kt](https://github.com/WindLeaf233/WLKits-Reforged/blob/master/src/main/java/ml/windleaf/wlkitsreforged/modules/enums/PlayerAction.kt))
+- `server.execute_command`[command, executor]: 直接在服务器执行命令
+- `server.info`: 查看服务器的各项信息
+- `server.stop`: 关闭服务器
+- `wlkits.info`: 查看 WLKits 的相关信息
+- `wlkits.reload`: 重载 WLKits 插件
