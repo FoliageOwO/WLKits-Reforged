@@ -3,9 +3,13 @@ package ml.windleaf.wlkitsreforged.modules.httpapi
 import com.google.gson.Gson
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
+import ml.windleaf.wlkitsreforged.core.WLKits
+import ml.windleaf.wlkitsreforged.internal.JsonData
 import ml.windleaf.wlkitsreforged.modules.HttpApi
-import ml.windleaf.wlkitsreforged.modules.httpapi.Error.*
+import ml.windleaf.wlkitsreforged.modules.enums.ApiError.*
+import ml.windleaf.wlkitsreforged.utils.Util
 import java.io.BufferedReader
+import java.io.IOException
 import java.io.InputStreamReader
 
 
@@ -30,7 +34,7 @@ open class Handler : HttpHandler {
                 val content = StringBuilder()
                 var line: String?
                 while (br.readLine().also { line = it } != null) content.append(line?.trim())
-                Gson().fromJson(content.toString(), HashMap::class.java)
+                WLKits.gson.fromJson(content.toString(), HashMap::class.java)
             }
         } catch (e: Exception) {
             return null
@@ -38,22 +42,28 @@ open class Handler : HttpHandler {
     }
 
     fun response(code: Int = 200, content: String = "", contentType: String = "text/plain") {
-        exchange.responseHeaders.add("Content-Type", contentType)
-        exchange.sendResponseHeaders(code, content.length.toLong())
-        val out = exchange.responseBody
-        out.write(content.toByteArray())
-        out.flush()
-        out.close()
+        Util.catch(IOException::class.java,
+            {
+                exchange.responseHeaders.add("Content-Type", contentType)
+                exchange.sendResponseHeaders(code, content.length.toLong())
+                val out = exchange.responseBody
+                out.write(content.toByteArray())
+                out.flush()
+                out.close()
+            }, { WLKits.log("&eWARNING: ${it.message}") }
+        )
     }
 
     fun rightParams(params: HashMap<*, *>?, vararg needParams: String): Boolean {
         return if (params == null) {
-            response(400, toJson(hashMapOf("error" to WRONG_PARAMETERS)))
+            response(400, JsonData.toJson(hashMapOf("error" to WRONG_PARAMETERS)))
             false
         } else {
             for (p in needParams) {
                 if (!params.containsKey(p)) {
-                    response(400, toJson(hashMapOf("error" to MISSING_PARAMETER, "parameter" to p)))
+                    response(400,
+                        JsonData.toJson(hashMapOf<String, Any>("error" to MISSING_PARAMETER, "parameter" to p))
+                    )
                     return false
                 }
             }
@@ -61,14 +71,12 @@ open class Handler : HttpHandler {
         }
     }
 
-    fun toJson(any: Any) = Gson().toJson(any, any::class.java)!!
-
     fun needToken(params: HashMap<*, *>?): Boolean {
         return if (!rightParams(params, "token")) false
         else {
             val token = params!!["token"] as String
             if (HttpApi.token != token) {
-                response(400, toJson(hashMapOf("error" to WRONG_TOKEN)))
+                response(400, JsonData.toJson(hashMapOf("error" to WRONG_TOKEN)))
                 false
             } else true
         }

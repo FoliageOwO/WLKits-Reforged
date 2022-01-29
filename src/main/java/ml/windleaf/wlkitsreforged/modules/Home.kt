@@ -2,7 +2,7 @@ package ml.windleaf.wlkitsreforged.modules
 
 import ml.windleaf.wlkitsreforged.core.Module
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
-import ml.windleaf.wlkitsreforged.data.JsonData
+import ml.windleaf.wlkitsreforged.internal.JsonData
 import ml.windleaf.wlkitsreforged.modules.commands.home.DelhomeCommand
 import ml.windleaf.wlkitsreforged.modules.commands.home.HomeCommand
 import ml.windleaf.wlkitsreforged.modules.commands.home.SethomeCommand
@@ -24,7 +24,7 @@ class Home : Module {
     }
 
     override fun load() {
-        enabled = Util.isEnabled(name)
+        enabled = Util.isEnabled(getName())
         Companion.enabled = enabled
     }
 

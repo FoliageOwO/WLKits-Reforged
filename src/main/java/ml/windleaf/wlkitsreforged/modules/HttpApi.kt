@@ -4,10 +4,8 @@ import com.sun.net.httpserver.HttpServer
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
 import ml.windleaf.wlkitsreforged.core.Module
 import ml.windleaf.wlkitsreforged.core.WLKits
-import ml.windleaf.wlkitsreforged.modules.httpapi.handlers.player.PlayerInfoHandler
-import ml.windleaf.wlkitsreforged.modules.httpapi.handlers.player.PlayerManageHandler
-import ml.windleaf.wlkitsreforged.modules.httpapi.handlers.server.ServerExecuteCommandHandler
-import ml.windleaf.wlkitsreforged.modules.httpapi.handlers.server.ServerInfoHandler
+import ml.windleaf.wlkitsreforged.modules.httpapi.handlers.macro.MacroListHandler
+import ml.windleaf.wlkitsreforged.modules.httpapi.handlers.macro.MacroRunHandler
 import ml.windleaf.wlkitsreforged.utils.Util
 import java.net.InetSocketAddress
 import java.util.concurrent.Executors
@@ -30,7 +28,7 @@ class HttpApi : Module {
     }
 
     override fun load() {
-        enabled = Util.isEnabled(name)
+        enabled = Util.isEnabled(getName())
         port = Util.getPluginConfig("HttpApi", "port") as Int
         pool = Util.getPluginConfig("HttpApi", "pool") as Int
         if (enabled) {
@@ -40,10 +38,8 @@ class HttpApi : Module {
             server = HttpServer.create(InetSocketAddress(port), 0)
             server.executor = Executors.newFixedThreadPool(pool)
 
-            PlayerInfoHandler()
-            PlayerManageHandler()
-            ServerInfoHandler()
-            ServerExecuteCommandHandler()
+            MacroRunHandler()
+            MacroListHandler()
 
             server.start()
             WLKits.log("&aHTTP API Server started: &b${server.address}")

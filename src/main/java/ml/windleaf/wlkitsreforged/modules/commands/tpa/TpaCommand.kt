@@ -25,7 +25,7 @@ class TpaCommand : CommandExecutor, TabCompleter {
                     if (player === sender) {
                         Util.send(sender, Util.getPluginMsg("Tpa", "self-tpa"))
                     } else {
-                        if (player == null) Util.send(sender, Util.insert(Util.getPluginMsg("Tpa", "not-found"), "playerName" to args[0]))
+                        if (player == null) Util.send(sender, Util.insert(Util.getPluginMsg("main", "player-not-found"), "playerName" to args[0]))
                         else {
                             Tpa.tpaLogs[player] = sender
                             val receiverLines = Util.getPluginMsgAs("Tpa", "receiver-lines") as List<*>

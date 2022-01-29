@@ -25,7 +25,7 @@ class BackDeath : Module, Listener, CommandExecutor {
     }
 
     override fun load() {
-        enabled = Util.isEnabled(name)
+        enabled = Util.isEnabled(getName())
     }
 
     override fun unload() = Unit
@@ -44,9 +44,9 @@ class BackDeath : Module, Listener, CommandExecutor {
             if (Util.mustPlayer(sender) && Util.needPermission(sender, "backdeath", PermissionType.COMMAND)) {
                 sender as Player
                 val location = tpLogs[sender]
-                if (location == null) Util.send(sender, Util.getPluginMsg(name, "fail")) else {
+                if (location == null) Util.send(sender, Util.getPluginMsg(getName(), "fail")) else {
                     sender.teleport(location)
-                    Util.send(sender, Util.getPluginMsg(name, "success"))
+                    Util.send(sender, Util.getPluginMsg(getName(), "success"))
                 }
             }
         } else Util.disabled(sender)

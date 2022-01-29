@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import ml.windleaf.wlkitsreforged.core.Module
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
-import ml.windleaf.wlkitsreforged.data.JsonData
+import ml.windleaf.wlkitsreforged.internal.JsonData
 import ml.windleaf.wlkitsreforged.modules.commands.warp.*
 import ml.windleaf.wlkitsreforged.modules.enums.WarpType
 import ml.windleaf.wlkitsreforged.utils.Util
@@ -63,17 +63,6 @@ class Warp : Module {
         }
 
         fun getWarps(): HashMap<String, WarpType> {
-            /*val names = warps.getListAs<String>("list")
-            val map = HashMap<String, WarpType>()
-            if (names != null) {
-                for (name in names) {
-                    when ('|' in name.toCharArray()) {
-                        true -> if (warps.getAs<String>("private.$name") != null) map[name] = WarpType.PRIVATE
-                        false -> if (warps.getAs<String>("public.$name") != null) map[name] = WarpType.PUBLIC
-                    }
-                }
-            }
-            return map*/
             val map = HashMap<String, WarpType>()
             list.forEach {
                 it as String
@@ -91,7 +80,7 @@ class Warp : Module {
     }
 
     override fun load() {
-        enabled = Util.isEnabled(name)
+        enabled = Util.isEnabled(getName())
         Companion.enabled = enabled
         list = warps.getAs("list")!!
         publics = warps.getAs("public")!!

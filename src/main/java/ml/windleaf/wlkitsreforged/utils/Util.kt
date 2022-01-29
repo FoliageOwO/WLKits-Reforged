@@ -1,93 +1,439 @@
 package ml.windleaf.wlkitsreforged.utils
 
+import ml.windleaf.wlkitsreforged.apis.PlayerInType
 import ml.windleaf.wlkitsreforged.core.enums.PermissionType
 import ml.windleaf.wlkitsreforged.core.Module
 import ml.windleaf.wlkitsreforged.core.PluginManager
 import ml.windleaf.wlkitsreforged.core.WLKits
+import ml.windleaf.wlkitsreforged.core.enums.PlayerType
 import ml.windleaf.wlkitsreforged.core.reflect.Reflector
 import ml.windleaf.wlkitsreforged.core.reflect.versions.V1_16_R3
 import ml.windleaf.wlkitsreforged.core.enums.Versions
+import ml.windleaf.wlkitsreforged.modules.enums.ApiError
+import ml.windleaf.wlkitsreforged.modules.enums.PlayerAction
+import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil
+import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil.Test
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
+import org.bukkit.OfflinePlayer
 import org.bukkit.World
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
+import java.lang.reflect.Modifier
+import java.net.URI
+import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.jvm.Throws
 
-class Util {
-    companion object {
-        fun translateColorCode(s: String?) = s?.replace("&", "§")
-        fun withPrefix() = "&b${WLKits.name} >> &r" /* "&b${WLKits.name} » &r" */
-        fun registerCommand(cmd: String, executor: CommandExecutor) = WLKits.instance.getCommand(cmd)?.setExecutor(executor)
-        fun getPluginConfig(pluginName: String, root: String) = WLKits.instance.config.get("modules.${pluginName.lowercase()}.$root")
-        fun getPluginMsg(pluginName: String, root: String) = getPluginMsgAs(pluginName, root) as String
-        fun getPluginMsgAs(pluginName: String, root: String) = WLKits.message["${pluginName.lowercase()}.$root"]
-        fun send(p: CommandSender, s: String?) = p.sendMessage(translateColorCode(withPrefix() + s)!!)
-        fun isEnabled(pluginName: String) = getPluginConfig(pluginName, "enabled") as Boolean
-        fun disabled(p: CommandSender) = send(p, getPluginMsg("main", "disabled"))
-        fun getUUID(p: Player) = p.uniqueId.toString()
-        fun invalidArgs(p: CommandSender) = send(p, getPluginMsg("main", "invalid-args"))
-        fun hasPermission(p: CommandSender, name: String, type: PermissionType) = p.hasPermission("wlkits.${type.string}.$name")
-        fun generateRandomToken() = UUID.randomUUID().toString().replace("-", "")
-        fun broadcastPlayers(string: String?) = Bukkit.getOnlinePlayers().forEach { send(it, string) }
-        fun sendHelp(s: CommandSender, vararg pairs: Pair<String, String>) = pairs.forEach { send(s, "&6${it.first} &f- &a${it.second}".replace("|", "&2|&6")) }
-        fun send(p: CommandSender, vararg s: String?) = s.forEach { send(p, it) }
-        fun getPluginByName(name: String): Module? = PluginManager.pluginList.firstOrNull { it.name == name }
-        fun getWorldByName(name: String): World? = Bukkit.getWorlds().firstOrNull { it.toString() == name || it.name == name }
+/**
+ * The util object, which includes some useful functions
+ */
+object Util {
+    /**
+     * Colors a string
+     *
+     * @param s the string to color
+     * @return the colored string
+     */
+    fun translateColorCode(s: String?) = s?.replace("&", "§")
 
-        fun registerEvent(listener: Listener) {
-            WLKits.debug("register listener: $listener")
-            WLKits.instance.server.pluginManager.registerEvents(listener, WLKits.instance)
+    /**
+     * Gets the message prefix of the plugin
+     *
+     * @return the prefix
+     */
+    fun withPrefix() = "&b${WLKits.name} >> &r" /* "&b${WLKits.name} » &r" */
+
+    /**
+     * A shortcut to register a command
+     *
+     * @param cmd the command string
+     * @param executor the command executor
+     */
+    fun registerCommand(cmd: String, executor: CommandExecutor) = WLKits.instance.getCommand(cmd)?.setExecutor(executor)
+
+    /**
+     * A shortcut to get the config of module from plugin config.yml
+     *
+     * @param pluginName the name of the module
+     * @param root the key of the config
+     */
+    fun getPluginConfig(pluginName: String, root: String) = WLKits.instance.config.get("modules.${pluginName.lowercase()}.$root")
+
+    /**
+     * A shortcut to get the message of module from plugin message.yml
+     *
+     * @param pluginName the name of the module
+     * @param root the key of the message
+     * @return the message as string
+     */
+    fun getPluginMsg(pluginName: String, root: String) = getPluginMsgAs(pluginName, root) as String
+
+    /**
+     * A shortcut to get the message of module from plugin message.yml as custom class
+     *
+     * @param pluginName the name of the module
+     * @param root the key of the message
+     * @return any object
+     */
+    fun getPluginMsgAs(pluginName: String, root: String) = WLKits.message["${pluginName.lowercase()}.$root"]
+
+    /**
+     * Sends a message to command sender
+     *
+     * @param p the command sender
+     * @param s the message to send
+     */
+    fun send(p: CommandSender, s: String?) = p.sendMessage(translateColorCode(withPrefix() + s)!!)
+
+    /**
+     * Gets the enabled state of module
+     *
+     * @param pluginName the name of the module
+     * @return the enabled state
+     */
+    fun isEnabled(pluginName: String) = getPluginConfig(pluginName, "enabled") as Boolean
+
+    /**
+     * Sends a message to player to tell that the module is disabled
+     *
+     * @param p the player to tell
+     */
+    fun disabled(p: CommandSender) = send(p, getPluginMsg("main", "disabled"))
+
+    /**
+     * A shortcut to get the uuid string of player
+     *
+     * @param p the player to get
+     * @return the uuid string, null if the player is null
+     */
+    fun getUUID(p: Player?) = if (p != null) p.uniqueId.toString() else null
+
+    /**
+     * Sends a message to player to tell that the command arguments are invalid
+     *
+     * @param p the player to tell
+     */
+    fun invalidArgs(p: CommandSender) = send(p, getPluginMsg("main", "invalid-args"))
+
+    /**
+     * A shortcut to checks if the player has permission
+     *
+     * @param p the player to check
+     * @param name the module which includes the permission
+     * @param type the permission type
+     * @return true if the player has permission
+     * @see PermissionType
+     */
+    fun hasPermission(p: CommandSender, name: String, type: PermissionType) = p.hasPermission("wlkits.${type.string}.$name")
+
+    /**
+     * A shortcut to generate a random uuid string without char `-`
+     *
+     * @return the random uuid string
+     */
+    fun generateRandomToken() = UUID.randomUUID().toString().replace('-', ' ')
+
+    /**
+     * Sends the message to all online players
+     *
+     * @param string the message to send
+     */
+    fun broadcastPlayers(string: String?) = Bukkit.getOnlinePlayers().forEach { send(it, string) }
+
+    /**
+     * Sends the help message of module to command sender
+     *
+     * @param s the command sender
+     * @param pairs the help message pairs
+     */
+    fun sendHelp(s: CommandSender, vararg pairs: Pair<String, String>) = pairs.forEach { send(s, "&6${it.first} &f- &a${it.second}".replace("|", "&2|&6")) }
+
+    /**
+     * Sends the messages to command sender
+     *
+     * @param p the command sender
+     * @param s the messages to send
+     * @see Util#send(CommandSender, String)
+     */
+    fun send(p: CommandSender, vararg s: String?) = s.forEach { send(p, it) }
+
+    /**
+     * Gets the module by module name
+     *
+     * @param name the module name
+     * @return the module, null if not found
+     */
+    fun getPluginByName(name: String): Module? = PluginManager.pluginList.firstOrNull { it.getName() == name }
+
+    /**
+     * Gets the world by world name
+     *
+     * @param name the world name
+     * @return the world, null if not found
+     */
+    fun getWorldByName(name: String): World? = Bukkit.getWorlds().firstOrNull { it.toString() == name || it.name == name }
+
+    /**
+     * Parses the boolean value
+     *
+     * true -> ✔
+     * false -> ✖
+     *
+     * @param boolean the boolean value
+     * @return string
+     */
+    fun parseBooleanColor(boolean: Boolean) = if (boolean) "&a✔&r" else "&c✖&r"
+
+    /**
+     * A shortcut to register event
+     *
+     * @param listener the listener
+     */
+    fun registerEvent(listener: Listener) {
+        WLKits.debug("register listener: $listener")
+        WLKits.instance.server.pluginManager.registerEvents(listener, WLKits.instance)
+    }
+
+    /**
+     * Checks if command sender is player, else send message to command sender
+     *
+     * @param p the command sender
+     * @return true if command sender is player
+     */
+    fun mustPlayer(p: CommandSender): Boolean {
+        return if (p is Player && p !is ConsoleCommandSender) true
+        else {
+            send(p, getPluginMsg("main", "must-player"))
+            false
+        }
+    }
+
+    /**
+     * Formats the string with the key and value of pairs
+     *
+     * @param s the string
+     * @param pairs the pairs
+     */
+    fun insert(s: String?, vararg pairs: Pair<String, String>): String? {
+        var result = s
+        pairs.forEach { result = result?.replace("{${it.first}}", it.second) }
+        return result
+    }
+
+    /**
+     * Checks if the command sender has permission, else send message to command sender
+     *
+     * @param p the command sender
+     * @param name the module name
+     * @param type the permission type
+     * @see PermissionType
+     */
+    fun needPermission(p: CommandSender, name: String, type: PermissionType): Boolean {
+        if (hasPermission(p, name, type)) return true
+        else send(p, getPluginMsg("main", "no-permission"))
+        return false
+    }
+
+    /**
+     * Gets the reflector which is suitable with NMS version
+     *
+     * @return the reflector
+     * @see Reflector
+     */
+    fun getReflector(): Reflector {
+        val versions = Bukkit.getBukkitVersion().split(".")
+        val major = versions[0]
+        val minor = versions[1]
+        var nmsVersion = "v$major@$minor@R".replace('@', '_')
+
+        for (i in 1..9) {
+            val versionTest = nmsVersion + i
+            try {
+                Class.forName("org.bukkit.craftbukkit.$versionTest.inventory.CraftItemStack")
+                nmsVersion += i
+                break
+            } catch (ignored: ClassNotFoundException) { }
         }
 
-        fun mustPlayer(p: CommandSender): Boolean {
-            return if (p is Player && p !is ConsoleCommandSender) true
-            else {
-                send(p, getPluginMsg("main", "must-player"))
-                false
+        val result: Reflector = try {
+            Versions.valueOf(nmsVersion.uppercase()).reflector
+        } catch (e: IllegalArgumentException) { V1_16_R3() }
+
+        WLKits.debug(ref = result, "NMS: $nmsVersion -> $result")
+        return result
+    }
+
+    /**
+     * A shortcut to call method and catch exception automatically, gets the result
+     *
+     * @param exception the exception class to catch, defaults to Exception
+     * @param function the lambda function to call
+     * @param onException the lambda function to call when caught exception, defaults to empty function
+     * @return the result of the function, null if caught exception
+     */
+    fun <T> catch(
+        exception: Class<out Exception> = Exception::class.java,
+        function: () -> T?,
+        onException: (e: Exception) -> Unit = {}
+    ): T? {
+        try {
+            return function.invoke()
+        } catch (e: Exception) {
+            if (exception.isInstance(e)) onException.invoke(e)
+            else e.printStackTrace()
+        }
+        return null
+    }
+
+    /**
+     * A shortcut to call method and catch exception automatically, gets the result
+     *
+     * @param function the lambda function to call
+     * @return the result of the function, null if caught exception
+     * @see Util#catch(Class, () -> T?, (e: Exception) -> Unit)
+     */
+    fun <T> catch(function: () -> T?) = catch<T>(Exception::class.java, function, { it.printStackTrace() })
+
+    /**
+     * Removes the color from the string
+     *
+     * @param s the string to remove
+     * @return the string without color code
+     */
+    fun removeColor(s: String?): String? {
+        var st = translateColorCode(s)
+        ChatColor.values().forEach { st = st?.replace("§" + it.char, "") }
+        return st
+    }
+
+    /**
+     * Gets all classes which super a class
+     *
+     * @param packagePath the package path
+     * @return the list of classes
+     */
+    inline fun <reified T> getClassesWithSuperclass(packagePath: String): ArrayList<Class<out T>> {
+        val list = arrayListOf<Class<out T>>()
+        val cls = T::class.java
+        val resolver = ResolverUtil()
+        resolver.classLoader = cls.classLoader
+        resolver.findInPackage(object : Test {
+            override fun matches(type: Class<*>?) = true
+            override fun matches(resource: URI?) = true
+            override fun doesMatchClass() = true
+            override fun doesMatchResource() = true
+        }, packagePath)
+
+        WLKits.debug("Found ${resolver.classes.size} classes")
+        resolver.classes.forEach {
+            it.declaredMethods.find { d -> Modifier.isNative(d.modifiers) }?.let { m ->
+                val k = m.declaringClass.typeName + "." + m.name
+                throw UnsatisfiedLinkError("Native method $k in ${it.name}")
             }
+
+            WLKits.debug("Class: ${it.simpleName}, ${cls.isAssignableFrom(it)}, ${!it.isInterface}, ${!Modifier.isAbstract(it.modifiers)}")
+            if (cls.isAssignableFrom(it)
+                && !it.isInterface
+                && !Modifier.isAbstract(it.modifiers)) list.add(it as Class<out T>)
         }
 
-        fun insert(s: String?, vararg pairs: Pair<String, String>): String? {
-            var result = s
-            pairs.forEach { result = result?.replace("{${it.first}}", it.second) }
-            return result
-        }
+        return list
+    }
 
-        fun needPermission(p: CommandSender, name: String, type: PermissionType): Boolean {
-            if (hasPermission(p, name, type)) return true
-            else send(p, getPluginMsg("main", "no-permission"))
-            return false
-        }
+    /**
+     * Formats the timestamp to string with pattern `yyyy-MM-dd HH:mm:ss`
+     *
+     * @param long the timestamp
+     * @return the date string
+     */
+    fun getDate(long: Long): String = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date(long))!!
 
-        fun getReflector(): Reflector {
-            val versions = Bukkit.getBukkitVersion().split(".")
-            val major = versions[0]
-            val minor = versions[1]
-            var nmsVersion = "v$major@$minor@R".replace('@', '_')
+    /**
+     * Gets the PlayerInType instance by uuid or name
+     *
+     * @param uuidOrName uuid or name
+     * @return the PlayerInType instance, null if player not found
+     */
+    fun getPlayerBy(uuidOrName: String): PlayerInType? {
+        var playerType: PlayerType = PlayerType.OFFLINE
+        var type: PlayerInType.TypeEnum = PlayerInType.TypeEnum.NAME
+        var temp: OfflinePlayer? = Bukkit.getPlayer(uuidOrName)
 
-            for (i in 1..9) {
-                val versionTest = nmsVersion + i
-                try {
-                    Class.forName("org.bukkit.craftbukkit.$versionTest.inventory.CraftItemStack")
-                    nmsVersion += i
-                    break
-                } catch (ignored: ClassNotFoundException) { }
+        catch(IllegalArgumentException::class.java,
+            {
+                if (temp == null) {
+                    temp = Bukkit.getPlayer(UUID.fromString(uuidOrName))
+                    type = PlayerInType.TypeEnum.UUID
+                }
+                playerType = PlayerType.ONLINE
+            },
+            {
+                temp = null
+                type = PlayerInType.TypeEnum.NAME
+            })
+        if (temp == null) {
+            Bukkit.getOfflinePlayers().forEach {
+                playerType = PlayerType.OFFLINE
+                type = if (it.name == uuidOrName) {
+                    temp = it
+                    PlayerInType.TypeEnum.NAME
+                } else if (it.uniqueId.toString() == uuidOrName) {
+                    temp = it
+                    PlayerInType.TypeEnum.UUID
+                } else PlayerInType.TypeEnum.NAME
             }
-
-            val result: Reflector = try {
-                Versions.valueOf(nmsVersion.uppercase()).reflector
-            } catch (e: IllegalArgumentException) { V1_16_R3() }
-
-            WLKits.debug(ref = result, "NMS: $nmsVersion -> $result")
-            return result
+            if (temp == null) return null
         }
+        return PlayerInType(type, temp!!, playerType , uuidOrName)
+    }
 
-        fun <T> catch(function: () -> T?): T? {
-            try { return function.invoke() } catch (e: Exception) { e.printStackTrace() }
-            return null
+    /**
+     * Checks if two collection are equal
+     *
+     * @param c1 the first collection
+     * @param c2 the second collection
+     * @return true if equal
+     */
+    fun collectionsEquals(c1: Collection<*>, c2: Collection<*>): Boolean {
+        if (c1.size != c2.size) return false
+        c1.forEach { if (!c2.contains(it)) return false }
+        return true
+    }
+
+    /**
+     * Gets the player action by string
+     *
+     * @param action the action string
+     * @return the player action, [PlayerAction.NULL] if not found
+     */
+    fun getPlayerActionByString(string: String): PlayerAction {
+        PlayerAction.values().forEach { if (it.string == string.lowercase()) return it }
+        return PlayerAction.NULL
+    }
+
+    /**
+     * Checks if the args are valid
+     *
+     * @param args the args map
+     * @param needArgs must-have args
+     * @return true if valid, throw exception if not
+     * @throws IllegalArgumentException if args is invalid
+     */
+    @Throws(IllegalArgumentException::class)
+    fun rightArgs(args: Map<*, *>?, vararg needArgs: String): Boolean {
+        return if (args == null) {
+            throw IllegalArgumentException("wrong parameters")
+        } else {
+            needArgs.forEach {
+                if (!args.containsKey(it)) {
+                    throw IllegalArgumentException("missing parameter `$it`")
+                }
+            }
+            true
         }
     }
 }

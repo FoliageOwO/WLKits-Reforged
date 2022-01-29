@@ -22,7 +22,7 @@ class Tpa : Module {
     }
 
     override fun load() {
-        enabled = Util.isEnabled(name)
+        enabled = Util.isEnabled(getName())
         Companion.enabled = enabled
     }
 

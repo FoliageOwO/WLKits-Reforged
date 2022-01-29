@@ -10,6 +10,7 @@ main:
   reload: '&a重载成功!'
   status: '&f子插件 &6{pluginName} &f的开启状态: {status}'
   no-plugin: '&c没有叫做 &6{pluginName} &c的子插件!'
+  player-not-found: '&c玩家 &6{playerName} &c不存在!'
 backdeath:
   fail: '&c无法返回上一个死亡点!'
   success: '&a返回成功!'
@@ -45,7 +46,6 @@ skipnight:
 tpa:
   help: '&a请使用 &6/tpahelp &a查看帮助!'
   self-tpa: '&c你不能给自己发送传送请求!'
-  not-found: '&c玩家 &6{playerName} &c不存在!'
   receiver-lines:
     - '&a你有一个待接受的传送请求:'
     - '&a玩家 {sender} &a想传送到你这里,'
@@ -76,7 +76,6 @@ warp:
   cannot-public: '&c你不是管理员, 无法操作公有地标!'
 playertag:
   no-tag: '&c玩家 &6{playerName} &c没有称号!'
-  no-player: '&c玩家 &6{playerName} &c不存在!'
   set-success: '&a成功将玩家 &6{playerName} &a的称号设置为 &r{tag}&a!'
   reset-success: '&a玩家 &6{playerName} &a称号/名称重置成功!'
   get: '&a玩家 &6{playerName} &a的称号为: &r{tag}&a.'
@@ -84,3 +83,8 @@ schedulenotice:
   notice-lines:
     - ''
     - ''
+macro:
+  authed: '&a玩家 &6{playerName} &a的授权状态: {authed}'
+  success: '&a运行成功: &r{result}'
+  error: '&c运行失败: &r{errorMsg}'
+  no-result: '&8<无结果>'

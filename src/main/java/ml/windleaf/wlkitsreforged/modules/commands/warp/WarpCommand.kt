@@ -23,7 +23,7 @@ class WarpCommand : CommandExecutor, TabCompleter {
                     sender as Player
                     val name = args[0]
                     val uuid = Util.getUUID(sender)
-                    if (Warp.existsWarp(uuid, name, WarpType.PUBLIC)) {
+                    if (Warp.existsWarp(uuid!!, name, WarpType.PUBLIC)) {
                         teleport(sender, name, WarpType.PUBLIC, "name" to name)
                     } else if (Warp.existsWarp(uuid, name, WarpType.PRIVATE)) {
                         teleport(sender, name, WarpType.PRIVATE, "name" to name)

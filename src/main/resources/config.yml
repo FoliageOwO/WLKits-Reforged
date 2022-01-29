@@ -53,3 +53,5 @@ modules: # 所有的模块
     sound-notice: true # 提到玩家时是否播放声音提醒
   wlkitsplugin: # WLKits 命令集合
     enabled: true
+  macro: # 宏指令
+    enabled: true

@@ -25,7 +25,7 @@ class Back : Module, Listener, CommandExecutor {
     }
 
     override fun load() {
-        enabled = Util.isEnabled(name)
+        enabled = Util.isEnabled(getName())
     }
 
     override fun unload() = Unit
@@ -45,8 +45,8 @@ class Back : Module, Listener, CommandExecutor {
                 sender as Player
                 if (tpLogs.containsKey(sender)) {
                     sender.teleport(tpLogs[sender]!!)
-                    Util.send(sender, Util.getPluginMsg(name, "success"))
-                } else Util.send(sender, Util.getPluginMsg(name, "fail"))
+                    Util.send(sender, Util.getPluginMsg(getName(), "success"))
+                } else Util.send(sender, Util.getPluginMsg(getName(), "fail"))
             }
         } else Util.disabled(sender)
         return false

@@ -22,7 +22,7 @@ class DelwarpCommand : CommandExecutor, TabCompleter {
                 val uuid = if (sender is Player) Util.getUUID(sender) else ""
                 val n = "name" to name
                 val pn = "playerName" to sender.name
-                if (Warp.existsWarp(uuid, name, WarpType.PUBLIC)) {
+                if (Warp.existsWarp(uuid!!, name, WarpType.PUBLIC)) {
                     delete(sender, name, WarpType.PUBLIC, n, pn)
                 } else if (Warp.existsWarp(uuid, name, WarpType.PRIVATE)) {
                     delete(sender, name, WarpType.PRIVATE, n, pn)
@@ -71,7 +71,7 @@ class DelwarpCommand : CommandExecutor, TabCompleter {
             name as String
             if (sender is Player) {
                 if (Util.getPluginConfig("Warp", "allow-public") as Boolean || sender.isOp) warps.add(name)
-                if (tmp[name] == WarpType.PRIVATE && name.startsWith(Util.getUUID(sender))) warps.add(name.split("|")[1])
+                if (tmp[name] == WarpType.PRIVATE && name.startsWith(Util.getUUID(sender)!!)) warps.add(name.split("|")[1])
             }
         }
         return warps

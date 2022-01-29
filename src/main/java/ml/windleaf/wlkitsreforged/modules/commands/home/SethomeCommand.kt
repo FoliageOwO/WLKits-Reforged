@@ -13,7 +13,7 @@ class SethomeCommand : CommandExecutor {
         if (Home.enabled) {
             if (Util.mustPlayer(sender) && Util.needPermission(sender, "home", PermissionType.COMMAND)) {
                 val player = sender as Player
-                if (Home.homes.contains(Util.getUUID(player))) Util.send(player, Util.getPluginMsg("Home", "redo"))
+                if (Home.homes.contains(Util.getUUID(player)!!)) Util.send(player, Util.getPluginMsg("Home", "redo"))
                 else {
                     val sb = StringBuilder()
                     val location = player.location
@@ -23,7 +23,7 @@ class SethomeCommand : CommandExecutor {
                         .append(" ").append(location.z)
                     if (Util.getPluginConfig("Home", "set-more") as Boolean)
                         sb.append(" ").append(location.yaw).append(" ").append(location.pitch)
-                    Home.homes[Util.getUUID(player)] = sb.toString()
+                    Home.homes[Util.getUUID(player)!!] = sb.toString()
                     Home.homes.saveData()
                     Util.send(player, Util.getPluginMsg("Home", "success"))
                 }

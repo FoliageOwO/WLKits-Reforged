@@ -20,7 +20,7 @@ class JoinInfo : Module, Listener {
     }
 
     override fun load() {
-        enabled = Util.isEnabled(name)
+        enabled = Util.isEnabled(getName())
     }
 
     override fun unload() = Unit
@@ -32,10 +32,10 @@ class JoinInfo : Module, Listener {
             val player = e.player
             e.joinMessage = ""
             val pn = "playerName" to player.name
-            val uuid = "uuid" to Util.getUUID(player)
+            val uuid = "uuid" to Util.getUUID(player)!!
             val ip = "ip" to player.address.toString()
-            WLKits.log(Util.insert(Util.getPluginMsg(name, "console-join"), pn, uuid, ip)!!)
-            Util.broadcastPlayers(Util.insert(Util.getPluginMsg(name, "join"), pn, uuid, ip))
+            WLKits.log(Util.insert(Util.getPluginMsg(getName(), "console-join"), pn, uuid, ip)!!)
+            Util.broadcastPlayers(Util.insert(Util.getPluginMsg(getName(), "join"), pn, uuid, ip))
         }
     }
 
@@ -45,10 +45,10 @@ class JoinInfo : Module, Listener {
             val player = e.player
             e.quitMessage = ""
             val pn = "playerName" to player.name
-            val uuid = "uuid" to Util.getUUID(player)
+            val uuid = "uuid" to Util.getUUID(player)!!
             val ip = "ip" to player.address.toString()
-            WLKits.log(Util.insert(Util.getPluginMsg(name, "console-quit"), pn, uuid, ip)!!)
-            Util.broadcastPlayers(Util.insert(Util.getPluginMsg(name, "quit"), pn, uuid, ip))
+            WLKits.log(Util.insert(Util.getPluginMsg(getName(), "console-quit"), pn, uuid, ip)!!)
+            Util.broadcastPlayers(Util.insert(Util.getPluginMsg(getName(), "quit"), pn, uuid, ip))
         }
     }
 }

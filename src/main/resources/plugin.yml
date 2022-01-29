@@ -65,6 +65,9 @@ commands:
   wlkits:
     description: WLKits plugin commands
     permission: wlkits.cmd.wlkits
+  macro:
+    description: The macro system of WLKits plugin
+    permission: wlkits.cmd.macro
 
 permissions:
   wlkits.*:
@@ -87,6 +90,7 @@ permissions:
       - wlkits.cmd.warplist
       - wlkits.cmd.playertag
       - wlkits.cmd.wlkits
+      - wlkits.cmd.macro
 
   wlkits.cmd.backdeath:
     default: true
@@ -113,6 +117,9 @@ permissions:
     default: op
 
   wlkits.cmd.wlkits:
+    default: op
+
+  wlkits.cmd.macro:
     default: op
 
   wlkits.action.*:

@@ -1,26 +1,47 @@
-package ml.windleaf.wlkitsreforged.data
+package ml.windleaf.wlkitsreforged.internal
 
-import com.alibaba.fastjson.JSON
+import com.google.gson.JsonSyntaxException
 import ml.windleaf.wlkitsreforged.core.WLKits
+import ml.windleaf.wlkitsreforged.data.Data
 import ml.windleaf.wlkitsreforged.utils.FileUtil
 import ml.windleaf.wlkitsreforged.utils.Util
 import java.io.*
 
-
+/**
+ * JsonData class saves `.json` internal
+ */
 class JsonData(private val name: String) : DataFile<HashMap<String, Any?>> {
     private lateinit var json: HashMap<String, Any?>
 
     init { loadDataFromFile() }
 
     companion object {
-        inline fun <reified T> parse(str: String): T = JSON.parseObject(str, T::class.java)
+        inline fun <reified T> parse(str: String): T {
+            val cls = T::class.java
+            var result: T = WLKits.gson.fromJson("{}", cls)
+            Util.catch(JsonSyntaxException::class.java,
+                {
+                    result = WLKits.gson.fromJson(str, cls)
+                }, {
+                    result = WLKits.gson.fromJson(if (cls.isArray) "[]" else "{}", cls)
+                }
+            )
+            return result
+        }
+
+        fun toJson(obj: Any): String {
+            WLKits.debug("Converting object ${obj::class.java}")
+            val json = if (obj is Data) obj.toJsonString() else WLKits.gson.toJson(obj)
+            WLKits.debug("Result json: $json")
+            return json
+        }
     }
 
-    override fun toString(): String = JSON.toJSONString(json)
+    override fun toString(): String = toJson(this)
 
     override fun getName() = name
     override fun getType() = DataType.JSON
-    override fun saveData() = FileUtil.saveData(toString(), path)
+    override fun saveData() = FileUtil.saveData(toString(), super.getPath())
     override fun getData() = json
     override fun setData(target: HashMap<String, Any?>) {
         json = target
@@ -41,10 +62,11 @@ class JsonData(private val name: String) : DataFile<HashMap<String, Any?>> {
 
     override fun loadDataFromFile() {
         json = parse(readJsonFile())
-        WLKits.debug("Loaded JSON data: $json")
+        WLKits.debug("Loaded JSON internal: $json")
     }
 
     private fun readJsonFile(): String {
+        val path = super.getPath()
         return if (File(path).exists()) {
             var jsonStr: String
             Util.catch {

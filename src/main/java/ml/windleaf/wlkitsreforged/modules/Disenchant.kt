@@ -34,8 +34,8 @@ class Disenchant : Module, Listener {
     }
 
     override fun load() {
-        enabled = Util.isEnabled(name)
-        gui = GuiUtil(Util.getPluginMsg(name, "menu-display-name"), 9)
+        enabled = Util.isEnabled(getName())
+        gui = GuiUtil(Util.getPluginMsg(getName(), "menu-display-name"), 9)
         registerRecipe()
     }
 
@@ -46,14 +46,14 @@ class Disenchant : Module, Listener {
     private fun disenchant(player: Player, offhand: ItemStack) {
         val book = ItemStack(Material.ENCHANTED_BOOK)
         val meta = book.itemMeta as EnchantmentStorageMeta?
-        if (meta == null) Util.send(player, Util.getPluginMsg(name, "fail"))
+        if (meta == null) Util.send(player, Util.getPluginMsg(getName(), "fail"))
         else {
             val enchants = offhand.enchantments
             for ((key, value) in enchants) meta.addStoredEnchant(key!!, value!!, true)
-            meta.lore = listOf(Util.insert(Util.translateColorCode(Util.getPluginMsg(name, "lore")), "playerName" to player.name))
+            meta.lore = listOf(Util.insert(Util.translateColorCode(Util.getPluginMsg(getName(), "lore")), "playerName" to player.name))
             book.itemMeta = meta
             player.inventory.setItemInMainHand(book)
-            Util.send(player, Util.insert(Util.getPluginMsg(name, "success"), "item" to player.inventory.itemInOffHand.type.name))
+            Util.send(player, Util.insert(Util.getPluginMsg(getName(), "success"), "item" to player.inventory.itemInOffHand.type.name))
             // 抹除武器附魔
             offhand.itemMeta?.enchants?.forEach { offhand.removeEnchantment(it.key) }
             player.updateInventory()
@@ -65,7 +65,7 @@ class Disenchant : Module, Listener {
         val confirmMeta: ItemMeta = confirm.itemMeta!!
         confirmMeta.setDisplayName(Util.translateColorCode(Util.getPluginMsg("main", "confirm")))
         val confirmLore = java.util.ArrayList<String>()
-        confirmLore.add(Util.translateColorCode(Util.getPluginMsg(name, "click-to-confirm"))!!)
+        confirmLore.add(Util.translateColorCode(Util.getPluginMsg(getName(), "click-to-confirm"))!!)
         confirmMeta.lore = confirmLore
         confirm.itemMeta = confirmMeta
 
@@ -73,15 +73,15 @@ class Disenchant : Module, Listener {
         val cancelMeta: ItemMeta = cancel.itemMeta!!
         cancelMeta.setDisplayName(Util.translateColorCode(Util.getPluginMsg("main", "cancel")))
         val cancelLore = java.util.ArrayList<String>()
-        cancelLore.add(Util.translateColorCode(Util.getPluginMsg(name, "click-to-cancel"))!!)
+        cancelLore.add(Util.translateColorCode(Util.getPluginMsg(getName(), "click-to-cancel"))!!)
         cancelMeta.lore = cancelLore
         cancel.itemMeta = cancelMeta
 
         disenchantBook = ItemStack(Material.ENCHANTED_BOOK)
         val bookMeta: ItemMeta = disenchantBook.itemMeta!!
-        bookMeta.setDisplayName(Util.translateColorCode(Util.getPluginMsg(name, "book-display-name")))
+        bookMeta.setDisplayName(Util.translateColorCode(Util.getPluginMsg(getName(), "book-display-name")))
         val bookLore = java.util.ArrayList<String>()
-        bookLore.add(Util.translateColorCode(Util.getPluginMsg(name, "book-lore"))!!)
+        bookLore.add(Util.translateColorCode(Util.getPluginMsg(getName(), "book-lore"))!!)
         bookMeta.lore = bookLore
         disenchantBook.itemMeta = bookMeta
 
@@ -107,7 +107,7 @@ class Disenchant : Module, Listener {
                     // 打开 GUI 确认操作
                     loadInventory(player)
                     gui.openGui(player)
-                } else Util.send(player, Util.translateColorCode(Util.getPluginMsg(name, "no-enchantment"))!!)
+                } else Util.send(player, Util.translateColorCode(Util.getPluginMsg(getName(), "no-enchantment"))!!)
             }
         }
     }

@@ -1,10 +1,13 @@
-package ml.windleaf.wlkitsreforged.data
+package ml.windleaf.wlkitsreforged.internal
 
 import ml.windleaf.wlkitsreforged.utils.FileUtil
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.configuration.file.YamlConfiguration
 import kotlin.collections.ArrayList
 
+/**
+ * YamlData class saves `.yml` internal
+ */
 class YamlData(private val name: String) : DataFile<YamlConfiguration> {
     private lateinit var yaml: YamlConfiguration
 
@@ -14,7 +17,7 @@ class YamlData(private val name: String) : DataFile<YamlConfiguration> {
 
     override fun getName() = name
     override fun getType() = DataType.YAML
-    override fun saveData() = yaml.save(file)
+    override fun saveData() = yaml.save(super.getFile())
     override fun getData() = yaml
     override fun setData(target: YamlConfiguration) {
         yaml = target
@@ -36,8 +39,8 @@ class YamlData(private val name: String) : DataFile<YamlConfiguration> {
     override fun loadDataFromFile() {
         val d = YamlConfiguration()
         yaml = Util.catch {
-            FileUtil.makeFile(path)
-            d.load(file)
+            FileUtil.makeFile(super.getPath())
+            d.load(super.getFile())
             d
         }!!
     }

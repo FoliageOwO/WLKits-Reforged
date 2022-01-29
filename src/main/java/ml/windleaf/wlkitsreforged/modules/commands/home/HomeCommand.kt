@@ -14,8 +14,8 @@ class HomeCommand : CommandExecutor {
         if (Home.enabled) {
             if (Util.mustPlayer(sender) && Util.needPermission(sender, "home", PermissionType.COMMAND)) {
                 val player = sender as Player
-                if (Home.homes.contains(Util.getUUID(player))) {
-                    val locationString = Home.homes[Util.getUUID(player)]!! as String
+                if (Home.homes.contains(Util.getUUID(player)!!)) {
+                    val locationString = Home.homes[Util.getUUID(player)!!]!! as String
                     val array = locationString.split("\\s+".toRegex()).toTypedArray()
                     val world = Util.getWorldByName(array[0])
                     val x = array[1].toDouble()

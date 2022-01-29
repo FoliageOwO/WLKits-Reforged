@@ -48,7 +48,7 @@ class SetwarpCommand : CommandExecutor {
 
     private fun set(sender: Player, name: String, type: WarpType, vararg pairs: Pair<String, String>) {
         val uuid = Util.getUUID(sender)
-        if (Warp.existsWarp(uuid, name, type)) Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "already-exists"), *pairs))
+        if (Warp.existsWarp(uuid!!, name, type)) Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "already-exists"), *pairs))
         else {
             Warp.list.add(if (type == WarpType.PRIVATE) "$uuid|$name" else name)
             Warp.update()

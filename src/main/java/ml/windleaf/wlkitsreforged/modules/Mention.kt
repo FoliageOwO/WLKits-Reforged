@@ -29,13 +29,13 @@ class Mention : Module, Listener {
     }
 
     override fun load() {
-        enabled = Util.isEnabled(name)
-        prefix = Util.getPluginConfig(name, "prefix") as String
-        styleTo = Util.translateColorCode(Util.getPluginConfig(name, "to-style") as String)!!
-        styleOther = Util.translateColorCode(Util.getPluginConfig(name, "other-style") as String)!!
-        styleAll = Util.translateColorCode(Util.getPluginConfig(name, "all-style") as String)!!
-        allMsg = Util.insert(Util.getPluginConfig(name, "all-msg") as String, "prefix" to prefix)!!
-        soundNotice = Util.getPluginConfig(name, "sound-notice") as Boolean
+        enabled = Util.isEnabled(getName())
+        prefix = Util.getPluginConfig(getName(), "prefix") as String
+        styleTo = Util.translateColorCode(Util.getPluginConfig(getName(), "to-style") as String)!!
+        styleOther = Util.translateColorCode(Util.getPluginConfig(getName(), "other-style") as String)!!
+        styleAll = Util.translateColorCode(Util.getPluginConfig(getName(), "all-style") as String)!!
+        allMsg = Util.insert(Util.getPluginConfig(getName(), "all-msg") as String, "prefix" to prefix)!!
+        soundNotice = Util.getPluginConfig(getName(), "sound-notice") as Boolean
     }
 
     override fun unload() = Unit
@@ -51,9 +51,9 @@ class Mention : Module, Listener {
                 val pref = "<${s.displayName}> "
                 val end = Util.translateColorCode("&r")
                 Bukkit.getOnlinePlayers().forEach {
-                    if (Util.getPluginConfig(name, "all") as Boolean
+                    if (Util.getPluginConfig(getName(), "all") as Boolean
                         && msg.contains(allMsg)
-                        && s.isOp == Util.getPluginConfig(name, "all-op") as Boolean) {
+                        && s.isOp == Util.getPluginConfig(getName(), "all-op") as Boolean) {
                         it.sendMessage(pref + msg.replace(allMsg, "$styleAll$allMsg$end"))
                         playSound(it)
                     } else {

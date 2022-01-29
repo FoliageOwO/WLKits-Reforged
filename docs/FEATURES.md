@@ -34,7 +34,7 @@
 允许玩家使用命令 `/backdeath`(简写 `/backd` 或 `/bd`) 返回上一个死亡点
 
 ### Disenchant
-*[permission: wlkits.action.disenchant]*
+*[permission: wlkits.playerAction.disenchant]*
 
 允许玩家将一个物品上的附魔转移到附魔书上
 
@@ -69,7 +69,7 @@
 循环在服务器中广播公告
 
 ### SkipNight
-*[permission: wlkits.action.skipnight]*
+*[permission: wlkits.playerAction.skipnight]*
 
 使用睡觉玩家在整个玩家数量所占百分比计算跳过夜晚需要玩家的数量, 如
 
@@ -155,7 +155,7 @@
 | ---------- | ------ | ------- | ------- |
 | token      | String | Token   | *       |
 | playerName | String | 玩家名称 | *       |
-| action     | String | 操作类型 | kick, kill, ban, pardon, clear, tp, msg (见 [Action.kt](https://github.com/WindLeaf233/WLKits-Reforged/blob/master/src/main/java/ml/windleaf/wlkitsreforged/plugins/httpapi/handlers/player/Action.kt)) |
+| playerAction     | String | 操作类型 | kick, kill, ban, pardon, clear, tp, msg (见 [PlayerAction.kt](https://github.com/WindLeaf233/WLKits-Reforged/blob/master/src/main/java/ml/windleaf/wlkitsreforged/plugins/httpapi/handlers/player/Action.kt)) |
 
 - `/api/server/info`
 

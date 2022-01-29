@@ -13,7 +13,7 @@ class PluginManager {
             Disenchant(),
             Home(), HttpApi(),
             JoinInfo(),
-            Mention(),
+            Macro(), Mention(),
             PlayerTag(),
             ScheduleNotice(), SkipNight(), Suicide(),
             Tpa(),
@@ -23,22 +23,28 @@ class PluginManager {
         private val loadedPlugins = arrayListOf<Module>()
 
         fun loadStartupPlugins(registers: Boolean = true) = pluginList.forEach {
-            if (it.type == LoadType.ON_STARTUP && it !in loadedPlugins) {
-                if (registers) it.registers()
-                it.load()
-                loadedPlugins.add(it)
+            if (it.getType() == LoadType.ON_STARTUP && it !in loadedPlugins) {
+                reloadEnabled()
+                if (it.getEnabled()) {
+                    if (registers) it.registers()
+                    it.load()
+                    loadedPlugins.add(it)
+                }
             }
         }
 
         fun loadLoadWorldPlugins(registers: Boolean = true) = pluginList.forEach {
-            if (it.type == LoadType.ON_LOAD_WORLD && it !in loadedPlugins) {
-                if (registers) it.registers()
-                it.load()
-                loadedPlugins.add(it)
+            if (it.getType() == LoadType.ON_LOAD_WORLD && it !in loadedPlugins) {
+                reloadEnabled()
+                if (it.getEnabled()) {
+                    if (registers) it.registers()
+                    it.load()
+                    loadedPlugins.add(it)
+                }
             }
         }
 
-        fun reloadEnabled() = pluginList.forEach { it.enabled = Util.isEnabled(it.name) }
+        fun reloadEnabled() = pluginList.forEach { it.setEnabled(Util.isEnabled(it.getName())) }
 
         fun reload() {
             WLKits.reload()

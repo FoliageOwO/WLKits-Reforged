@@ -1,33 +1,34 @@
-package ml.windleaf.wlkitsreforged.core;
+package ml.windleaf.wlkitsreforged.core
 
-import ml.windleaf.wlkitsreforged.core.enums.LoadType;
+import ml.windleaf.wlkitsreforged.core.enums.LoadType
+import org.jetbrains.annotations.NotNull
 
 /**
  * The module interface
  *
  * @author WindLeaf_qwq
  */
-public interface Module {
+interface Module {
     /**
      * Gets the name of module
      *
      * @return the module name
      */
-    String getName();
+    @NotNull fun getName(): String
 
     /**
      * Gets if this module is enabled
      *
-     * @return true if this module is enabled
+     * @return `true` if this module is enabled
      */
-    Boolean getEnabled();
+    @NotNull fun getEnabled(): Boolean
 
     /**
      * Sets enabled state of module
      *
      * @param target the enabled state
      */
-    void setEnabled(Boolean target);
+    fun setEnabled(@NotNull target: Boolean)
 
     /**
      * Gets the load type of module
@@ -35,20 +36,20 @@ public interface Module {
      * @return the load type of module
      * @see LoadType
      */
-    LoadType getType();
+    @NotNull fun getType(): LoadType
 
     /**
      * Loads the module
      */
-    void load();
+    fun load()
 
     /**
      * Unloads the module
      */
-    void unload();
+    fun unload()
 
     /**
      * Registers all events the module need
      */
-    void registers();
+    fun registers()
 }

@@ -24,7 +24,7 @@ class Suicide : Module, Listener, CommandExecutor {
     }
 
     override fun load() {
-        enabled = Util.isEnabled(name)
+        enabled = Util.isEnabled(getName())
     }
 
     override fun unload() = Unit
@@ -38,9 +38,9 @@ class Suicide : Module, Listener, CommandExecutor {
         if (enabled && Util.hasPermission(e.entity, "suicide", PermissionType.ACTION)) {
             val player = e.entity
             if (player in suicideList) {
-                if (!(Util.getPluginConfig(name, "use-vanilla") as Boolean)) {
+                if (!(Util.getPluginConfig(getName(), "use-vanilla") as Boolean)) {
                     e.deathMessage = ""
-                    Util.broadcastPlayers(Util.insert(Util.getPluginMsg(name, "msg"), "playerName" to player.name))
+                    Util.broadcastPlayers(Util.insert(Util.getPluginMsg(getName(), "msg"), "playerName" to player.name))
                 }
                 suicideList.remove(player)
             }

@@ -18,12 +18,22 @@ class WLKitsPlugin : Module, CommandExecutor, TabCompleter {
     override fun getEnabled() = enabled
     override fun getType() = LoadType.ON_STARTUP
 
+    companion object {
+        val info = arrayListOf(
+            "&a${WLKits.name} &fv${WLKits.version} &arunning on bukkit &c${Bukkit.getBukkitVersion()} &6[using Reflector: ${WLKits.reflector.getNMS()}]",
+            "&agithub: &ehttps://github.com/WindLeaf233/WLKits-Reforged",
+            /*"&aplugins: &b(${PluginManager.pluginList.size}) [${
+                PluginManager.pluginList.stream().map { Util.parseBooleanColor(it.enabled) }.collect(Collectors.joining(", "))
+            }]",*/
+            "&adebugMode: ${if (WLKits.debug) "&aTRUE" else "&cFALSE"}")
+    }
+
     override fun setEnabled(target: Boolean) {
         enabled = target
     }
 
     override fun load() {
-        enabled = Util.isEnabled(name)
+        enabled = Util.isEnabled(getName())
     }
 
     override fun unload() = Unit
@@ -48,18 +58,10 @@ class WLKitsPlugin : Module, CommandExecutor, TabCompleter {
                                 val n = args[1]
                                 val plugin = Util.getPluginByName(n)
                                 if (plugin == null) Util.send(sender, Util.insert(Util.getPluginMsg("main", "no-plugin"), "pluginName" to n))
-                                else Util.send(sender, Util.insert(Util.getPluginMsg("main", "status"), "pluginName" to n, "status" to if (plugin.enabled) "&aTRUE" else "&cFALSE"))
+                                else Util.send(sender, Util.insert(Util.getPluginMsg("main", "status"), "pluginName" to n, "status" to if (plugin.getEnabled()) "&aTRUE" else "&cFALSE"))
                             }
                         }
-                        "info" -> {
-                            Util.send(sender,
-                                "&a${WLKits.name} &fv${WLKits.version} &arunning on bukkit &c${Bukkit.getBukkitVersion()} &6[using Reflector: ${WLKits.reflector.nms}]",
-                                "&agithub: &ehttps://github.com/WindLeaf233/WLKits-Reforged",
-                                "&aplugins: &b(${PluginManager.pluginList.size}) [${
-                                    PluginManager.pluginList.stream().map { if (it.enabled) "&a${it.name}&r" else "&c${it.name}&r" }.collect(Collectors.joining(", "))
-                                }]",
-                                "&adebugMode: ${if (WLKits.debug) "&aTRUE" else "&cFALSE"}")
-                        }
+                        "info" -> info.forEach { Util.send(sender, it) }
                         else -> Util.invalidArgs(sender)
                     }
                 }
@@ -71,7 +73,7 @@ class WLKitsPlugin : Module, CommandExecutor, TabCompleter {
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): List<String> {
         val subCommands = arrayOf("help", "reload", "status", "info")
         if (args.size > 1) return PluginManager.pluginList.stream().map {
-            it.name
+            it.getName()
         }.collect(Collectors.toList()).filter { s: String -> s.startsWith(args[1]) }
         else if (args.isEmpty()) return listOf(*subCommands).filter { s: String -> s.startsWith(args[0]) }
         else if (args.size > 2) return emptyList()

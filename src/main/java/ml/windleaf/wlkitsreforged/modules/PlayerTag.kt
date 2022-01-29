@@ -3,7 +3,7 @@ package ml.windleaf.wlkitsreforged.modules
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
 import ml.windleaf.wlkitsreforged.core.enums.PermissionType
 import ml.windleaf.wlkitsreforged.core.Module
-import ml.windleaf.wlkitsreforged.data.JsonData
+import ml.windleaf.wlkitsreforged.internal.JsonData
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
@@ -35,7 +35,7 @@ class PlayerTag : Module, Listener, CommandExecutor, TabCompleter {
     }
 
     override fun load() {
-        enabled = Util.isEnabled(name)
+        enabled = Util.isEnabled(getName())
         scoreboard = Bukkit.getScoreboardManager()?.mainScoreboard!!
         Companion.enabled = enabled
         Bukkit.getOnlinePlayers().forEach { setDisplayName(it) }
@@ -65,13 +65,13 @@ class PlayerTag : Module, Listener, CommandExecutor, TabCompleter {
                             if (player == null) noPlayer(sender, "playerName" to n, "tag" to tag)
                             else {
                                 val coloredTag = Util.translateColorCode("$tag&r")!!
-                                val formatted = Util.insert(Util.getPluginConfig(name, "format") as String, "playerName" to n, "tag" to coloredTag)!!
-                                playerTags[Util.getUUID(player)] = coloredTag
+                                val formatted = Util.insert(Util.getPluginConfig(getName(), "format") as String, "playerName" to n, "tag" to coloredTag)!!
+                                playerTags[Util.getUUID(player)!!] = coloredTag
                                 val displayName = formatted + player.name
                                 player.setDisplayName(displayName)
                                 setNameTag(player, formatted)
                                 playerTags.saveData()
-                                Util.send(sender, Util.insert(Util.getPluginMsg(name, "set-success"), "playerName" to n, "tag" to coloredTag))
+                                Util.send(sender, Util.insert(Util.getPluginMsg(getName(), "set-success"), "playerName" to n, "tag" to coloredTag))
                             }
                         }
                     }
@@ -82,10 +82,10 @@ class PlayerTag : Module, Listener, CommandExecutor, TabCompleter {
                             val player = Bukkit.getPlayer(n)
                             if (player == null) noPlayer(sender, "playerName" to n)
                             else {
-                                when (val tag = playerTags[Util.getUUID(player)] as String?) {
+                                when (val tag = playerTags[Util.getUUID(player)!!] as String?) {
                                     null -> noTag(sender, "playerName" to n)
                                     "" -> noTag(sender, "playerName" to n)
-                                    else -> Util.send(sender, Util.insert(Util.getPluginMsg(name, "get"), "playerName" to n, "tag" to tag))
+                                    else -> Util.send(sender, Util.insert(Util.getPluginMsg(getName(), "get"), "playerName" to n, "tag" to tag))
                                 }
                             }
                         }
@@ -97,11 +97,11 @@ class PlayerTag : Module, Listener, CommandExecutor, TabCompleter {
                             val player = Bukkit.getPlayer(n)
                             if (player == null) noPlayer(sender, "playerName" to n)
                             else {
-                                playerTags.remove(Util.getUUID(player))
+                                playerTags.remove(Util.getUUID(player)!!)
                                 player.setDisplayName(player.name)
                                 resetNameTag(player)
                                 playerTags.saveData()
-                                Util.send(sender, Util.insert(Util.getPluginMsg(name, "reset-success"), "playerName" to n))
+                                Util.send(sender, Util.insert(Util.getPluginMsg(getName(), "reset-success"), "playerName" to n))
                             }
                         }
                     }
@@ -112,8 +112,8 @@ class PlayerTag : Module, Listener, CommandExecutor, TabCompleter {
         return false
     }
 
-    private fun noTag(sender: CommandSender, vararg pairs: Pair<String, String>) = Util.send(sender, Util.insert(Util.getPluginMsg(name, "no-tag"), *pairs))
-    private fun noPlayer(sender: CommandSender, vararg pairs: Pair<String, String>) = Util.send(sender, Util.insert(Util.getPluginMsg(name, "no-player"), *pairs))
+    private fun noTag(sender: CommandSender, vararg pairs: Pair<String, String>) = Util.send(sender, Util.insert(Util.getPluginMsg(getName(), "no-tag"), *pairs))
+    private fun noPlayer(sender: CommandSender, vararg pairs: Pair<String, String>) = Util.send(sender, Util.insert(Util.getPluginMsg("main", "player-not-found"), *pairs))
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<String?>): List<String> {
         val subCommands = arrayOf("help", "set", "get", "reset")
@@ -134,10 +134,10 @@ class PlayerTag : Module, Listener, CommandExecutor, TabCompleter {
     }
 
     private fun setDisplayName(p: Player) {
-        val uuid = Util.getUUID(p)
+        val uuid = Util.getUUID(p)!!
         if (playerTags.contains(uuid)) {
             val tag = playerTags[uuid]!! as String
-            val displayName = Util.insert(Util.getPluginConfig(name, "format") as String, "tag" to tag)!! + p.name
+            val displayName = Util.insert(Util.getPluginConfig(getName(), "format") as String, "tag" to tag)!! + p.name
             p.setDisplayName(displayName)
         }
     }
