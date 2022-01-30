@@ -13,6 +13,7 @@ class V1_12_R1: Reflector {
     fun loadStartupPlugin(e: WorldLoadEvent) {
         ModuleManager.registerCommands()
         ModuleManager.loadModules(LoadType.ON_STARTUP)
+        ModuleManager.loadModules(LoadType.ON_LOAD_WORLD)
         ModuleManager.refreshEnabled()
     }
 }

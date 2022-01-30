@@ -85,13 +85,16 @@ class Disenchant : Module, Listener {
         disenchantBook.itemMeta = bookMeta
 
         try {
+            WLKits.debug("registering disenchant book")
             val disenchantBookRecipe =
                 ShapedRecipe(NamespacedKey(WLKits.instance, "disenchantmentbook"), disenchantBook)
             disenchantBookRecipe.shape("###", "#@#", "###")
             disenchantBookRecipe.setIngredient('#', Material.GLOWSTONE_DUST)
             disenchantBookRecipe.setIngredient('@', Material.BOOK)
             Bukkit.addRecipe(disenchantBookRecipe)
-        } catch (ignored: IllegalStateException) { }
+        } catch (e: IllegalStateException) {
+            WLKits.debug("disenchant catch exception: $e")
+        }
     }
 
     @EventHandler

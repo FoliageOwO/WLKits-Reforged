@@ -38,7 +38,7 @@ object ModuleManager {
      *
      * @see Util.getClassesWithSuperclass
      */
-    val tabCompleters = Util.getClassesWithSuperclass<ModuleTabCompleter>(PACKAGE)
+    private val tabCompleters = Util.getClassesWithSuperclass<ModuleTabCompleter>(PACKAGE)
 
     /**
      * The list of all module instances
@@ -93,6 +93,7 @@ object ModuleManager {
                 Util.catch(Exception::class.java,
                     {
                         refreshEnabled()
+                        WLKits.debug("loading module: ${it.getName()} [enabled=${it.getEnabled()},isListener=${it is Listener}]")
                         if (it.getEnabled()) {
                             if (it is Listener && registers) Util.registerEvent(it)
                             it.load()
@@ -114,7 +115,6 @@ object ModuleManager {
      * Registers all commands into [Commanding] and tab completers
      *
      * @see Commanding
-     * @see Util.registerTabCompleter
      */
     fun registerCommands() {
         commandInstances.forEach {
