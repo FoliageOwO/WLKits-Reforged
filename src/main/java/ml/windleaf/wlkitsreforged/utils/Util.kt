@@ -139,7 +139,7 @@ object Util {
      *
      * @return the random uuid string
      */
-    fun generateRandomToken() = UUID.randomUUID().toString().replace('-', ' ')
+    fun generateRandomToken() = UUID.randomUUID().toString().replace("-", "")
 
     /**
      * Sends the message to all online players
