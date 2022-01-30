@@ -8,7 +8,7 @@ import ml.windleaf.wlkitsreforged.modules.macro.MacroInfo
 class WLKitsInfoMacro : MacroEntire<String> {
     override fun execute(): String {
         val sb = StringBuilder()
-        WLKitsPlugin.info.forEach { sb.append(it).append("\n") }
+        WLKitsPlugin.getInfo().forEach { sb.append(it).append("\n") }
         return sb.toString().trim()
     }
 }

@@ -1,8 +1,11 @@
 package ml.windleaf.wlkitsreforged.modules
 
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
-import ml.windleaf.wlkitsreforged.core.Module
+import ml.windleaf.wlkitsreforged.core.module.Module
 import ml.windleaf.wlkitsreforged.core.WLKits
+import ml.windleaf.wlkitsreforged.core.annotations.ModuleInfo
+import ml.windleaf.wlkitsreforged.core.annotations.Permission
+import ml.windleaf.wlkitsreforged.core.enums.PermissionType
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Bukkit
 import org.bukkit.Sound
@@ -12,11 +15,10 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
 import kotlin.properties.Delegates
 
+@ModuleInfo(description = "Mentions a player when they are mentioned in chat.", type = LoadType.ON_STARTUP)
 class Mention : Module, Listener {
     private var enabled = false
-    override fun getName() = "Mention"
     override fun getEnabled() = enabled
-    override fun getType() = LoadType.ON_STARTUP
     private lateinit var prefix: String
     private lateinit var styleTo: String
     private lateinit var styleOther: String
@@ -38,9 +40,6 @@ class Mention : Module, Listener {
         soundNotice = Util.getPluginConfig(getName(), "sound-notice") as Boolean
     }
 
-    override fun unload() = Unit
-    override fun registers() = Util.registerEvent(this)
-
     @EventHandler
     fun event(e: AsyncPlayerChatEvent) {
         if (enabled) {
@@ -50,25 +49,27 @@ class Mention : Module, Listener {
                 var msg = e.message
                 val pref = "<${s.displayName}> "
                 val end = Util.translateColorCode("&r")
-                Bukkit.getOnlinePlayers().forEach {
-                    if (Util.getPluginConfig(getName(), "all") as Boolean
-                        && msg.contains(allMsg)
-                        && s.isOp == Util.getPluginConfig(getName(), "all-op") as Boolean) {
-                        it.sendMessage(pref + msg.replace(allMsg, "$styleAll$allMsg$end"))
-                        playSound(it)
-                    } else {
-                        val r = "$prefix${it.name}"
-                        for (p in otherPlayers(it)) {
-                            val x = "$prefix${p.name}"
-                            msg = msg.replace(x, "$styleOther$x$end")
-                        }
-                        if (msg.contains(r)) {
-                            it.sendMessage(pref + msg.replace(r, "$styleTo$r$end"))
+                if (Util.hasPermission(s, Permission("wlkits.action.mention", PermissionType.ACTION))) {
+                    Bukkit.getOnlinePlayers().forEach {
+                        if (Util.getPluginConfig(getName(), "all") as Boolean
+                            && msg.contains(allMsg)
+                            && s.isOp == Util.getPluginConfig(getName(), "all-op") as Boolean) {
+                            it.sendMessage(pref + msg.replace(allMsg, "$styleAll$allMsg$end"))
                             playSound(it)
+                        } else {
+                            val r = "$prefix${it.name}"
+                            for (p in otherPlayers(it)) {
+                                val x = "$prefix${p.name}"
+                                msg = msg.replace(x, "$styleOther$x$end")
+                            }
+                            if (msg.contains(r)) {
+                                it.sendMessage(pref + msg.replace(r, "$styleTo$r$end"))
+                                playSound(it)
+                            } else it.sendMessage(pref + msg)
                         }
-                        else it.sendMessage(pref + msg)
                     }
-                }
+                } else Bukkit.getOnlinePlayers().forEach { it.sendMessage(pref + msg) }
+                Bukkit.getConsoleSender().sendMessage(pref + msg)
             }
         }
     }

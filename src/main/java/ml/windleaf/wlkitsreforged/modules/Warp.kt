@@ -2,19 +2,18 @@ package ml.windleaf.wlkitsreforged.modules
 
 import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
-import ml.windleaf.wlkitsreforged.core.Module
+import ml.windleaf.wlkitsreforged.core.annotations.ModuleInfo
+import ml.windleaf.wlkitsreforged.core.module.Module
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
 import ml.windleaf.wlkitsreforged.internal.JsonData
-import ml.windleaf.wlkitsreforged.modules.commands.warp.*
 import ml.windleaf.wlkitsreforged.modules.enums.WarpType
 import ml.windleaf.wlkitsreforged.utils.Util
 import kotlin.properties.Delegates
 
+@ModuleInfo(description = "Allows players to set warps that other players can teleport to", type = LoadType.ON_STARTUP)
 class Warp : Module {
     private var enabled = false
-    override fun getName() = "Warp"
     override fun getEnabled() = enabled
-    override fun getType() = LoadType.ON_STARTUP
     companion object {
         val warps = JsonData("warps")
         var enabled by Delegates.notNull<Boolean>()
@@ -85,14 +84,5 @@ class Warp : Module {
         list = warps.getAs("list")!!
         publics = warps.getAs("public")!!
         privates = warps.getAs("private")!!
-    }
-
-    override fun unload() = Unit
-    override fun registers() {
-        Util.registerCommand("setwarp", SetwarpCommand())
-        Util.registerCommand("warp", WarpCommand())
-        Util.registerCommand("delwarp", DelwarpCommand())
-        Util.registerCommand("warphelp", WarphelpCommand())
-        Util.registerCommand("warplist", WarplistCommand())
     }
 }

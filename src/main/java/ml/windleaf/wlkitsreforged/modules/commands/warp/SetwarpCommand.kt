@@ -1,49 +1,49 @@
 package ml.windleaf.wlkitsreforged.modules.commands.warp
 
 import com.alibaba.fastjson.JSONObject
-import ml.windleaf.wlkitsreforged.core.enums.PermissionType
+import ml.windleaf.wlkitsreforged.core.annotations.CommandInfo
+import ml.windleaf.wlkitsreforged.core.annotations.MustPlayer
+import ml.windleaf.wlkitsreforged.core.annotations.Permission
+import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleCommand
 import ml.windleaf.wlkitsreforged.modules.Warp
 import ml.windleaf.wlkitsreforged.modules.enums.WarpType
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.io.IOException
 
-class SetwarpCommand : CommandExecutor {
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
-        if (Warp.enabled) {
-            if (Util.mustPlayer(sender) && Util.needPermission(sender, "warp", PermissionType.COMMAND)) {
-                if (args.isEmpty() || args.size < 2) Util.invalidArgs(sender)
+@CommandInfo(cmd = "setwarp", description = "Set a warp", belongTo = Warp::class)
+class SetwarpCommand : ModuleCommand {
+    @MustPlayer
+    @Permission("wlkits.cmd.warp")
+    override fun onCommand(sender: CommandSender, args: Array<String>) {
+        if (args.isEmpty() || args.size < 2) Util.invalidArgs(sender)
+        else {
+            if (args[0].length > 15) Util.send(sender, Util.getPluginMsg("Warp", "max-string"))
+            else {
+                sender as Player
+                var type: Any = args[0]
+                val name = args[1]
+                val types = HashMap<String, WarpType>()
+                for (t: WarpType in WarpType.values()) types[t.string] = t
+                val n = "name" to name
+                val t = "type" to type.toString()
+                if (type !in types.keys) Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "unknown-type"), n, t))
                 else {
-                    if (args[0].length > 15) Util.send(sender, Util.getPluginMsg("Warp", "max-string"))
-                    else {
-                        sender as Player
-                        var type: Any = args[0]
-                        val name = args[1]
-                        val types = HashMap<String, WarpType>()
-                        for (t: WarpType in WarpType.values()) types[t.string] = t
-                        val n = "name" to name
-                        val t = "type" to type.toString()
-                        if (type !in types.keys) Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "unknown-type"), n, t))
-                        else {
-                            type = types[type]!!
-                            when (type) {
-                                WarpType.PUBLIC -> {
-                                    if (sender.isOp) set(sender, name, type, n, t)
-                                    else if (!sender.isOp && Util.getPluginConfig("Warp", "allow-public") as Boolean) {
-                                        set(sender, name, type, n, t)
-                                    } else Util.send(sender, Util.getPluginMsg("Warp", "cannot-public"))
-                                }
-                                WarpType.PRIVATE -> set(sender, name, type, n, t)
-                            }
+                    type = types[type]!!
+                    when (type) {
+                        WarpType.PUBLIC -> {
+                            if (sender.isOp) set(sender, name, type, n, t)
+                            else if (!sender.isOp && Util.getPluginConfig("Warp", "allow-public") as Boolean) {
+                                set(sender, name, type, n, t)
+                            } else Util.send(sender, Util.getPluginMsg("Warp", "cannot-public"))
                         }
+                        WarpType.PRIVATE -> set(sender, name, type, n, t)
                     }
                 }
             }
-        } else Util.disabled(sender)
-        return true
+        }
     }
 
     private fun set(sender: Player, name: String, type: WarpType, vararg pairs: Pair<String, String>) {

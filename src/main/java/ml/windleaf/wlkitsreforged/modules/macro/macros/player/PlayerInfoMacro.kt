@@ -1,6 +1,6 @@
 package ml.windleaf.wlkitsreforged.modules.macro.macros.player
 
-import ml.windleaf.wlkitsreforged.apis.PlayerInType
+import ml.windleaf.wlkitsreforged.internal.PlayerInType
 import ml.windleaf.wlkitsreforged.core.enums.PlayerType
 import ml.windleaf.wlkitsreforged.data.OfflinePlayerData
 import ml.windleaf.wlkitsreforged.data.OnlinePlayerData

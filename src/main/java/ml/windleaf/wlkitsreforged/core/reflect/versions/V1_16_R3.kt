@@ -1,6 +1,7 @@
 package ml.windleaf.wlkitsreforged.core.reflect.versions
 
-import ml.windleaf.wlkitsreforged.core.PluginManager
+import ml.windleaf.wlkitsreforged.core.enums.LoadType
+import ml.windleaf.wlkitsreforged.core.module.ModuleManager
 import ml.windleaf.wlkitsreforged.core.reflect.Reflector
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Bukkit
@@ -15,10 +16,11 @@ class V1_16_R3 : Reflector {
         fun loadStartupPlugin(e: ServerLoadEvent) {
             when (e.type) {
                 ServerLoadEvent.LoadType.STARTUP -> {
-                    PluginManager.loadStartupPlugins()
-                    PluginManager.reloadEnabled()
+                    ModuleManager.registerCommands()
+                    ModuleManager.loadModules(LoadType.ON_STARTUP)
+                    ModuleManager.refreshEnabled()
                 }
-                ServerLoadEvent.LoadType.RELOAD -> PluginManager.reload()
+                ServerLoadEvent.LoadType.RELOAD -> ModuleManager.reload()
             }
         }
     }
@@ -26,7 +28,7 @@ class V1_16_R3 : Reflector {
     override fun sendConsole(message: String) = Bukkit.getConsoleSender().sendMessage(Util.translateColorCode(message)!!)
 
     @EventHandler
-    override fun loadWorldPlugin(e: WorldLoadEvent) = PluginManager.loadLoadWorldPlugins()
+    override fun loadWorldPlugin(e: WorldLoadEvent) = ModuleManager.loadModules(LoadType.ON_LOAD_WORLD)
 
     @EventHandler
     fun loadStartupPlugin(e: ServerLoadEvent) = Companion.loadStartupPlugin(e)

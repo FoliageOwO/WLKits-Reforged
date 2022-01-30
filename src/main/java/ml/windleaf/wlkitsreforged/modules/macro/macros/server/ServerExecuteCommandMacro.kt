@@ -1,6 +1,6 @@
 package ml.windleaf.wlkitsreforged.modules.macro.macros.server
 
-import ml.windleaf.wlkitsreforged.apis.PlayerInType
+import ml.windleaf.wlkitsreforged.internal.PlayerInType
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.modules.macro.MacroEntire
 import ml.windleaf.wlkitsreforged.modules.macro.MacroInfo

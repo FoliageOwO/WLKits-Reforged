@@ -1,7 +1,9 @@
-package ml.windleaf.wlkitsreforged.core
+package ml.windleaf.wlkitsreforged.core.module
 
+import ml.windleaf.wlkitsreforged.core.annotations.ModuleInfo
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
 import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 
 /**
  * The module interface
@@ -14,7 +16,7 @@ interface Module {
      *
      * @return the module name
      */
-    @NotNull fun getName(): String
+    @NotNull fun getName(): String = this.javaClass.simpleName
 
     /**
      * Gets if this module is enabled
@@ -36,20 +38,23 @@ interface Module {
      * @return the load type of module
      * @see LoadType
      */
-    @NotNull fun getType(): LoadType
+    @NotNull fun getType() = this.getModuleInfo()?.type!!
 
     /**
      * Loads the module
      */
-    fun load()
+    fun load() = Unit
 
     /**
      * Unloads the module
      */
-    fun unload()
+    fun unload() = Unit
 
     /**
-     * Registers all events the module need
+     * Gets the ModuleInfo of this module instance
+     *
+     * @return the ModuleInfo instance
+     * @see ModuleInfo
      */
-    fun registers()
+    @Nullable fun getModuleInfo(): ModuleInfo? = javaClass.getAnnotation(ModuleInfo::class.java)
 }

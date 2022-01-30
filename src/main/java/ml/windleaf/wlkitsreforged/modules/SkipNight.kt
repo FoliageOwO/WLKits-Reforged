@@ -2,8 +2,10 @@ package ml.windleaf.wlkitsreforged.modules
 
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
 import ml.windleaf.wlkitsreforged.core.enums.PermissionType
-import ml.windleaf.wlkitsreforged.core.Module
+import ml.windleaf.wlkitsreforged.core.module.Module
 import ml.windleaf.wlkitsreforged.core.WLKits
+import ml.windleaf.wlkitsreforged.core.annotations.ModuleInfo
+import ml.windleaf.wlkitsreforged.core.annotations.Permission
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -12,11 +14,13 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerBedEnterEvent
 import org.bukkit.event.player.PlayerBedLeaveEvent
 
+@ModuleInfo(
+    description = "Automatically calculates the number of players who need to skip the night as a percentage",
+    type = LoadType.ON_STARTUP
+)
 class SkipNight : Module, Listener {
     private var enabled = false
-    override fun getName() = "SkipNight"
     override fun getEnabled() = enabled
-    override fun getType() = LoadType.ON_STARTUP
     private var onBed = ArrayList<Player>()
 
     override fun setEnabled(target: Boolean) {
@@ -27,13 +31,10 @@ class SkipNight : Module, Listener {
         enabled = Util.isEnabled(getName())
     }
 
-    override fun unload() = Unit
-    override fun registers() = Util.registerEvent(this)
-
     @EventHandler
     fun onPlayerBedEnterEvent(e: PlayerBedEnterEvent) {
         if (!enabled) return
-        if (!Util.hasPermission(e.player, "skipnight", PermissionType.ACTION)) return
+        if (!Util.hasPermission(e.player, Permission("wlkits.action.skipnight", PermissionType.ACTION))) return
         if (e.bedEnterResult !== PlayerBedEnterEvent.BedEnterResult.OK) return
 
         val percent = Util.getPluginConfig(getName(), "percent") as Int
@@ -86,7 +87,7 @@ class SkipNight : Module, Listener {
     @EventHandler
     fun onPlayerBedLeaveEvent(e: PlayerBedLeaveEvent) {
         if (!enabled) return
-        if (!Util.hasPermission(e.player, "skipnight", PermissionType.ACTION)) return
+        if (!Util.hasPermission(e.player, Permission("wlkits.action.skipnight", PermissionType.ACTION))) return
         onBed.remove(e.player)
     }
 }

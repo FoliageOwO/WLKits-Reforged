@@ -2,8 +2,9 @@ package ml.windleaf.wlkitsreforged.modules
 
 import com.sun.net.httpserver.HttpServer
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
-import ml.windleaf.wlkitsreforged.core.Module
+import ml.windleaf.wlkitsreforged.core.module.Module
 import ml.windleaf.wlkitsreforged.core.WLKits
+import ml.windleaf.wlkitsreforged.core.annotations.ModuleInfo
 import ml.windleaf.wlkitsreforged.modules.httpapi.handlers.macro.MacroListHandler
 import ml.windleaf.wlkitsreforged.modules.httpapi.handlers.macro.MacroRunHandler
 import ml.windleaf.wlkitsreforged.utils.Util
@@ -11,11 +12,10 @@ import java.net.InetSocketAddress
 import java.util.concurrent.Executors
 import kotlin.properties.Delegates
 
+@ModuleInfo(description = "Opens HTTP API to manage server", type = LoadType.ON_STARTUP)
 class HttpApi : Module {
     private var enabled = false
-    override fun getName() = "HttpApi"
     override fun getEnabled() = enabled
-    override fun getType() = LoadType.ON_STARTUP
     companion object {
         var port by Delegates.notNull<Int>()
         var pool by Delegates.notNull<Int>()
@@ -53,6 +53,4 @@ class HttpApi : Module {
             WLKits.log("&aHTTP API Server stopped.")
         }
     }
-
-    override fun registers() = Unit
 }

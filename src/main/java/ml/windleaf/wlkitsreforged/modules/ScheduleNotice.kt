@@ -1,16 +1,16 @@
 package ml.windleaf.wlkitsreforged.modules
 
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
-import ml.windleaf.wlkitsreforged.core.Module
+import ml.windleaf.wlkitsreforged.core.module.Module
 import ml.windleaf.wlkitsreforged.core.WLKits
+import ml.windleaf.wlkitsreforged.core.annotations.ModuleInfo
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.scheduler.BukkitRunnable
 
+@ModuleInfo(description = "Broadcasts all players notice messages in schedule", type = LoadType.ON_LOAD_WORLD)
 class ScheduleNotice : Module {
     private var enabled = false
-    override fun getName() = "ScheduleNotice"
     override fun getEnabled() = enabled
-    override fun getType() = LoadType.ON_LOAD_WORLD
     private lateinit var runnable: BukkitRunnable
 
     override fun setEnabled(target: Boolean) {
@@ -35,6 +35,4 @@ class ScheduleNotice : Module {
     override fun unload() {
         if (enabled) runnable.cancel()
     }
-
-    override fun registers() = Unit
 }

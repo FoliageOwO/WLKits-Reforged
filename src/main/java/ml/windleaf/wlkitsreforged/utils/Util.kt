@@ -1,15 +1,15 @@
 package ml.windleaf.wlkitsreforged.utils
 
-import ml.windleaf.wlkitsreforged.apis.PlayerInType
+import ml.windleaf.wlkitsreforged.internal.PlayerInType
 import ml.windleaf.wlkitsreforged.core.enums.PermissionType
-import ml.windleaf.wlkitsreforged.core.Module
-import ml.windleaf.wlkitsreforged.core.PluginManager
+import ml.windleaf.wlkitsreforged.core.module.Module
+import ml.windleaf.wlkitsreforged.core.module.ModuleManager
 import ml.windleaf.wlkitsreforged.core.WLKits
+import ml.windleaf.wlkitsreforged.core.annotations.Permission
 import ml.windleaf.wlkitsreforged.core.enums.PlayerType
 import ml.windleaf.wlkitsreforged.core.reflect.Reflector
 import ml.windleaf.wlkitsreforged.core.reflect.versions.V1_16_R3
 import ml.windleaf.wlkitsreforged.core.enums.Versions
-import ml.windleaf.wlkitsreforged.modules.enums.ApiError
 import ml.windleaf.wlkitsreforged.modules.enums.PlayerAction
 import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil
 import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil.Test
@@ -17,7 +17,6 @@ import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.OfflinePlayer
 import org.bukkit.World
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
@@ -47,13 +46,6 @@ object Util {
      */
     fun withPrefix() = "&b${WLKits.name} >> &r" /* "&b${WLKits.name} » &r" */
 
-    /**
-     * A shortcut to register a command
-     *
-     * @param cmd the command string
-     * @param executor the command executor
-     */
-    fun registerCommand(cmd: String, executor: CommandExecutor) = WLKits.instance.getCommand(cmd)?.setExecutor(executor)
 
     /**
      * A shortcut to get the config of module from plugin config.yml
@@ -110,7 +102,7 @@ object Util {
      * @param p the player to get
      * @return the uuid string, null if the player is null
      */
-    fun getUUID(p: Player?) = if (p != null) p.uniqueId.toString() else null
+    fun getUUID(p: Player?) = p?.uniqueId?.toString()
 
     /**
      * Sends a message to player to tell that the command arguments are invalid
@@ -128,7 +120,19 @@ object Util {
      * @return true if the player has permission
      * @see PermissionType
      */
+    @Deprecated("Use Permission to check permission",
+        replaceWith = ReplaceWith("Util.hasPermission(p, Permission(name, type))",
+        imports = ["ml.windleaf.wlkitsreforged.core.annotations.Permission"]))
     fun hasPermission(p: CommandSender, name: String, type: PermissionType) = p.hasPermission("wlkits.${type.string}.$name")
+
+    /**
+     * A shortcut to checks if the command sender has permission
+     *
+     * @param s the command sender
+     * @param permission the [Permission] instance
+     * @return true if the command sender has permission
+     */
+    fun hasPermission(s: CommandSender, permission: Permission) = s.hasPermission(permission.permissionString)
 
     /**
      * A shortcut to generate a random uuid string without char `-`
@@ -167,7 +171,7 @@ object Util {
      * @param name the module name
      * @return the module, null if not found
      */
-    fun getPluginByName(name: String): Module? = PluginManager.pluginList.firstOrNull { it.getName() == name }
+    fun getPluginByName(name: String): Module? = ModuleManager.moduleInstances.firstOrNull { it.getName() == name }
 
     /**
      * Gets the world by world name
@@ -180,13 +184,11 @@ object Util {
     /**
      * Parses the boolean value
      *
-     * true -> ✔
-     * false -> ✖
-     *
      * @param boolean the boolean value
      * @return string
      */
-    fun parseBooleanColor(boolean: Boolean) = if (boolean) "&a✔&r" else "&c✖&r"
+    fun parseBooleanColor(boolean: Boolean) =
+        if (boolean) getPluginMsg("main", "true") else getPluginMsg("main", "false")
 
     /**
      * A shortcut to register event
@@ -232,9 +234,26 @@ object Util {
      * @param type the permission type
      * @see PermissionType
      */
+    @Deprecated("Use Permission to check permission",
+        replaceWith = ReplaceWith("Util.needPermission(p, Permission(name, type))",
+        imports = ["ml.windleaf.wlkitsreforged.core.annotations.Permission"]))
     fun needPermission(p: CommandSender, name: String, type: PermissionType): Boolean {
         if (hasPermission(p, name, type)) return true
         else send(p, getPluginMsg("main", "no-permission"))
+        return false
+    }
+
+    /**
+     * Checks if the command sender has permission, else send message to command sender
+     *
+     * @param s the command sender
+     * @param permission the [Permission] instance
+     * @return true if command sender has permission
+     * @see Permission
+     */
+    fun needPermission(s: CommandSender, permission: Permission): Boolean {
+        if (hasPermission(s, permission)) return true
+        else send(s, getPluginMsg("main", "no-permission"))
         return false
     }
 
@@ -296,7 +315,7 @@ object Util {
      * @return the result of the function, null if caught exception
      * @see Util#catch(Class, () -> T?, (e: Exception) -> Unit)
      */
-    fun <T> catch(function: () -> T?) = catch<T>(Exception::class.java, function, { it.printStackTrace() })
+    fun <T> catch(function: () -> T?) = catch<T>(Exception::class.java, function) { it.printStackTrace() }
 
     /**
      * Removes the color from the string
@@ -328,6 +347,7 @@ object Util {
             override fun doesMatchResource() = true
         }, packagePath)
 
+        WLKits.debug("Finding $cls")
         WLKits.debug("Found ${resolver.classes.size} classes")
         resolver.classes.forEach {
             it.declaredMethods.find { d -> Modifier.isNative(d.modifiers) }?.let { m ->
@@ -335,7 +355,7 @@ object Util {
                 throw UnsatisfiedLinkError("Native method $k in ${it.name}")
             }
 
-            WLKits.debug("Class: ${it.simpleName}, ${cls.isAssignableFrom(it)}, ${!it.isInterface}, ${!Modifier.isAbstract(it.modifiers)}")
+            WLKits.debug("Class: $it, ${cls.isAssignableFrom(it)}, ${!it.isInterface}, ${!Modifier.isAbstract(it.modifiers)}")
             if (cls.isAssignableFrom(it)
                 && !it.isInterface
                 && !Modifier.isAbstract(it.modifiers)) list.add(it as Class<out T>)
@@ -407,7 +427,7 @@ object Util {
     /**
      * Gets the player action by string
      *
-     * @param action the action string
+     * @param string the action string
      * @return the player action, [PlayerAction.NULL] if not found
      */
     fun getPlayerActionByString(string: String): PlayerAction {

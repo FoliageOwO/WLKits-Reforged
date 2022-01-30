@@ -11,6 +11,9 @@ main:
   status: '&f子插件 &6{pluginName} &f的开启状态: {status}'
   no-plugin: '&c没有叫做 &6{pluginName} &c的子插件!'
   player-not-found: '&c玩家 &6{playerName} &c不存在!'
+  error: '&c执行该动作时发生了内部错误, 请联系管理员!'
+  true: '&a✔&r'
+  false: '&c✖&r'
 backdeath:
   fail: '&c无法返回上一个死亡点!'
   success: '&a返回成功!'

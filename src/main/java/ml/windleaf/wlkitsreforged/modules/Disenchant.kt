@@ -1,9 +1,11 @@
 package ml.windleaf.wlkitsreforged.modules
 
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
-import ml.windleaf.wlkitsreforged.core.enums.PermissionType
-import ml.windleaf.wlkitsreforged.core.Module
+import ml.windleaf.wlkitsreforged.core.module.Module
 import ml.windleaf.wlkitsreforged.core.WLKits
+import ml.windleaf.wlkitsreforged.core.annotations.ModuleInfo
+import ml.windleaf.wlkitsreforged.core.annotations.Permission
+import ml.windleaf.wlkitsreforged.core.enums.PermissionType
 import ml.windleaf.wlkitsreforged.utils.GuiUtil
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Bukkit
@@ -19,11 +21,10 @@ import org.bukkit.inventory.*
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.ItemMeta
 
+@ModuleInfo(description = "Transfers the item's enchantment to enchantment book", type = LoadType.ON_LOAD_WORLD)
 class Disenchant : Module, Listener {
     private var enabled = false
-    override fun getName() = "Disenchant"
     override fun getEnabled() = enabled
-    override fun getType() = LoadType.ON_LOAD_WORLD
     private lateinit var gui: GuiUtil
     private lateinit var disenchantBook: ItemStack
     private lateinit var confirm: ItemStack
@@ -39,8 +40,6 @@ class Disenchant : Module, Listener {
         registerRecipe()
     }
 
-    override fun unload() = Unit
-    override fun registers() = Util.registerEvent(this)
     private fun loadInventory(player: Player) = gui.setItems(3 to confirm, 4 to player.inventory.itemInOffHand, 5 to cancel)
 
     private fun disenchant(player: Player, offhand: ItemStack) {
@@ -114,7 +113,7 @@ class Disenchant : Module, Listener {
 
     @EventHandler
     fun onInventoryClickEvent(e: InventoryClickEvent) {
-        if (enabled && Util.needPermission(e.whoClicked, "disenchant", PermissionType.ACTION)) {
+        if (enabled && Util.needPermission(e.whoClicked, Permission("wlkits.action.disenchant", PermissionType.ACTION))) {
             val inventory = e.inventory
             if (gui.equals(inventory)) {
                 val player = e.whoClicked as Player

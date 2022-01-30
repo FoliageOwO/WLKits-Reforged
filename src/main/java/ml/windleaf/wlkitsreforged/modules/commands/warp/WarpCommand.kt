@@ -1,37 +1,37 @@
 package ml.windleaf.wlkitsreforged.modules.commands.warp
 
-import ml.windleaf.wlkitsreforged.core.enums.PermissionType
+import ml.windleaf.wlkitsreforged.core.annotations.CommandInfo
+import ml.windleaf.wlkitsreforged.core.annotations.MustPlayer
+import ml.windleaf.wlkitsreforged.core.annotations.Permission
+import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleCommand
+import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleTabCompleter
 import ml.windleaf.wlkitsreforged.modules.Warp
 import ml.windleaf.wlkitsreforged.modules.enums.WarpType
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Location
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
-import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import java.math.BigDecimal
 import java.util.*
 import java.util.stream.Collectors
 
-class WarpCommand : CommandExecutor, TabCompleter {
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
-        if (Warp.enabled) {
-            if (Util.mustPlayer(sender) && Util.needPermission(sender, "warp", PermissionType.COMMAND)) {
-                if (args.isEmpty()) Util.invalidArgs(sender)
-                else {
-                    sender as Player
-                    val name = args[0]
-                    val uuid = Util.getUUID(sender)
-                    if (Warp.existsWarp(uuid!!, name, WarpType.PUBLIC)) {
-                        teleport(sender, name, WarpType.PUBLIC, "name" to name)
-                    } else if (Warp.existsWarp(uuid, name, WarpType.PRIVATE)) {
-                        teleport(sender, name, WarpType.PRIVATE, "name" to name)
-                    } else Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "not-found"), "name" to name))
-                }
-            }
-        } else Util.disabled(sender)
-        return true
+@CommandInfo(cmd = "warp", description = "Teleport to a warp", belongTo = Warp::class)
+class WarpCommand : ModuleCommand, ModuleTabCompleter {
+    @MustPlayer
+    @Permission("wlkits.command.warp")
+    override fun onCommand(sender: CommandSender, args: Array<String>) {
+        if (args.isEmpty()) Util.invalidArgs(sender)
+        else {
+            sender as Player
+            val name = args[0]
+            val uuid = Util.getUUID(sender)
+            if (Warp.existsWarp(uuid!!, name, WarpType.PUBLIC)) {
+                teleport(sender, name, WarpType.PUBLIC, "name" to name)
+            } else if (Warp.existsWarp(uuid, name, WarpType.PRIVATE)) {
+                teleport(sender, name, WarpType.PRIVATE, "name" to name)
+            } else Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "not-found"), "name" to name))
+        }
     }
 
     private fun teleport(sender: Player, name: String, type: WarpType, pair: Pair<String, String>) {
@@ -63,10 +63,11 @@ class WarpCommand : CommandExecutor, TabCompleter {
         }
     }
 
-    override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<String?>): List<String> {
+    @Permission("wlkits.command.warp")
+    override fun onTabComplete(sender: CommandSender, args: Array<String>): List<String> {
         val tmp = Warp.getWarps()
         val filter = Arrays.stream<Any>(tmp.keys.toTypedArray()).filter { s: Any ->
-            s.toString().startsWith(args[0]!!)
+            s.toString().startsWith(args[0])
         }.collect(Collectors.toList())
         val warps: MutableList<String> = ArrayList()
         for (name in filter) {

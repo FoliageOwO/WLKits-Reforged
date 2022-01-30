@@ -1,4 +1,4 @@
-package ml.windleaf.wlkitsreforged.apis
+package ml.windleaf.wlkitsreforged.internal
 
 import ml.windleaf.wlkitsreforged.core.enums.PlayerType
 import org.bukkit.OfflinePlayer
