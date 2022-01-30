@@ -139,7 +139,7 @@ object ModuleManager {
      */
     fun reload() {
         WLKits.reload()
-        unloadPlugins()
+        unloadModules()
         registerCommands()
         loadModules(LoadType.ON_STARTUP, false)
         loadModules(LoadType.ON_LOAD_WORLD, false)
@@ -149,7 +149,7 @@ object ModuleManager {
     /**
      * Unloads all modules
      */
-    fun unloadPlugins() {
+    fun unloadModules() {
         loadedModules.forEach(Module::unload)
         loadedModules.clear()
     }

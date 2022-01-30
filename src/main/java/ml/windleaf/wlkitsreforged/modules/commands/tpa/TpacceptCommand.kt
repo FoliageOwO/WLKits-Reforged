@@ -6,7 +6,6 @@ import ml.windleaf.wlkitsreforged.core.annotations.Permission
 import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleCommand
 import ml.windleaf.wlkitsreforged.modules.Tpa
 import ml.windleaf.wlkitsreforged.utils.Util
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -19,8 +18,8 @@ class TpacceptCommand : ModuleCommand {
         if (toPlayer != null) {
             toPlayer.teleport((sender as Player?)!!)
             Tpa.tpaLogs.remove(sender)
-            Util.send(sender, Util.getPluginMsg("Tpa", "accept"))
-            Util.send(toPlayer, Util.getPluginMsg("Tpa", "accept"))
-        } else Util.send(sender, Util.getPluginMsg("Tpa", "no-request"))
+            Util.send(sender, Util.getModuleMsg("Tpa", "accept"))
+            Util.send(toPlayer, Util.getModuleMsg("Tpa", "accept"))
+        } else Util.send(sender, Util.getModuleMsg("Tpa", "no-request"))
     }
 }

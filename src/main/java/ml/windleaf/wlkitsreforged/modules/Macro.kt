@@ -60,17 +60,17 @@ class Macro : Module, ModuleCommand {
                             WLKits.debug("Macro run result: $result")
                             val msg =
                                 if (result == Unit.toString()) Util.insert(
-                                    Util.getPluginMsg(getName(), "success"),
-                                    "result" to Util.getPluginMsg(getName(), "no-result")
+                                    Util.getModuleMsg(getName(), "success"),
+                                    "result" to Util.getModuleMsg(getName(), "no-result")
                                 ) else Util.insert(
-                                    Util.getPluginMsg(getName(), "success"),
+                                    Util.getModuleMsg(getName(), "success"),
                                     "result" to result
                                 )
                             WLKits.debug("Macro run msg: $msg")
                             Util.send(sender, msg)
                         }, {
                             val errorMsg = "${it.javaClass.simpleName}: ${it.message}"
-                            Util.send(sender, Util.insert(Util.getPluginMsg(getName(), "error"), "errorMsg" to errorMsg))
+                            Util.send(sender, Util.insert(Util.getModuleMsg(getName(), "error"), "errorMsg" to errorMsg))
                         })
                     }
                 }
@@ -79,8 +79,8 @@ class Macro : Module, ModuleCommand {
                     else {
                         val n = args[1]
                         val player = Bukkit.getPlayer(n)
-                        if (player == null) Util.send(sender, Util.insert(Util.getPluginMsg("main", "player-not-found"), "playerName" to n))
-                        else Util.send(sender, Util.insert(Util.getPluginMsg(getName(), "authed"), "playerName" to n, "authed" to Util.parseBooleanColor(manager.isAuthorized(player))))
+                        if (player == null) Util.send(sender, Util.insert(Util.getModuleMsg("main", "player-not-found"), "playerName" to n))
+                        else Util.send(sender, Util.insert(Util.getModuleMsg(getName(), "authed"), "playerName" to n, "authed" to Util.parseBooleanColor(manager.isAuthorized(player))))
                     }
                 }
                 else -> Util.invalidArgs(sender)

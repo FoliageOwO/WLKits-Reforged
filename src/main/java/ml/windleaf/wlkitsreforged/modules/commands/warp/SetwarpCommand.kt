@@ -8,7 +8,6 @@ import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleCommand
 import ml.windleaf.wlkitsreforged.modules.Warp
 import ml.windleaf.wlkitsreforged.modules.enums.WarpType
 import ml.windleaf.wlkitsreforged.utils.Util
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.io.IOException
@@ -20,7 +19,7 @@ class SetwarpCommand : ModuleCommand {
     override fun onCommand(sender: CommandSender, args: Array<String>) {
         if (args.isEmpty() || args.size < 2) Util.invalidArgs(sender)
         else {
-            if (args[0].length > 15) Util.send(sender, Util.getPluginMsg("Warp", "max-string"))
+            if (args[0].length > 15) Util.send(sender, Util.getModuleMsg("Warp", "max-string"))
             else {
                 sender as Player
                 var type: Any = args[0]
@@ -29,15 +28,15 @@ class SetwarpCommand : ModuleCommand {
                 for (t: WarpType in WarpType.values()) types[t.string] = t
                 val n = "name" to name
                 val t = "type" to type.toString()
-                if (type !in types.keys) Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "unknown-type"), n, t))
+                if (type !in types.keys) Util.send(sender, Util.insert(Util.getModuleMsg("Warp", "unknown-type"), n, t))
                 else {
                     type = types[type]!!
                     when (type) {
                         WarpType.PUBLIC -> {
                             if (sender.isOp) set(sender, name, type, n, t)
-                            else if (!sender.isOp && Util.getPluginConfig("Warp", "allow-public") as Boolean) {
+                            else if (!sender.isOp && Util.getModuleConfig("Warp", "allow-public") as Boolean) {
                                 set(sender, name, type, n, t)
-                            } else Util.send(sender, Util.getPluginMsg("Warp", "cannot-public"))
+                            } else Util.send(sender, Util.getModuleMsg("Warp", "cannot-public"))
                         }
                         WarpType.PRIVATE -> set(sender, name, type, n, t)
                     }
@@ -48,7 +47,7 @@ class SetwarpCommand : ModuleCommand {
 
     private fun set(sender: Player, name: String, type: WarpType, vararg pairs: Pair<String, String>) {
         val uuid = Util.getUUID(sender)
-        if (Warp.existsWarp(uuid!!, name, type)) Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "already-exists"), *pairs))
+        if (Warp.existsWarp(uuid!!, name, type)) Util.send(sender, Util.insert(Util.getModuleMsg("Warp", "already-exists"), *pairs))
         else {
             Warp.list.add(if (type == WarpType.PRIVATE) "$uuid|$name" else name)
             Warp.update()
@@ -61,7 +60,7 @@ class SetwarpCommand : ModuleCommand {
                 "z" to loc.z,
                 "world" to loc.world?.name,
             ) as HashMap<String, Any>
-            if (Util.getPluginConfig("Warp", "set-more") as Boolean) {
+            if (Util.getModuleConfig("Warp", "set-more") as Boolean) {
                 map["yaw"] = loc.yaw
                 map["pitch"] = loc.pitch
             }
@@ -78,15 +77,15 @@ class SetwarpCommand : ModuleCommand {
 
             try {
                 Warp.update()
-                Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "success"), *pairs))
-                if (Util.getPluginConfig("Warp", "broadcast") as Boolean) {
+                Util.send(sender, Util.insert(Util.getModuleMsg("Warp", "success"), *pairs))
+                if (Util.getModuleConfig("Warp", "broadcast") as Boolean) {
                     val p = "playerName" to sender.displayName
                     val n = "name" to name
                     if (type == WarpType.PUBLIC)
-                        for (line in Util.getPluginMsgAs("Warp", "broadcast-lines") as List<*>) Util.broadcastPlayers(Util.insert(line as String, p, n))
+                        for (line in Util.getModuleMsgAs("Warp", "broadcast-lines") as List<*>) Util.broadcastPlayers(Util.insert(line as String, p, n))
                 }
             } catch (e: IOException) {
-                Util.send(sender, Util.getPluginMsg("Warp", "fail"))
+                Util.send(sender, Util.getModuleMsg("Warp", "fail"))
                 e.printStackTrace()
             }
         }

@@ -38,7 +38,7 @@ interface Reflector : Listener {
      *
      * *Listening to [WorldLoadEvent].*
      */
-    fun loadWorldPlugin(@NotNull e: WorldLoadEvent) {
-        Versions.V1_16_R3.reflector.loadWorldPlugin(e)
+    fun loadWorldModule(@NotNull e: WorldLoadEvent) {
+        Versions.V1_16_R3.reflector.loadWorldModule(e)
     }
 }

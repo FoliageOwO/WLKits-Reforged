@@ -60,13 +60,13 @@ class PlayerTag : Module, Listener, ModuleCommand, ModuleTabCompleter {
                         if (player == null) noPlayer(sender, "playerName" to n, "tag" to tag)
                         else {
                             val coloredTag = Util.translateColorCode("$tag&r")!!
-                            val formatted = Util.insert(Util.getPluginConfig(getName(), "format") as String, "playerName" to n, "tag" to coloredTag)!!
+                            val formatted = Util.insert(Util.getModuleConfig(getName(), "format") as String, "playerName" to n, "tag" to coloredTag)!!
                             playerTags[Util.getUUID(player)!!] = coloredTag
                             val displayName = formatted + player.name
                             player.setDisplayName(displayName)
                             setNameTag(player, formatted)
                             playerTags.saveData()
-                            Util.send(sender, Util.insert(Util.getPluginMsg(getName(), "set-success"), "playerName" to n, "tag" to coloredTag))
+                            Util.send(sender, Util.insert(Util.getModuleMsg(getName(), "set-success"), "playerName" to n, "tag" to coloredTag))
                         }
                     }
                 }
@@ -80,7 +80,7 @@ class PlayerTag : Module, Listener, ModuleCommand, ModuleTabCompleter {
                             when (val tag = playerTags[Util.getUUID(player)!!] as String?) {
                                 null -> noTag(sender, "playerName" to n)
                                 "" -> noTag(sender, "playerName" to n)
-                                else -> Util.send(sender, Util.insert(Util.getPluginMsg(getName(), "get"), "playerName" to n, "tag" to tag))
+                                else -> Util.send(sender, Util.insert(Util.getModuleMsg(getName(), "get"), "playerName" to n, "tag" to tag))
                             }
                         }
                     }
@@ -96,7 +96,7 @@ class PlayerTag : Module, Listener, ModuleCommand, ModuleTabCompleter {
                             player.setDisplayName(player.name)
                             resetNameTag(player)
                             playerTags.saveData()
-                            Util.send(sender, Util.insert(Util.getPluginMsg(getName(), "reset-success"), "playerName" to n))
+                            Util.send(sender, Util.insert(Util.getModuleMsg(getName(), "reset-success"), "playerName" to n))
                         }
                     }
                 }
@@ -105,8 +105,8 @@ class PlayerTag : Module, Listener, ModuleCommand, ModuleTabCompleter {
         }
     }
 
-    private fun noTag(sender: CommandSender, vararg pairs: Pair<String, String>) = Util.send(sender, Util.insert(Util.getPluginMsg(getName(), "no-tag"), *pairs))
-    private fun noPlayer(sender: CommandSender, vararg pairs: Pair<String, String>) = Util.send(sender, Util.insert(Util.getPluginMsg("main", "player-not-found"), *pairs))
+    private fun noTag(sender: CommandSender, vararg pairs: Pair<String, String>) = Util.send(sender, Util.insert(Util.getModuleMsg(getName(), "no-tag"), *pairs))
+    private fun noPlayer(sender: CommandSender, vararg pairs: Pair<String, String>) = Util.send(sender, Util.insert(Util.getModuleMsg("main", "player-not-found"), *pairs))
 
     override fun onTabComplete(sender: CommandSender, args: Array<String>): List<String> {
         val subCommands = arrayOf("help", "set", "get", "reset")
@@ -130,7 +130,7 @@ class PlayerTag : Module, Listener, ModuleCommand, ModuleTabCompleter {
         val uuid = Util.getUUID(p)!!
         if (playerTags.contains(uuid)) {
             val tag = playerTags[uuid]!! as String
-            val displayName = Util.insert(Util.getPluginConfig(getName(), "format") as String, "tag" to tag)!! + p.name
+            val displayName = Util.insert(Util.getModuleConfig(getName(), "format") as String, "tag" to tag)!! + p.name
             p.setDisplayName(displayName)
         }
     }

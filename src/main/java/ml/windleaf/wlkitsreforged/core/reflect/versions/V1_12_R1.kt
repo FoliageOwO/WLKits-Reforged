@@ -10,7 +10,7 @@ class V1_12_R1: Reflector {
     override fun getNMS() = "v1_12_R1"
 
     @EventHandler
-    fun loadStartupPlugin(e: WorldLoadEvent) {
+    fun loadStartupModule(e: WorldLoadEvent) {
         ModuleManager.registerCommands()
         ModuleManager.loadModules(LoadType.ON_STARTUP)
         ModuleManager.loadModules(LoadType.ON_LOAD_WORLD)

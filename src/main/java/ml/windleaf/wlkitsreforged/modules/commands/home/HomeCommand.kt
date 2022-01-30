@@ -7,7 +7,6 @@ import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleCommand
 import ml.windleaf.wlkitsreforged.modules.Home
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Location
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -29,7 +28,7 @@ class HomeCommand : ModuleCommand {
                 val pitch = array[5].toFloat()
                 player.teleport(Location(world, x, y, z, yaw, pitch))
             } else player.teleport(Location(world, x, y, z))
-            Util.send(player, Util.getPluginMsg("Home", "back-home"))
-        } else Util.send(player, Util.getPluginMsg("Home", "no-home"))
+            Util.send(player, Util.getModuleMsg("Home", "back-home"))
+        } else Util.send(player, Util.getModuleMsg("Home", "no-home"))
     }
 }

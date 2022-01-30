@@ -50,28 +50,29 @@ object Util {
     /**
      * A shortcut to get the config of module from plugin config.yml
      *
-     * @param pluginName the name of the module
+     * @param moduleName the name of the module
      * @param root the key of the config
+     * @return the config
      */
-    fun getPluginConfig(pluginName: String, root: String) = WLKits.instance.config.get("modules.${pluginName.lowercase()}.$root")
+    fun getModuleConfig(moduleName: String, root: String) = WLKits.instance.config.get("modules.${moduleName.lowercase()}.$root")
 
     /**
      * A shortcut to get the message of module from plugin message.yml
      *
-     * @param pluginName the name of the module
+     * @param moduleName the name of the module
      * @param root the key of the message
      * @return the message as string
      */
-    fun getPluginMsg(pluginName: String, root: String) = getPluginMsgAs(pluginName, root) as String
+    fun getModuleMsg(moduleName: String, root: String) = getModuleMsgAs(moduleName, root) as String
 
     /**
      * A shortcut to get the message of module from plugin message.yml as custom class
      *
-     * @param pluginName the name of the module
+     * @param moduleName the name of the module
      * @param root the key of the message
      * @return any object
      */
-    fun getPluginMsgAs(pluginName: String, root: String) = WLKits.message["${pluginName.lowercase()}.$root"]
+    fun getModuleMsgAs(moduleName: String, root: String) = WLKits.message["${moduleName.lowercase()}.$root"]
 
     /**
      * Sends a message to command sender
@@ -84,17 +85,17 @@ object Util {
     /**
      * Gets the enabled state of module
      *
-     * @param pluginName the name of the module
+     * @param moduleName the name of the module
      * @return the enabled state
      */
-    fun isEnabled(pluginName: String) = getPluginConfig(pluginName, "enabled") as Boolean
+    fun isEnabled(moduleName: String) = getModuleConfig(moduleName, "enabled") as Boolean
 
     /**
      * Sends a message to player to tell that the module is disabled
      *
      * @param p the player to tell
      */
-    fun disabled(p: CommandSender) = send(p, getPluginMsg("main", "disabled"))
+    fun disabled(p: CommandSender) = send(p, getModuleMsg("main", "disabled"))
 
     /**
      * A shortcut to get the uuid string of player
@@ -109,7 +110,7 @@ object Util {
      *
      * @param p the player to tell
      */
-    fun invalidArgs(p: CommandSender) = send(p, getPluginMsg("main", "invalid-args"))
+    fun invalidArgs(p: CommandSender) = send(p, getModuleMsg("main", "invalid-args"))
 
     /**
      * A shortcut to checks if the player has permission
@@ -171,7 +172,7 @@ object Util {
      * @param name the module name
      * @return the module, null if not found
      */
-    fun getPluginByName(name: String): Module? = ModuleManager.moduleInstances.firstOrNull { it.getName() == name }
+    fun getModuleByName(name: String): Module? = ModuleManager.moduleInstances.firstOrNull { it.getName() == name }
 
     /**
      * Gets the world by world name
@@ -188,7 +189,7 @@ object Util {
      * @return string
      */
     fun parseBooleanColor(boolean: Boolean) =
-        if (boolean) getPluginMsg("main", "true") else getPluginMsg("main", "false")
+        if (boolean) getModuleMsg("main", "true") else getModuleMsg("main", "false")
 
     /**
      * A shortcut to register event
@@ -209,7 +210,7 @@ object Util {
     fun mustPlayer(p: CommandSender): Boolean {
         return if (p is Player && p !is ConsoleCommandSender) true
         else {
-            send(p, getPluginMsg("main", "must-player"))
+            send(p, getModuleMsg("main", "must-player"))
             false
         }
     }
@@ -239,7 +240,7 @@ object Util {
         imports = ["ml.windleaf.wlkitsreforged.core.annotations.Permission"]))
     fun needPermission(p: CommandSender, name: String, type: PermissionType): Boolean {
         if (hasPermission(p, name, type)) return true
-        else send(p, getPluginMsg("main", "no-permission"))
+        else send(p, getModuleMsg("main", "no-permission"))
         return false
     }
 
@@ -253,7 +254,7 @@ object Util {
      */
     fun needPermission(s: CommandSender, permission: Permission): Boolean {
         if (hasPermission(s, permission)) return true
-        else send(s, getPluginMsg("main", "no-permission"))
+        else send(s, getModuleMsg("main", "no-permission"))
         return false
     }
 

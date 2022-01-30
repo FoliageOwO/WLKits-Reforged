@@ -9,7 +9,6 @@ import ml.windleaf.wlkitsreforged.core.module.Module
 import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleCommand
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Location
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -41,9 +40,9 @@ class BackDeath : Module, Listener, ModuleCommand {
     override fun onCommand(sender: CommandSender, args: Array<String>) {
         sender as Player
         val location = tpLogs[sender]
-        if (location == null) Util.send(sender, Util.getPluginMsg(getName(), "fail")) else {
+        if (location == null) Util.send(sender, Util.getModuleMsg(getName(), "fail")) else {
             sender.teleport(location)
-            Util.send(sender, Util.getPluginMsg(getName(), "success"))
+            Util.send(sender, Util.getModuleMsg(getName(), "success"))
         }
     }
 }

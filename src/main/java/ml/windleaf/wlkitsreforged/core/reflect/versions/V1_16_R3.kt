@@ -13,7 +13,7 @@ class V1_16_R3 : Reflector {
     override fun getNMS() = "v1_16_R3"
 
     companion object {
-        fun loadStartupPlugin(e: ServerLoadEvent) {
+        fun loadStartupModule(e: ServerLoadEvent) {
             when (e.type) {
                 ServerLoadEvent.LoadType.STARTUP -> {
                     ModuleManager.registerCommands()
@@ -28,8 +28,8 @@ class V1_16_R3 : Reflector {
     override fun sendConsole(message: String) = Bukkit.getConsoleSender().sendMessage(Util.translateColorCode(message)!!)
 
     @EventHandler
-    override fun loadWorldPlugin(e: WorldLoadEvent) = ModuleManager.loadModules(LoadType.ON_LOAD_WORLD)
+    override fun loadWorldModule(e: WorldLoadEvent) = ModuleManager.loadModules(LoadType.ON_LOAD_WORLD)
 
     @EventHandler
-    fun loadStartupPlugin(e: ServerLoadEvent) = Companion.loadStartupPlugin(e)
+    fun loadStartupPlugin(e: ServerLoadEvent) = Companion.loadStartupModule(e)
 }

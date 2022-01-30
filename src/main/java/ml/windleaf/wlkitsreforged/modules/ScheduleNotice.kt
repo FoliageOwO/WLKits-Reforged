@@ -20,8 +20,8 @@ class ScheduleNotice : Module {
     override fun load() {
         enabled = Util.isEnabled(getName())
         if (enabled) {
-            val interval = Util.getPluginConfig(getName(), "interval") as Int
-            val lines = Util.getPluginMsgAs(getName(), "notice-lines") as List<*>
+            val interval = Util.getModuleConfig(getName(), "interval") as Int
+            val lines = Util.getModuleMsgAs(getName(), "notice-lines") as List<*>
             val ticks = (interval * 20).toLong()
             runnable = object : BukkitRunnable() {
                 override fun run() {

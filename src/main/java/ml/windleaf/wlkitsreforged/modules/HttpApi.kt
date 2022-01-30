@@ -29,10 +29,10 @@ class HttpApi : Module {
 
     override fun load() {
         enabled = Util.isEnabled(getName())
-        port = Util.getPluginConfig("HttpApi", "port") as Int
-        pool = Util.getPluginConfig("HttpApi", "pool") as Int
+        port = Util.getModuleConfig("HttpApi", "port") as Int
+        pool = Util.getModuleConfig("HttpApi", "pool") as Int
         if (enabled) {
-            val configToken = Util.getPluginConfig("HttpApi", "token") as String
+            val configToken = Util.getModuleConfig("HttpApi", "token") as String
             token = if (configToken == "") Util.generateRandomToken() else configToken
 
             server = HttpServer.create(InetSocketAddress(port), 0)

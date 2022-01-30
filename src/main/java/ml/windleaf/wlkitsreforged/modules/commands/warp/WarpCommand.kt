@@ -9,7 +9,6 @@ import ml.windleaf.wlkitsreforged.modules.Warp
 import ml.windleaf.wlkitsreforged.modules.enums.WarpType
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Location
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.math.BigDecimal
@@ -30,7 +29,7 @@ class WarpCommand : ModuleCommand, ModuleTabCompleter {
                 teleport(sender, name, WarpType.PUBLIC, "name" to name)
             } else if (Warp.existsWarp(uuid, name, WarpType.PRIVATE)) {
                 teleport(sender, name, WarpType.PRIVATE, "name" to name)
-            } else Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "not-found"), "name" to name))
+            } else Util.send(sender, Util.insert(Util.getModuleMsg("Warp", "not-found"), "name" to name))
         }
     }
 
@@ -52,13 +51,13 @@ class WarpCommand : ModuleCommand, ModuleTabCompleter {
         when (type) {
             WarpType.PUBLIC -> {
                 sender.teleport(location)
-                Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "tp-success"), pair))
+                Util.send(sender, Util.insert(Util.getModuleMsg("Warp", "tp-success"), pair))
             }
             WarpType.PRIVATE -> {
                 if (Util.getUUID(sender) == uuid) {
                     sender.teleport(location)
-                    Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "tp-success"), pair))
-                } else Util.send(sender, Util.getPluginMsg("Warp", "tp-private"))
+                    Util.send(sender, Util.insert(Util.getModuleMsg("Warp", "tp-success"), pair))
+                } else Util.send(sender, Util.getModuleMsg("Warp", "tp-private"))
             }
         }
     }

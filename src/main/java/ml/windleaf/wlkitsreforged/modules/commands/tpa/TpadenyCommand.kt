@@ -6,7 +6,6 @@ import ml.windleaf.wlkitsreforged.core.annotations.Permission
 import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleCommand
 import ml.windleaf.wlkitsreforged.modules.Tpa
 import ml.windleaf.wlkitsreforged.utils.Util
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -18,8 +17,8 @@ class TpadenyCommand : ModuleCommand {
         val player: Player? = Tpa.tpaLogs[sender]
         if (player != null) {
             Tpa.tpaLogs.remove(sender)
-            Util.send(sender, Util.getPluginMsg("Tpa", "deny"))
-            Util.send(player, Util.getPluginMsg("Tpa", "deny"))
-        } else Util.send(sender, Util.getPluginMsg("Tpa", "no-request"))
+            Util.send(sender, Util.getModuleMsg("Tpa", "deny"))
+            Util.send(player, Util.getModuleMsg("Tpa", "deny"))
+        } else Util.send(sender, Util.getModuleMsg("Tpa", "no-request"))
     }
 }

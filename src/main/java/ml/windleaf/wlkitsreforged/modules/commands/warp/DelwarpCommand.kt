@@ -8,7 +8,6 @@ import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleTabCompleter
 import ml.windleaf.wlkitsreforged.modules.Warp
 import ml.windleaf.wlkitsreforged.modules.enums.WarpType
 import ml.windleaf.wlkitsreforged.utils.Util
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.util.*
@@ -28,7 +27,7 @@ class DelwarpCommand : ModuleCommand, ModuleTabCompleter {
                 delete(sender, name, WarpType.PUBLIC, n, pn)
             } else if (Warp.existsWarp(uuid, name, WarpType.PRIVATE)) {
                 delete(sender, name, WarpType.PRIVATE, n, pn)
-            } else Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "not-found"), n, pn))
+            } else Util.send(sender, Util.insert(Util.getModuleMsg("Warp", "not-found"), n, pn))
         }
     }
 
@@ -36,16 +35,16 @@ class DelwarpCommand : ModuleCommand, ModuleTabCompleter {
         val uuid = if (sender is Player) Util.getUUID(sender) else ""
         when (type) {
             WarpType.PUBLIC -> {
-                if (sender.isOp || Util.getPluginConfig("Warp", "allow-public") as Boolean) {
+                if (sender.isOp || Util.getModuleConfig("Warp", "allow-public") as Boolean) {
                     Warp.list.remove(name)
                     Warp.update()
 
                     Warp.publics.removeIf { (it as JSONObject)["name"] == name }
-                    Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "del-success"), *pairs))
-                    if (Util.getPluginConfig("Warp", "broadcast") as Boolean)
-                        Util.broadcastPlayers(Util.insert(Util.getPluginMsg("Warp", "del-broadcast"), *pairs))
+                    Util.send(sender, Util.insert(Util.getModuleMsg("Warp", "del-success"), *pairs))
+                    if (Util.getModuleConfig("Warp", "broadcast") as Boolean)
+                        Util.broadcastPlayers(Util.insert(Util.getModuleMsg("Warp", "del-broadcast"), *pairs))
                     Warp.update()
-                } else Util.send(sender, Util.getPluginMsg("Warp", "cannot-public"))
+                } else Util.send(sender, Util.getModuleMsg("Warp", "cannot-public"))
             }
             WarpType.PRIVATE -> {
                 val jsonObj = Warp.getWarpByName(name, WarpType.PRIVATE)!!
@@ -54,9 +53,9 @@ class DelwarpCommand : ModuleCommand, ModuleTabCompleter {
                     Warp.update()
 
                     Warp.privates.remove(jsonObj)
-                    Util.send(sender, Util.insert(Util.getPluginMsg("Warp", "del-success"), *pairs))
+                    Util.send(sender, Util.insert(Util.getModuleMsg("Warp", "del-success"), *pairs))
                     Warp.update()
-                } else Util.send(sender, Util.getPluginMsg("Warp", "del-private"))
+                } else Util.send(sender, Util.getModuleMsg("Warp", "del-private"))
             }
         }
     }
@@ -70,7 +69,7 @@ class DelwarpCommand : ModuleCommand, ModuleTabCompleter {
         for (name in filter) {
             name as String
             if (sender is Player) {
-                if (Util.getPluginConfig("Warp", "allow-public") as Boolean || sender.isOp) warps.add(name)
+                if (Util.getModuleConfig("Warp", "allow-public") as Boolean || sender.isOp) warps.add(name)
                 if (tmp[name] == WarpType.PRIVATE && name.startsWith(Util.getUUID(sender)!!)) warps.add(name.split("|")[1])
             }
         }

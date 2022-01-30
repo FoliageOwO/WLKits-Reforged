@@ -31,8 +31,8 @@ class JoinInfo : Module, Listener {
             val pn = "playerName" to player.name
             val uuid = "uuid" to Util.getUUID(player)!!
             val ip = "ip" to player.address.toString()
-            WLKits.log(Util.insert(Util.getPluginMsg(getName(), "console-join"), pn, uuid, ip)!!)
-            Util.broadcastPlayers(Util.insert(Util.getPluginMsg(getName(), "join"), pn, uuid, ip))
+            WLKits.log(Util.insert(Util.getModuleMsg(getName(), "console-join"), pn, uuid, ip)!!)
+            Util.broadcastPlayers(Util.insert(Util.getModuleMsg(getName(), "join"), pn, uuid, ip))
         }
     }
 
@@ -44,8 +44,8 @@ class JoinInfo : Module, Listener {
             val pn = "playerName" to player.name
             val uuid = "uuid" to Util.getUUID(player)!!
             val ip = "ip" to player.address.toString()
-            WLKits.log(Util.insert(Util.getPluginMsg(getName(), "console-quit"), pn, uuid, ip)!!)
-            Util.broadcastPlayers(Util.insert(Util.getPluginMsg(getName(), "quit"), pn, uuid, ip))
+            WLKits.log(Util.insert(Util.getModuleMsg(getName(), "console-quit"), pn, uuid, ip)!!)
+            Util.broadcastPlayers(Util.insert(Util.getModuleMsg(getName(), "quit"), pn, uuid, ip))
         }
     }
 }

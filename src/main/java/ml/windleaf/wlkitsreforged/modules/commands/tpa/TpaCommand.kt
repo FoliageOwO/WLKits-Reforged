@@ -8,7 +8,6 @@ import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleTabCompleter
 import ml.windleaf.wlkitsreforged.modules.Tpa
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Bukkit
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.util.*
@@ -22,17 +21,17 @@ class TpaCommand : ModuleCommand, ModuleTabCompleter {
     override fun onCommand(sender: CommandSender, args: Array<String>) {
         sender as Player
         if (args.isEmpty()) {
-            Util.send(sender, Util.getPluginMsg("Tpa", "help"))
+            Util.send(sender, Util.getModuleMsg("Tpa", "help"))
         } else {
             val player = Bukkit.getPlayer(args[0])
             if (player === sender) {
-                Util.send(sender, Util.getPluginMsg("Tpa", "self-tpa"))
+                Util.send(sender, Util.getModuleMsg("Tpa", "self-tpa"))
             } else {
-                if (player == null) Util.send(sender, Util.insert(Util.getPluginMsg("main", "player-not-found"), "playerName" to args[0]))
+                if (player == null) Util.send(sender, Util.insert(Util.getModuleMsg("main", "player-not-found"), "playerName" to args[0]))
                 else {
                     Tpa.tpaLogs[player] = sender
-                    val receiverLines = Util.getPluginMsgAs("Tpa", "receiver-lines") as List<*>
-                    val senderLines = Util.getPluginMsgAs("Tpa", "sender-lines") as List<*>
+                    val receiverLines = Util.getModuleMsgAs("Tpa", "receiver-lines") as List<*>
+                    val senderLines = Util.getModuleMsgAs("Tpa", "sender-lines") as List<*>
                     val rc = "receiver" to player.displayName
                     val sd = "sender" to sender.displayName
                     for (rl in receiverLines) Util.send(player, Util.insert(rl as String, rc, sd))

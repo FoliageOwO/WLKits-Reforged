@@ -9,7 +9,6 @@ import ml.windleaf.wlkitsreforged.core.annotations.Permission
 import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleCommand
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Location
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -42,7 +41,7 @@ class Back : Module, Listener, ModuleCommand {
         sender as Player
         if (tpLogs.containsKey(sender)) {
             sender.teleport(tpLogs[sender]!!)
-            Util.send(sender, Util.getPluginMsg(getName(), "success"))
-        } else Util.send(sender, Util.getPluginMsg(getName(), "fail"))
+            Util.send(sender, Util.getModuleMsg(getName(), "success"))
+        } else Util.send(sender, Util.getModuleMsg(getName(), "fail"))
     }
 }

@@ -32,12 +32,12 @@ class Mention : Module, Listener {
 
     override fun load() {
         enabled = Util.isEnabled(getName())
-        prefix = Util.getPluginConfig(getName(), "prefix") as String
-        styleTo = Util.translateColorCode(Util.getPluginConfig(getName(), "to-style") as String)!!
-        styleOther = Util.translateColorCode(Util.getPluginConfig(getName(), "other-style") as String)!!
-        styleAll = Util.translateColorCode(Util.getPluginConfig(getName(), "all-style") as String)!!
-        allMsg = Util.insert(Util.getPluginConfig(getName(), "all-msg") as String, "prefix" to prefix)!!
-        soundNotice = Util.getPluginConfig(getName(), "sound-notice") as Boolean
+        prefix = Util.getModuleConfig(getName(), "prefix") as String
+        styleTo = Util.translateColorCode(Util.getModuleConfig(getName(), "to-style") as String)!!
+        styleOther = Util.translateColorCode(Util.getModuleConfig(getName(), "other-style") as String)!!
+        styleAll = Util.translateColorCode(Util.getModuleConfig(getName(), "all-style") as String)!!
+        allMsg = Util.insert(Util.getModuleConfig(getName(), "all-msg") as String, "prefix" to prefix)!!
+        soundNotice = Util.getModuleConfig(getName(), "sound-notice") as Boolean
     }
 
     @EventHandler
@@ -51,9 +51,9 @@ class Mention : Module, Listener {
                 val end = Util.translateColorCode("&r")
                 if (Util.hasPermission(s, Permission("wlkits.action.mention", PermissionType.ACTION))) {
                     Bukkit.getOnlinePlayers().forEach {
-                        if (Util.getPluginConfig(getName(), "all") as Boolean
+                        if (Util.getModuleConfig(getName(), "all") as Boolean
                             && msg.contains(allMsg)
-                            && s.isOp == Util.getPluginConfig(getName(), "all-op") as Boolean) {
+                            && s.isOp == Util.getModuleConfig(getName(), "all-op") as Boolean) {
                             it.sendMessage(pref + msg.replace(allMsg, "$styleAll$allMsg$end"))
                             playSound(it)
                         } else {

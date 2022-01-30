@@ -23,7 +23,7 @@ class AntiCreeper : Module, Listener {
 
     override fun load() {
         enabled = Util.isEnabled(getName())
-        notice = Util.getPluginConfig(getName(), "notice") as Boolean
+        notice = Util.getModuleConfig(getName(), "notice") as Boolean
     }
 
     @EventHandler

@@ -51,7 +51,7 @@ modules: # 所有的模块
     all-style: '&b&l' # 全员提到的高亮样式
     all-op: true # 提到全员是否需要 op
     sound-notice: true # 提到玩家时是否播放声音提醒
-  wlkitsplugin: # WLKits 命令集合
+  wlkitscommands: # WLKits 命令集合
     enabled: true
   macro: # 宏指令
     enabled: true

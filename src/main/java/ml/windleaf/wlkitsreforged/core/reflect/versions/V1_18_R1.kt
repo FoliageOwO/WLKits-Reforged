@@ -17,5 +17,5 @@ class V1_18_R1 : Reflector {
     }
 
     @EventHandler
-    fun loadStartupPlugin(e: ServerLoadEvent) = V1_16_R3.loadStartupPlugin(e)
+    fun loadStartupModule(e: ServerLoadEvent) = V1_16_R3.loadStartupModule(e)
 }

@@ -37,7 +37,7 @@ class SkipNight : Module, Listener {
         if (!Util.hasPermission(e.player, Permission("wlkits.action.skipnight", PermissionType.ACTION))) return
         if (e.bedEnterResult !== PlayerBedEnterEvent.BedEnterResult.OK) return
 
-        val percent = Util.getPluginConfig(getName(), "percent") as Int
+        val percent = Util.getModuleConfig(getName(), "percent") as Int
         // 百分比小数形式
         val percentDecimals = percent.toDouble() / 100
         if (percent < 0 || percent > 100) {
@@ -51,7 +51,7 @@ class SkipNight : Module, Listener {
 
         val onBedPercent = onBed.size.toDouble() / online.toDouble()
         if (onBedPercent >= percentDecimals) {
-            Util.broadcastPlayers(Util.getPluginMsg(getName(), "msg-ok"))
+            Util.broadcastPlayers(Util.getModuleMsg(getName(), "msg-ok"))
             // 判断天气
             if (e.player.world.isThundering) {
                 // 设置为晴天
@@ -76,7 +76,7 @@ class SkipNight : Module, Listener {
 
         Util.broadcastPlayers(
             Util.insert(
-                Util.getPluginMsg(getName(), "msg-need"),
+                Util.getModuleMsg(getName(), "msg-need"),
                 "onBed" to onBed.size.toString(),
                 "needPlayers" to need.toString()
             )

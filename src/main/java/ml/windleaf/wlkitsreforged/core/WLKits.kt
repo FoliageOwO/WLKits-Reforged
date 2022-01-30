@@ -95,7 +95,7 @@ class WLKits : JavaPlugin() {
         fun reload() {
             instance.reloadConfig()
             message.loadDataFromFile()
-            debug = Util.getPluginConfig("main", "debug") as Boolean
+            debug = Util.getModuleConfig("main", "debug") as Boolean
         }
     }
 
@@ -104,7 +104,7 @@ class WLKits : JavaPlugin() {
         val startTime = System.currentTimeMillis()
         instance = this
         reflector = Util.getReflector()
-        debug = Util.getPluginConfig("main", "debug") as Boolean
+        debug = Util.getModuleConfig("main", "debug") as Boolean
 
         // Debugs the data folder
         debug("Data folder: ${FileUtil.path}")
@@ -131,5 +131,5 @@ class WLKits : JavaPlugin() {
         log("Successfully loaded in &e${endTime - startTime}ms&r!")
     }
 
-    override fun onDisable() = ModuleManager.unloadPlugins()
+    override fun onDisable() = ModuleManager.unloadModules()
 }

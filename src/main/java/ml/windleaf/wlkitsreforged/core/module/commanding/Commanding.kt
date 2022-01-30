@@ -109,7 +109,7 @@ class Commanding : Listener {
                 }
             }, {
                 it.printStackTrace()
-                Util.send(sender, Util.getPluginMsg("main", "error"))
+                Util.send(sender, Util.getModuleMsg("main", "error"))
             }
         )
     }

@@ -11,15 +11,14 @@ import ml.windleaf.wlkitsreforged.core.module.ModuleManager
 import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleTabCompleter
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Bukkit
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import java.util.*
 import java.util.stream.Collectors
 import kotlin.collections.ArrayList
 
-@CommandInfo(cmd = "wlkits", description = "The base commands of WLKits plugin", belongTo = WLKitsPlugin::class)
+@CommandInfo(cmd = "wlkits", description = "The base commands of WLKits plugin", belongTo = WLKitsCommands::class)
 @ModuleInfo(description = "The base commands of WLKits plugin", type = LoadType.ON_STARTUP)
-class WLKitsPlugin : Module, ModuleCommand, ModuleTabCompleter {
+class WLKitsCommands : Module, ModuleCommand, ModuleTabCompleter {
     private var enabled = false
     override fun getEnabled() = enabled
 
@@ -52,18 +51,18 @@ class WLKitsPlugin : Module, ModuleCommand, ModuleTabCompleter {
                 "help" -> Util.sendHelp(sender,
                     "/wlkits help" to "查看此帮助",
                     "/wlkits reload" to "重载插件",
-                    "/wlkits status [pluginName]" to "查看子插件开启状态",
+                    "/wlkits status [moduleName]" to "查看模块开启状态",
                     "/wlkits info" to "查看插件信息")
                 "reload" -> {
                     ModuleManager.reload()
-                    Util.send(sender, Util.getPluginMsg("main", "reload"))
+                    Util.send(sender, Util.getModuleMsg("main", "reload"))
                 }
                 "status" -> {
                     if (args.size != 2) Util.invalidArgs(sender) else {
                         val n = args[1]
-                        val plugin = Util.getPluginByName(n)
-                        if (plugin == null) Util.send(sender, Util.insert(Util.getPluginMsg("main", "no-plugin"), "pluginName" to n))
-                        else Util.send(sender, Util.insert(Util.getPluginMsg("main", "status"), "pluginName" to n, "status" to if (plugin.getEnabled()) "&aTRUE" else "&cFALSE"))
+                        val module = Util.getModuleByName(n)
+                        if (module == null) Util.send(sender, Util.insert(Util.getModuleMsg("main", "module-not-found"), "moduleName" to n))
+                        else Util.send(sender, Util.insert(Util.getModuleMsg("main", "status"), "moduleName" to n, "status" to if (module.getEnabled()) "&aTRUE" else "&cFALSE"))
                     }
                 }
                 "info" -> getInfo().forEach { Util.send(sender, it) }

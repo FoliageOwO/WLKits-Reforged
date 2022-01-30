@@ -8,7 +8,6 @@ import ml.windleaf.wlkitsreforged.core.enums.LoadType
 import ml.windleaf.wlkitsreforged.core.module.Module
 import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleCommand
 import ml.windleaf.wlkitsreforged.utils.Util
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -35,9 +34,9 @@ class Suicide : Module, Listener, ModuleCommand {
         if (enabled && Util.hasPermission(e.entity, Permission("wlkits.cmd.suicide"))) {
             val player = e.entity
             if (player in suicideList) {
-                if (!(Util.getPluginConfig(getName(), "use-vanilla") as Boolean)) {
+                if (!(Util.getModuleConfig(getName(), "use-vanilla") as Boolean)) {
                     e.deathMessage = ""
-                    Util.broadcastPlayers(Util.insert(Util.getPluginMsg(getName(), "msg"), "playerName" to player.name))
+                    Util.broadcastPlayers(Util.insert(Util.getModuleMsg(getName(), "msg"), "playerName" to player.name))
                 }
                 suicideList.remove(player)
             }

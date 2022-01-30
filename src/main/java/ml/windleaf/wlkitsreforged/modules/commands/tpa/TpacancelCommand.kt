@@ -6,7 +6,6 @@ import ml.windleaf.wlkitsreforged.core.annotations.Permission
 import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleCommand
 import ml.windleaf.wlkitsreforged.modules.Tpa
 import ml.windleaf.wlkitsreforged.utils.Util
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -19,8 +18,8 @@ class TpacancelCommand : ModuleCommand {
         val player = getKeyByValue(Tpa.tpaLogs, toPlayer)
         if (toPlayer != null && player != null && player == sender) {
             Tpa.tpaLogs.remove(sender)
-            Util.send(sender, Util.getPluginMsg("Tpa", "cancel"))
-        } else Util.send(sender, Util.getPluginMsg("Tpa", "no-request"))
+            Util.send(sender, Util.getModuleMsg("Tpa", "cancel"))
+        } else Util.send(sender, Util.getModuleMsg("Tpa", "no-request"))
     }
 
     private fun getKeyByValue(map: Map<Player, Player>, value: Player?): Player? {
