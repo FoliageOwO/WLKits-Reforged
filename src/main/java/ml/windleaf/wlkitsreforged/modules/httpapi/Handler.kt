@@ -1,10 +1,9 @@
 package ml.windleaf.wlkitsreforged.modules.httpapi
 
-import com.google.gson.Gson
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import ml.windleaf.wlkitsreforged.core.WLKits
-import ml.windleaf.wlkitsreforged.internal.JsonData
+import ml.windleaf.wlkitsreforged.internal.file.JsonData
 import ml.windleaf.wlkitsreforged.modules.HttpApi
 import ml.windleaf.wlkitsreforged.modules.enums.ApiError.*
 import ml.windleaf.wlkitsreforged.utils.Util

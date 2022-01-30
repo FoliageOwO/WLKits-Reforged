@@ -1,6 +1,6 @@
 package ml.windleaf.wlkitsreforged.data
 
-import ml.windleaf.wlkitsreforged.internal.JsonData
+import ml.windleaf.wlkitsreforged.internal.file.JsonData
 import org.bukkit.Location
 
 /**

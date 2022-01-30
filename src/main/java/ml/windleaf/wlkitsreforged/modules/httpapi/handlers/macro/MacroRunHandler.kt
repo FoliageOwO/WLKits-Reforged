@@ -4,7 +4,7 @@ import com.google.gson.internal.LinkedTreeMap
 import com.sun.net.httpserver.HttpExchange
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.data.Data
-import ml.windleaf.wlkitsreforged.internal.JsonData
+import ml.windleaf.wlkitsreforged.internal.file.JsonData
 import ml.windleaf.wlkitsreforged.modules.HttpApi
 import ml.windleaf.wlkitsreforged.modules.Macro
 import ml.windleaf.wlkitsreforged.modules.enums.ApiError.*

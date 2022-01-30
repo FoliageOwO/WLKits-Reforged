@@ -5,7 +5,7 @@ import ml.windleaf.wlkitsreforged.core.module.ModuleManager
 import ml.windleaf.wlkitsreforged.core.module.commanding.Commanding
 import ml.windleaf.wlkitsreforged.core.reflect.Reflector
 import ml.windleaf.wlkitsreforged.data.Data
-import ml.windleaf.wlkitsreforged.internal.YamlData
+import ml.windleaf.wlkitsreforged.internal.file.YamlData
 import ml.windleaf.wlkitsreforged.utils.FileUtil
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.plugin.java.JavaPlugin

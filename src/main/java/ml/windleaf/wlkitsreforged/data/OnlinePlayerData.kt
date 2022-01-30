@@ -1,6 +1,6 @@
 package ml.windleaf.wlkitsreforged.data
 
-import ml.windleaf.wlkitsreforged.internal.JsonData
+import ml.windleaf.wlkitsreforged.internal.file.JsonData
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.GameMode
 import org.bukkit.entity.Player

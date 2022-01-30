@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject
 import ml.windleaf.wlkitsreforged.core.annotations.ModuleInfo
 import ml.windleaf.wlkitsreforged.core.module.Module
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
-import ml.windleaf.wlkitsreforged.internal.JsonData
+import ml.windleaf.wlkitsreforged.internal.file.JsonData
 import ml.windleaf.wlkitsreforged.modules.enums.WarpType
 import ml.windleaf.wlkitsreforged.utils.Util
 import kotlin.properties.Delegates

@@ -1,4 +1,4 @@
-package ml.windleaf.wlkitsreforged.internal
+package ml.windleaf.wlkitsreforged.internal.file
 
 import com.google.gson.JsonSyntaxException
 import ml.windleaf.wlkitsreforged.core.WLKits
@@ -8,7 +8,7 @@ import ml.windleaf.wlkitsreforged.utils.Util
 import java.io.*
 
 /**
- * JsonData class saves `.json` internal
+ * JsonData class saves `.json` data
  */
 class JsonData(private val name: String) : DataFile<HashMap<String, Any?>> {
     private lateinit var json: HashMap<String, Any?>
@@ -62,7 +62,7 @@ class JsonData(private val name: String) : DataFile<HashMap<String, Any?>> {
 
     override fun loadDataFromFile() {
         json = parse(readJsonFile())
-        WLKits.debug("Loaded JSON internal: $json")
+        WLKits.debug("Loaded JSON data: $json")
     }
 
     private fun readJsonFile(): String {

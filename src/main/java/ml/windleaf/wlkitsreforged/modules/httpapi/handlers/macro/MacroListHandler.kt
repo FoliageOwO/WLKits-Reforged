@@ -1,7 +1,7 @@
 package ml.windleaf.wlkitsreforged.modules.httpapi.handlers.macro
 
 import com.sun.net.httpserver.HttpExchange
-import ml.windleaf.wlkitsreforged.internal.JsonData
+import ml.windleaf.wlkitsreforged.internal.file.JsonData
 import ml.windleaf.wlkitsreforged.modules.HttpApi
 import ml.windleaf.wlkitsreforged.modules.Macro
 import ml.windleaf.wlkitsreforged.modules.enums.ApiError

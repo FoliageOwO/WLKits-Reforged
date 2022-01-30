@@ -1,12 +1,12 @@
-package ml.windleaf.wlkitsreforged.internal;
+package ml.windleaf.wlkitsreforged.internal.file
 
-import ml.windleaf.wlkitsreforged.utils.FileUtil;
-import org.jetbrains.annotations.NotNull;
+import ml.windleaf.wlkitsreforged.utils.FileUtil
+import org.jetbrains.annotations.NotNull
 
-import java.io.File;
+import java.io.File
 
 /**
- * A class that represents a internal file
+ * A class that represents a data file
  *
  * @author WindLeaf_qwq
  */
@@ -19,48 +19,48 @@ interface DataFile<T> {
     @NotNull fun getName(): String
 
     /**
-     * Gets the path of internal file
+     * Gets the path of data file
      *
      * @return path of file
      */
     @NotNull fun getPath() = FileUtil.buildModuleDataPath(getName(), getType())
 
     /**
-     * Gets the file of internal
+     * Gets the file of data
      *
      * @return file
      */
     @NotNull fun getFile() = File(getPath())
 
     /**
-     * Gets the type of internal
+     * Gets the type of data
      *
-     * @return the type of internal
+     * @return the type of data
      * @see DataType
      */
     @NotNull fun getType(): DataType
 
     /**
-     * Gets the internal
+     * Gets the data
      *
-     * @return internal
+     * @return data
      */
     @NotNull fun getData(): T
 
     /**
-     * Saves the internal
+     * Saves the data
      */
     fun saveData()
 
     /**
-     * Sets the internal to target internal
+     * Sets the data to target data
      *
-     * @param target internal
+     * @param target data
      */
     fun setData(@NotNull target: T)
 
     /**
-     * Loads internal from file
+     * Loads data from file
      */
     fun loadDataFromFile()
 }

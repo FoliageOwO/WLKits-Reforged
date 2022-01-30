@@ -1,7 +1,7 @@
 package ml.windleaf.wlkitsreforged.modules.macro
 
 import ml.windleaf.wlkitsreforged.core.WLKits
-import ml.windleaf.wlkitsreforged.internal.JsonData
+import ml.windleaf.wlkitsreforged.internal.file.JsonData
 import ml.windleaf.wlkitsreforged.data.Data
 import ml.windleaf.wlkitsreforged.modules.Macro
 import ml.windleaf.wlkitsreforged.modules.macro.Exceptions.*

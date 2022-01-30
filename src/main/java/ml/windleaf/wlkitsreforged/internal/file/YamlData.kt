@@ -1,4 +1,4 @@
-package ml.windleaf.wlkitsreforged.internal
+package ml.windleaf.wlkitsreforged.internal.file
 
 import ml.windleaf.wlkitsreforged.utils.FileUtil
 import ml.windleaf.wlkitsreforged.utils.Util
@@ -6,7 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration
 import kotlin.collections.ArrayList
 
 /**
- * YamlData class saves `.yml` internal
+ * YamlData class saves `.yml` data
  */
 class YamlData(private val name: String) : DataFile<YamlConfiguration> {
     private lateinit var yaml: YamlConfiguration
