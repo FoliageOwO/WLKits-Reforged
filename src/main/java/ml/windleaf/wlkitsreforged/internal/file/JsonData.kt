@@ -1,7 +1,7 @@
 package ml.windleaf.wlkitsreforged.internal.file
 
 import com.alibaba.fastjson.JSON
-import com.google.gson.JsonSyntaxException
+import com.alibaba.fastjson.JSONException
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.data.Data
 import ml.windleaf.wlkitsreforged.utils.FileUtil
@@ -20,7 +20,7 @@ class JsonData(private val name: String) : DataFile<HashMap<String, Any?>> {
         inline fun <reified T> parse(str: String): T {
             val cls = T::class.java
             var result: T = JSON.parseObject("{}", cls)
-            Util.catch(JsonSyntaxException::class.java,
+            Util.catch(JSONException::class.java,
                 {
                     result = JSON.parseObject(str, cls)
                 }, {

@@ -13,6 +13,7 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import kotlin.reflect.typeOf
 
 @Suppress("UNCHECKED_CAST")
 @MacroInfo(path = "player.manage", description = "Manages a player", args = ["player", "action", "args"])
@@ -69,7 +70,7 @@ class PlayerManageMacro : MacroEntire<Unit> {
                     }
                 },
                 { e ->
-                    throw MacroException("error happened when running action `${action.string}`: ${e.message}", e)
+                    throw MacroException("error occurred while running action `${action.string}`: ${e.message}", e)
                 }
             )
         }
@@ -79,7 +80,11 @@ class PlayerManageMacro : MacroEntire<Unit> {
         val value = map["player"] as String
         action = Util.getPlayerActionByString(map["action"] as String)
         player = Util.getPlayerBy(value) ?: throw Exceptions.PlayerNotFoundException("player `$value` not found")
-        args = map["args"] as Map<String, Any>
+        try {
+            args = map["args"] as Map<String, Any>
+        } catch (e: ClassCastException) {
+            throw Exceptions.ArgumentException("args must be a json object, not `${map["args"]?.javaClass?.simpleName}`")
+        }
     }
 
     private fun run(vararg args: Any) = action.run(args as Array<Any>)

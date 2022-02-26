@@ -62,7 +62,7 @@ class MacroManager {
             val needArguments = arrayListOf<String>()
             macroArgs.forEach { if (!map.containsKey(it)) needArguments.add(it) }
             WLKits.debug("Need args: ${needArguments.joinToString(", ")}")
-            throw ArgumentException("argument(s) `${needArguments.joinToString(", ")}` is(are) not found")
+            throw ArgumentException("argument(s) `${needArguments.joinToString(", ")}` not found")
         }
     }
 
@@ -101,7 +101,7 @@ class MacroManager {
     fun <T> executeMacro(macro: MacroEntire<T>): T? {
         return Util.catch(Exception::class.java,
             { macro.execute() },
-            { throw MacroException("an exception happened when running macro", it) }
+            { throw MacroException("an exception occurred while running macro: ${it.message}", it) }
         )
     }
 

@@ -30,6 +30,13 @@ class PlayerInType(val type: TypeEnum, val player: ServerOperator, val playerTyp
     }
 
     /**
+     * Gets the player, without judge online or offline
+     *
+     * @return the player, an online player or an offline player
+     */
+    fun getPlayer(): OfflinePlayer? = this.getOnlinePlayer() ?: this.getOfflinePlayer()
+
+    /**
      * All value types
      */
     enum class TypeEnum {
