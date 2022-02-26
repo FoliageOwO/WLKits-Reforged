@@ -40,7 +40,7 @@ object Util {
     fun translateColorCode(s: String?) = s?.replace("&", "§")
 
     /**
-     * Gets the message prefix of the plugin
+     * Gets the message prefix of the module
      *
      * @return the prefix
      */
