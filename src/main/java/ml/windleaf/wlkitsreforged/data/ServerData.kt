@@ -3,7 +3,7 @@ package ml.windleaf.wlkitsreforged.data
 import org.bukkit.Server
 
 /**
- * The server data internal, saves information of server
+ * The server data, saves information of server
  */
 @Suppress("UNUSED")
 data class ServerData(val server: Server, override val T: Class<*> = Server::class.java) : Data {

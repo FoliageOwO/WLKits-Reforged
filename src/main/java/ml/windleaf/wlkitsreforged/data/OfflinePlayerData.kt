@@ -1,11 +1,11 @@
 package ml.windleaf.wlkitsreforged.data
 
-import ml.windleaf.wlkitsreforged.internal.file.JsonData
+import ml.windleaf.wlkitsreforged.others.saving.JsonData
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.OfflinePlayer
 
 /**
- * The offline player internal, only for the offline players
+ * The offline player data, only for the offline players
  */
 @Suppress("UNUSED")
 data class OfflinePlayerData(val p: OfflinePlayer,

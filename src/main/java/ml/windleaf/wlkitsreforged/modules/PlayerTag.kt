@@ -7,7 +7,7 @@ import ml.windleaf.wlkitsreforged.core.enums.LoadType
 import ml.windleaf.wlkitsreforged.core.module.Module
 import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleCommand
 import ml.windleaf.wlkitsreforged.core.module.commanding.ModuleTabCompleter
-import ml.windleaf.wlkitsreforged.internal.file.JsonData
+import ml.windleaf.wlkitsreforged.others.saving.JsonData
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender

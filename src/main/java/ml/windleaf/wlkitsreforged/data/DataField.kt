@@ -1,7 +1,7 @@
 package ml.windleaf.wlkitsreforged.data
 
 /**
- * The internal field annotation
+ * The data field annotation
  */
 @Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
