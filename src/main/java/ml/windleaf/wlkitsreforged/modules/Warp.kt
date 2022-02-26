@@ -21,6 +21,7 @@ class Warp : Module {
         lateinit var list: JSONArray
         lateinit var publics: JSONArray
         lateinit var privates: JSONArray
+        var maxNameLength by Delegates.notNull<Int>()
 
         fun existsWarp(uuid: String, warpName: String, warpType: WarpType): Boolean {
             val nameList = arrayListOf<String>()
@@ -86,5 +87,6 @@ class Warp : Module {
         list = JSON.toJSON(warps.getAs<ArrayList<*>>("list")!!) as JSONArray
         publics = JSON.toJSON(warps.getAs<ArrayList<*>>("public")!!) as JSONArray
         privates = JSON.toJSON(warps.getAs<ArrayList<*>>("private")!!) as JSONArray
+        maxNameLength = Util.getModuleConfig(getName(), "max-name-length") as Int
     }
 }

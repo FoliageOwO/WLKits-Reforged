@@ -102,6 +102,10 @@ modules:
     # 默认 true
     broadcast: true
 
+    # 地标最大名称字符上限
+    # 默认 10
+    max-name-length: 10
+
   # [模块] 玩家称号
   playertag:
     # 是否启用该模块

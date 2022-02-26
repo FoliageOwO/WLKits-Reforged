@@ -19,7 +19,7 @@ class SetwarpCommand : ModuleCommand {
     override fun onCommand(sender: CommandSender, args: Array<String>) {
         if (args.isEmpty() || args.size < 2) Util.invalidArgs(sender)
         else {
-            if (args[0].length > 15) Util.send(sender, Util.getModuleMsg("Warp", "max-string"))
+            if (args[0].length > Warp.maxNameLength) Util.send(sender, Util.insert(Util.getModuleMsg("Warp", "max-string"), "length" to Warp.maxNameLength.toString()))
             else {
                 sender as Player
                 var type: Any = args[0]
