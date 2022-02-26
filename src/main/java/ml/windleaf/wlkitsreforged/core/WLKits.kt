@@ -1,10 +1,8 @@
 package ml.windleaf.wlkitsreforged.core
 
-import com.google.gson.Gson
 import ml.windleaf.wlkitsreforged.core.module.ModuleManager
 import ml.windleaf.wlkitsreforged.core.module.commanding.Commanding
 import ml.windleaf.wlkitsreforged.core.reflect.Reflector
-import ml.windleaf.wlkitsreforged.data.Data
 import ml.windleaf.wlkitsreforged.internal.file.YamlData
 import ml.windleaf.wlkitsreforged.utils.FileUtil
 import ml.windleaf.wlkitsreforged.utils.Util
@@ -48,14 +46,6 @@ class WLKits : JavaPlugin() {
          * in the debug mode, the plugin will print out all the debug information
          */
         var debug = false
-
-        /**
-         * The instance of [Gson], used to convert json to object and parse json
-         *
-         * @see Gson
-         * @see Data
-         */
-        val gson = Gson()
 
         /**
          * The instance of [Commanding], which used to process commands and tab completers

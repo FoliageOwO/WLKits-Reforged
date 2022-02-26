@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.internal.file
 
+import com.alibaba.fastjson.JSON
 import com.google.gson.JsonSyntaxException
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.data.Data
@@ -18,12 +19,12 @@ class JsonData(private val name: String) : DataFile<HashMap<String, Any?>> {
     companion object {
         inline fun <reified T> parse(str: String): T {
             val cls = T::class.java
-            var result: T = WLKits.gson.fromJson("{}", cls)
+            var result: T = JSON.parseObject("{}", cls)
             Util.catch(JsonSyntaxException::class.java,
                 {
-                    result = WLKits.gson.fromJson(str, cls)
+                    result = JSON.parseObject(str, cls)
                 }, {
-                    result = WLKits.gson.fromJson(if (cls.isArray) "[]" else "{}", cls)
+                    result = JSON.parseObject(if (cls.isArray) "[]" else "{}", cls)
                 }
             )
             return result
@@ -31,7 +32,7 @@ class JsonData(private val name: String) : DataFile<HashMap<String, Any?>> {
 
         fun toJson(obj: Any): String {
             WLKits.debug("Converting object ${obj::class.java}")
-            val json = if (obj is Data) obj.toJsonString() else WLKits.gson.toJson(obj)
+            val json = if (obj is Data) obj.toJsonString() else JSON.toJSONString(obj)
             WLKits.debug("Result json: $json")
             return json
         }

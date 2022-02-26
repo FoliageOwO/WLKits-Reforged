@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.modules.httpapi
 
+import com.alibaba.fastjson.JSON
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import ml.windleaf.wlkitsreforged.core.WLKits
@@ -33,7 +34,7 @@ open class Handler : HttpHandler {
                 val content = StringBuilder()
                 var line: String?
                 while (br.readLine().also { line = it } != null) content.append(line?.trim())
-                WLKits.gson.fromJson(content.toString(), HashMap::class.java)
+                JSON.parseObject(content.toString(), HashMap::class.java)
             }
         } catch (e: Exception) {
             return null

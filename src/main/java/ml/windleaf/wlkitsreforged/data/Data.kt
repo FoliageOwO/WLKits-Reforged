@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.data
 
+import com.alibaba.fastjson.JSON
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.utils.DataClassUtil.getDataFields
 import ml.windleaf.wlkitsreforged.utils.DataClassUtil.getFieldObject
@@ -28,6 +29,6 @@ interface Data {
         val map = hashMapOf<String, Any>()
         val fields = getDataFields(this::class.java)
         fields.forEach { map[it.name] = getFieldObject(it, this) }
-        return WLKits.gson.toJson(map)
+        return JSON.toJSONString(map)
     }
 }

@@ -1,5 +1,7 @@
 package ml.windleaf.wlkitsreforged.modules
 
+import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONArray
 import ml.windleaf.wlkitsreforged.core.module.Module
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.core.annotations.CommandInfo
@@ -25,7 +27,7 @@ class Macro : Module, ModuleCommand {
         var enabled by Delegates.notNull<Boolean>()
         val manager = MacroManager()
         val authorized = JsonData("macro_authorized")
-        lateinit var authedList: ArrayList<String>
+        lateinit var authedList: JSONArray
     }
 
     override fun setEnabled(target: Boolean) {
@@ -34,7 +36,7 @@ class Macro : Module, ModuleCommand {
 
     override fun load() {
         enabled = Util.isEnabled(getName())
-        authedList = authorized.getAs("authed")!!
+        authedList = JSON.toJSON(authorized.getAs<ArrayList<*>>("authed")!!) as JSONArray
         Companion.enabled = enabled
     }
 
