@@ -5,14 +5,14 @@ import ml.windleaf.wlkitsreforged.data.DataField
 import java.lang.reflect.Field
 
 /**
- * The internal class util object
+ * The data class util object
  */
 object DataClassUtil {
     /**
-     * Gets the fields which annotated [DataField] of the internal class
+     * Gets the fields which annotated [DataField] of the data class
      *
-     * @param cls the internal class
-     * @return the all internal fields
+     * @param cls the data class
+     * @return the all data fields
      * @see DataField
      */
     fun getDataFields(cls: Class<*>): ArrayList<Field> {

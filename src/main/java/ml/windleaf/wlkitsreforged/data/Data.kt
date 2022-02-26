@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull
  */
 interface Data {
     /**
-     * The type `T` class of the internal
+     * The type `T` class of the data
      */
     val T: Class<*>
 

@@ -8,7 +8,7 @@ import ml.windleaf.wlkitsreforged.core.module.Module
 import ml.windleaf.wlkitsreforged.core.module.ModuleManager
 import ml.windleaf.wlkitsreforged.core.reflect.Reflector
 import ml.windleaf.wlkitsreforged.core.reflect.versions.V1_16_R3
-import ml.windleaf.wlkitsreforged.internal.PlayerInType
+import ml.windleaf.wlkitsreforged.others.PlayerInType
 import ml.windleaf.wlkitsreforged.modules.enums.PlayerAction
 import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil
 import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil.Test

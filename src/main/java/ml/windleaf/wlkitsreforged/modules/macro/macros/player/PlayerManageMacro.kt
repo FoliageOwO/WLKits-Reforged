@@ -1,6 +1,6 @@
 package ml.windleaf.wlkitsreforged.modules.macro.macros.player
 
-import ml.windleaf.wlkitsreforged.internal.PlayerInType
+import ml.windleaf.wlkitsreforged.others.PlayerInType
 import ml.windleaf.wlkitsreforged.core.enums.PlayerType
 import ml.windleaf.wlkitsreforged.modules.enums.PlayerAction
 import ml.windleaf.wlkitsreforged.modules.enums.PlayerAction.*
@@ -13,7 +13,6 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import kotlin.reflect.typeOf
 
 @Suppress("UNCHECKED_CAST")
 @MacroInfo(path = "player.manage", description = "Manages a player", args = ["player", "action", "args"])

@@ -1,12 +1,12 @@
 package ml.windleaf.wlkitsreforged.data
 
-import ml.windleaf.wlkitsreforged.internal.file.JsonData
+import ml.windleaf.wlkitsreforged.others.saving.JsonData
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
 
 /**
- * The online player internal, only for online players
+ * The online player data, only for online players
  */
 @Suppress("UNUSED")
 data class OnlinePlayerData(val p: Player,
@@ -78,7 +78,7 @@ data class OnlinePlayerData(val p: Player,
     val locale = p.locale
 
     /**
-     * The location internal of player
+     * The location data of player
      *
      * @see LocationData
      */

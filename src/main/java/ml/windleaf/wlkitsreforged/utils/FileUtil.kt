@@ -1,7 +1,7 @@
 package ml.windleaf.wlkitsreforged.utils
 
 import ml.windleaf.wlkitsreforged.core.WLKits
-import ml.windleaf.wlkitsreforged.internal.file.DataType
+import ml.windleaf.wlkitsreforged.others.saving.DataType
 import java.io.*
 
 /**

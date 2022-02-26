@@ -1,10 +1,10 @@
 package ml.windleaf.wlkitsreforged.data
 
-import ml.windleaf.wlkitsreforged.internal.file.JsonData
+import ml.windleaf.wlkitsreforged.others.saving.JsonData
 import org.bukkit.Location
 
 /**
- * The location internal, saves the location
+ * The location data, saves the location
  */
 @Suppress("UNUSED")
 data class LocationData(val l: Location,
