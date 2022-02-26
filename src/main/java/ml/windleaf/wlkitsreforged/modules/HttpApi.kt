@@ -48,9 +48,7 @@ class HttpApi : Module {
     }
 
     override fun unload() {
-        if (enabled) {
-            server.stop(0)
-            WLKits.log("&aHTTP API Server stopped.")
-        }
+        server.stop(0)
+        WLKits.log("&aHTTP API Server stopped.")
     }
 }
