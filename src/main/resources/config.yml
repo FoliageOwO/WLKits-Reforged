@@ -1,50 +1,152 @@
-# WLKits-Reforged 配置文件
+# WLKits-Reforged v0.2.3 配置文件
+# 模块对应的相关消息在 message.yml 配置
 
-modules: # 所有的模块
-  main: # WLKits
-    debug: false # 启用 WLKits 的 debug 模式
-  anticreeper: # 防止苦力怕爆炸破坏地形
+# 所有的模块配置
+modules:
+  # [模块] 主插件的相关配置
+  main:
+    # 是否启用 WLKits 的 debug 调试模式
+    # 注意, 开启后服务器后台将会有很多调试信息, 请谨慎开启
+    # 默认 false
+    debug: false
+
+  # [模块] 防止苦力怕爆炸破坏地形
+  anticreeper:
+    # 是否启用该模块
+    # 默认 true
     enabled: true
-    notice: false # 是否在控制台提示
-  disenchant: # 转移附魔到附魔书
+
+    # 是否在控制台显示防止爆炸的提示
+    # 默认 false
+    notice: false
+
+  # [模块] 附魔书转移
+  disenchant:
+    # 是否启用该模块
+    # 默认 true
     enabled: true
-  joininfo: # 显示玩家加入或离开
-    enabled: true # 如果关闭则会显示原版加入离开提示
-  backdeath: # 返回上一次死亡地点
+
+  # [模块] 玩家加入离开服务器信息
+  joininfo:
+    # 是否启用该模块
+    # 如果关闭则会显示原版的加入离开提示
+    # 默认 true
     enabled: true
-  back: # 返回上一个地点
+
+  # [模块] 返回死亡点
+  # 和 back 模块功能有相似之处
+  backdeath:
+    # 是否启用该模块
+    # 默认 true
     enabled: true
-  home: # 家
+
+  # [模块] 返回上一个地点
+  back:
+    # 是否启用该模块
+    # 默认 true
     enabled: true
-    set-more: false # 设置家的时候把玩家的 yaw, pitch (朝向) 同时记录
-  suicide: # 自杀
+
+  # [模块] 家管理
+  home:
+    # 是否启用该模块
+    # 默认 true
     enabled: true
-    use-vanilla: false # 如果开启则会显示玩家掉出世界或玩家死亡, 而不是显示插件自定义死亡信息
-  skipnight: # 跳过夜晚
+
+    # 是否在设置家的时候把玩家的朝向等数据同时记录
+    # 如果关闭, 传送家的时候只会传送坐标, 不会附带朝向等
+    # 默认 false
+    set-more: false
+
+  # [模块] 允许玩家自杀
+  # 创造等模式无效
+  suicide:
+    # 是否启用该模块
+    # 默认 true
     enabled: true
-    percent: 100 # 跳过夜晚需要的睡觉玩家的占比 (范围 0~100, 表示 0%~100%), 如果为 0 则只要有一名玩家睡觉则会跳过夜晚
-  tpa: # 传送
+
+  # [模块] 跳过夜晚
+  skipnight:
+    # 是否启用该模块
+    # 默认 true
     enabled: true
-  warp: # 地标点
+
+    # 跳过夜晚需要的睡觉玩家占比
+    # 范围为 0~100, 表示 0%~100%
+    # 如果为 0 则只要有一名玩家睡觉就会跳过夜晚
+    # 默认 100
+    percent: 100
+
+  # [模块] 传送请求
+  tpa:
+    # 是否启用该模块
+    # 默认 true
     enabled: true
-    set-more: false # 设置地标点的时候把玩家的 yaw, pitch (朝向) 同时记录
-    allow-public: false # 是否允许非管理员设置或删除公用地标点
-    broadcast: true # 设置或删除公用地标点后是否在全服广播
-  playertag: # 玩家称号
+
+  # [模块] 地标点
+  warp:
+    # 是否启用该模块
+    # 默认 true
     enabled: true
-    format: '{tag} ' # 称号格式, 例 '[OP] Steve'
-  schedulenotice: # 定时公告 公告请配置 message.yml
+
+    # 是否在设置地标点的时候把玩家的朝向等数据同时记录
+    # 和 home 的 set-more 一样
+    # 默认 false
+    set-more: false
+
+    # 是否允许非 OP 设置或删除共用地标点
+    # 注意, 开启代表任意玩家都可以设置或删除地标点, 请谨慎开启
+    # 默认 false
+    allow-public: false
+
+    # 设置或删除共用地标点后是否在全服通知
+    # 默认 true
+    broadcast: true
+
+  # [模块] 玩家称号
+  playertag:
+    # 是否启用该模块
+    # 默认 true
+    enabled: true
+
+    # 称号格式
+    # 即在聊天栏, TAB, 计分板上显示的名字
+    # 可用占位符: [tag: 称号]
+    # 默认 '{tag} '
+    format: '{tag} '
+
+  # [模块] 定时公告
+  schedulenotice:
+    # 是否启用该模块
+    # 默认 false
     enabled: false
-    interval: 120 # 定时公告的间隔 (单位: 秒)
-  httpapi: # HTTP API
+
+    # 定时公告的间隔
+    # 单位为秒
+    # 默认 120 (即 2 分钟)
+    interval: 120
+
+  # [模块] 对外开放的 HTTP API
+  httpapi:
+    # 是否启用该模块
+    # 默认 false
     enabled: false
-    port: 8080 # 端口
-    pool: 10 # 线程池
-    token: '' # 固定 Token, 填空代表随机生成
+
+    # API 的端口
+    # 默认 25555
+    port: 25555
+
+    # 线程池大小
+    # 默认 10
+    pool: 10
+
+    # 验证时需要的 Token
+    # 填空字符串 '' 代表随机生成, 否则代表固定的 Token
+    # 默认 ''
+    token: ''
 
   # [模块] 提到玩家高亮
   mention:
-    # 是否开启该模块
+    # 是否启用该模块
     # 默认 true
     enabled: true
 
@@ -75,7 +177,15 @@ modules: # 所有的模块
     # 提到全体同时生效
     # 默认 true
     sound-notice: true
-  wlkitscommands: # WLKits 命令集合
+
+  # [模块] WLKits 插件管理
+  wlkitscommands:
+    # 是否启用该模块
+    # 默认 true
     enabled: true
-  macro: # 宏指令
+
+  # [模块] 宏指令
+  macro:
+    # 是否启用该模块
+    # 默认 true
     enabled: true

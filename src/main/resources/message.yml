@@ -1,93 +1,266 @@
-# WLKits-Reforged 信息配置文件
+# WLKits-Reforged v0.2.3 消息配置文件
 # 使用 & 代替 §
 
+# [模块] 主插件的相关配置
 main:
+  # 必须要玩家执行的错误提示
   must-player: '&c这个命令只能由玩家使用!'
+
+  # 确定按钮
   confirm: '&a确定'
+
+  # 取消按钮
   cancel: '&c取消'
+
+  # 模块被禁用的错误提示
   disabled: '&c此功能已被禁用!'
+
+  # 命令参数错误的错误提示
   invalid-args: '&c命令参数错误!'
+
+  # 重载 WLKits 插件完毕的提示
   reload: '&a重载成功!'
+
+  # 模块开启状态
+  # 开启状态使用下面的 true 和 false
+  # 可用占位符: [moduleName: 模块名, status: 开启状态]
   status: '&f模块 &6{moduleName} &f的开启状态: {status}'
+
+  # 模块不存在的错误提示
+  # 可用占位符: [moduleName: 模块名]
   module-not-found: '&c没有叫做 &6{moduleName} &c的模块!'
+
+  # 玩家不存在的错误提示
+  # 可用占位符: [playerName: 玩家名]
   player-not-found: '&c玩家 &6{playerName} &c不存在!'
+
+  # 执行命令或者触发事件的错误提示
   error: '&c执行该动作时发生了内部错误, 请联系管理员!'
+
+  # status 的 true
   true: '&a✔&r'
+
+  # status 的 false
   false: '&c✖&r'
+
+# [模块] 返回死亡点
 backdeath:
+  # 返回失败的提示
   fail: '&c无法返回上一个死亡点!'
+
+  # 返回成功的提示
   success: '&a返回成功!'
+
+# [模块] 附魔书转移
 disenchant:
+  # 转移失败的提示
   fail: '&c转移失败!'
+
+  # 转移成功的提示
   success: '&a转移成功!'
+
+  # 转移后附魔书的标识
+  # 显示在物品名下方
+  # 可用占位符: [playerName: 玩家名]
   lore: '&a此物品是玩家 &6{playerName} &a转移后的附魔书'
-  menu-display-name: '&bDisenchant 菜单'
+
+  # 转移菜单的名字
+  menu-display-name: '&b转移附魔'
+
+  # 确定按钮的标识
   click-to-confirm: '&a点击以确认转移附魔'
+
+  # 取消按钮的标识
   click-to-cancel: '&c点击以取消'
+
+  # 转移附魔书的名字
   book-display-name: '&5转移附魔书'
+
+  # 转移附魔书的标识
   book-lore: '&a右键打开转移附魔菜单'
+
+  # 物品没有附魔, 转移失败的提示
   no-enchantment: '&c物品没有附魔, 无法转移!'
+
+# [模块] 玩家加入离开服务器信息
 joininfo:
+  # 玩家加入服务器的消息
+  # 可用占位符: [playerName: 玩家名, uuid: 玩家 UUID, ip: 玩家 IP]
   join: '&a[+] 玩家 {playerName} 加入了服务器!'
+
+  # 玩家离开服务器的消息
+  # 可用占位符: [playerName: 玩家名, uuid: 玩家 UUID, ip: 玩家 IP]
   quit: '&c[-] 玩家 {playerName} 离开了服务器!'
+
+  # 玩家加入服务器的消息, 显示给服务器后台
+  # 可用占位符: [playerName: 玩家名, uuid: 玩家 UUID, ip: 玩家 IP]
   console-join: '&a玩家 {playerName} ({uuid}) [{ip}] 加入了服务器!'
+
+  # 玩家离开服务器的消息, 显示给服务器后台
+  # 可用占位符: [playerName: 玩家名, uuid: 玩家 UUID, ip: 玩家 IP]
   console-quit: '&c玩家 {playerName} ({uuid}) [{ip}] 离开了服务器!'
+
+# [模块] 返回上一个地点
 back:
+  # 返回成功提示
   success: '&a成功返回上一位置!'
+
+  # 返回失败提示
   fail: '&c无法返回上一位置!'
+
+# [模块] 家管理
 home:
+  # 重复设置提示
   redo: '&c你已经设置过家了, 不能重复设置! 你可以使用 &6/delhome &c删除家!'
+
+  # 设置成功提示
   success: '&a设置家成功, 你以后可以使用 &6/home &a来回家了!'
+
+  # 回家提示
   back-home: '&a回家成功!'
+
+  # 玩家没有设置家提示
   no-home: '&c你还没有家, 快去使用 &6/sethome &c设置一个吧!'
+
+  # 删除家提示
   delete: '&a删除家成功!'
-suicide:
-  msg: '&c玩家 &6{playerName} &c结束了自己的生命'
+
+# [模块] 跳过夜晚
 skipnight:
+  # 还需要玩家提示
+  # 可用占位符: [onBed: 正在睡觉玩家数量, needPlayers: 需要玩家数量]
   msg-need: '&b当前已有 &a{onBed} &b名玩家睡觉, 还差 &e{needPlayers} &b名玩家.'
+
+  # 跳过成功提示
   msg-ok: '&a今晚将在睡梦中度过.'
+
+# [模块] 传送请求
 tpa:
+  # 查看帮助提示
   help: '&a请使用 &6/tpahelp &a查看帮助!'
+
+  # 不能传送自己提示
   self-tpa: '&c你不能给自己发送传送请求!'
+
+  # TPA 传送请求接收方消息
+  # 可用占位符: [sender: 发送方名字]
   receiver-lines:
     - '&a你有一个待接受的传送请求:'
     - '&a玩家 {sender} &a想传送到你这里,'
     - '&a接受请求: &2/tpaccept&a, 拒绝请求: &4/tpadeny&a.'
+
+  # TPA 传送请求发送方消息
+  # 可用占位符: [receiver: 接收方名字]
   sender-lines:
     - '&a已向玩家 {receiver} &a发送一个传送请求, 等待对方接受!'
     - '&a想要取消这个传送请求, 你可以输入 &6/tpacancel&a.'
+
+  # 没有请求提示
   no-request: '&c你没有待处理的传送请求!'
+
+  # 接受请求提示
   accept: '&a传送中...'
+
+  # 接收方拒绝传送提示
   deny: '&c玩家拒绝传送, 传送失败!'
+
+  # 发送方取消传送提示
   cancel: '&a已取消传送请求!'
+
+# [模块] 地标点
 warp:
+  # 地标点最大名称上限
   max-string: '&c最大名称上限为 &615 &c个字符!'
+
+  # 已经存在提示
+  # 可用占位符: [name: 地标名]
   already-exists: '&c地标 &6{name} &c已存在, 无法重复创建!'
+
+  # 创建成功提示
+  # 可用占位符: [name: 地标名]
   success: '&a创建地标点 &6{name} &a成功!'
+
+  # 未知地标类型提示
+  # 可用占位符: [type: 玩家输入的地标类型]
   unknown-type: '&c未知的地标类型 &6{type}&c, 请使用 &6/setwarp [public/private] [name] &c设置地标点!'
+
+  # 创建共用地标消息全服广播
+  # 可用占位符: [playerName: 玩家名, name: 地标名]
   broadcast-lines:
     - '&a玩家 &6{playerName} &a新建了一个地标点: &9{name}&a,'
     - '&a使用 &6/warp {name} &a传送到该地标点.'
+
+  # 创建失败提示
   fail: '&c创建地标点失败!'
+
+  # 传送到地标成功提示
+  # 可用占位符: [name: 地标名]
   tp-success: '&a成功传送到地标 &6{name}&a!'
+
+  # 传送失败, 私人地标提示
   tp-private: '&c这是一个私人地标, 无法传送!'
+
+  # 传送失败, 找不到地标提示
+  # 可用占位符: [name: 地标名]
   not-found: '&c没有叫做 &6{name} &c的地标!'
+
+  # 没有可传送的地标提示
   no-warps: '&c没有可传送的地标, 快去创建一个地标吧!'
+
+  # 删除地标成功提示
+  # 可用占位符: [name: 地标名]
   del-success: '&a成功删除地标 &6{name}&a!'
+
+  # 删除公共地标消息全服广播
+  # 可用占位符: [playerName: 玩家名, name: 地标名]
   del-broadcast: '&c玩家 &6{playerName} &c删除了地标点 &9{name}&c!'
+
+  # 删除失败, 不是私人地标的主人提示
   del-private: '&c你不是这个私人地标的主人, 无法删除!'
+
+  # 无法操作公用地标提示
   cannot-public: '&c你不是管理员, 无法操作公有地标!'
+
+# [模块] 玩家称号
 playertag:
+  # 玩家无称号提示
+  # 可用占位符: [playerName: 玩家名]
   no-tag: '&c玩家 &6{playerName} &c没有称号!'
+
+  # 设置称号成功提示
+  # 可用占位符: [playerName: 玩家名, tag: 称号]
   set-success: '&a成功将玩家 &6{playerName} &a的称号设置为 &r{tag}&a!'
-  reset-success: '&a玩家 &6{playerName} &a称号/名称重置成功!'
+
+  # 重置称号成功
+  # 可用占位符: [playerName: 玩家名]
+  reset-success: '&a玩家 &6{playerName} &a称号重置成功!'
+
+  # 获取玩家称号
+  # 可用占位符: [playerName: 玩家名, tag: 称号]
   get: '&a玩家 &6{playerName} &a的称号为: &r{tag}&a.'
+
+# [模块] 定时公告
 schedulenotice:
+  # 公告内容
   notice-lines:
-    - ''
-    - ''
+    - '[公告] &a这是一条默认公告'
+    - '[公告] &d在 message.yml 设置公告内容'
+
+# [模块] 宏指令
 macro:
+  # 授权状态查询
+  # 授权状态使用上面的 main 中的 true 和 false
+  # 可用占位符: [playerName: 玩家名, authed: 授权状态]
   authed: '&a玩家 &6{playerName} &a的授权状态: {authed}'
+
+  # 宏运行成功提示
+  # 可用占位符: [result: 运行结果]
   success: '&a运行成功: &r{result}'
+
+  # 宏运行失败提示
+  # 可用占位符: [errorMsg: 错误消息]
   error: '&c运行失败: &r{errorMsg}'
+
+  # 宏运行无结果
+  # 即上面的运行结果
   no-result: '&8<无结果>'

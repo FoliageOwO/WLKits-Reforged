@@ -7,6 +7,7 @@ import ml.windleaf.wlkitsreforged.core.annotations.ModuleInfo
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
@@ -24,28 +25,20 @@ class JoinInfo : Module, Listener {
     }
 
     @EventHandler
-    fun onPlayerJoinEvent(e: PlayerJoinEvent) {
-        if (enabled) {
-            val player = e.player
-            e.joinMessage = ""
-            val pn = "playerName" to player.name
-            val uuid = "uuid" to Util.getUUID(player)!!
-            val ip = "ip" to player.address.toString()
-            WLKits.log(Util.insert(Util.getModuleMsg(getName(), "console-join"), pn, uuid, ip)!!)
-            Util.broadcastPlayers(Util.insert(Util.getModuleMsg(getName(), "join"), pn, uuid, ip))
-        }
-    }
+    fun onPlayerJoinEvent(e: PlayerJoinEvent) = this.send(e, "Join")
 
     @EventHandler
-    fun onPlayerQuitEvent(e: PlayerQuitEvent) {
+    fun onPlayerQuitEvent(e: PlayerQuitEvent) = this.send(e, "Quit")
+
+    private fun send(e: PlayerEvent, type: String) {
         if (enabled) {
             val player = e.player
-            e.quitMessage = ""
+            e.javaClass.getMethod("set${type}Message", String::class.java).invoke(e, "")
             val pn = "playerName" to player.name
             val uuid = "uuid" to Util.getUUID(player)!!
             val ip = "ip" to player.address.toString()
-            WLKits.log(Util.insert(Util.getModuleMsg(getName(), "console-quit"), pn, uuid, ip)!!)
-            Util.broadcastPlayers(Util.insert(Util.getModuleMsg(getName(), "quit"), pn, uuid, ip))
+            WLKits.log(Util.insert(Util.getModuleMsg(getName(), "console-${type.lowercase()}"), pn, uuid, ip)!!)
+            Util.broadcastPlayers(Util.insert(Util.getModuleMsg(getName(), type.lowercase()), pn, uuid, ip))
         }
     }
 }

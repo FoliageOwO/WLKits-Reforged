@@ -34,10 +34,6 @@ class Suicide : Module, Listener, ModuleCommand {
         if (enabled && Util.hasPermission(e.entity, Permission("wlkits.cmd.suicide"))) {
             val player = e.entity
             if (player in suicideList) {
-                if (!(Util.getModuleConfig(getName(), "use-vanilla") as Boolean)) {
-                    e.deathMessage = ""
-                    Util.broadcastPlayers(Util.insert(Util.getModuleMsg(getName(), "msg"), "playerName" to player.name))
-                }
                 suicideList.remove(player)
             }
         }
