@@ -53,6 +53,16 @@ class WLKits : JavaPlugin() {
         val commanding = Commanding()
 
         /**
+         * TRUE for status
+         */
+        lateinit var TRUE: String
+
+        /**
+         * FALSE for status
+         */
+        lateinit var FALSE: String
+
+        /**
          * Prints out the message without [Reflector]
          */
         fun log(any: Any) = log(null, any)
@@ -106,6 +116,10 @@ class WLKits : JavaPlugin() {
         FileUtil.saveResource("macro_authorized.json")
         message = YamlData("message")
         reload()
+
+        // Loads status
+        TRUE = Util.getModuleMsg("main", "true")
+        FALSE = Util.getModuleMsg("main", "false")
 
         // Loads all modules
         ModuleManager.init()

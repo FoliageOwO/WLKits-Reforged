@@ -62,7 +62,7 @@ class WLKitsCommands : Module, ModuleCommand, ModuleTabCompleter {
                         val n = args[1]
                         val module = Util.getModuleByName(n)
                         if (module == null) Util.send(sender, Util.insert(Util.getModuleMsg("main", "module-not-found"), "moduleName" to n))
-                        else Util.send(sender, Util.insert(Util.getModuleMsg("main", "status"), "moduleName" to n, "status" to if (module.getEnabled()) "&aTRUE" else "&cFALSE"))
+                        else Util.send(sender, Util.insert(Util.getModuleMsg("main", "status"), "moduleName" to n, "status" to Util.parseBooleanColor(module.getEnabled())))
                     }
                 }
                 "info" -> getInfo().forEach { Util.send(sender, it) }

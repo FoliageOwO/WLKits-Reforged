@@ -1,15 +1,14 @@
 package ml.windleaf.wlkitsreforged.utils
 
-import ml.windleaf.wlkitsreforged.internal.PlayerInType
-import ml.windleaf.wlkitsreforged.core.enums.PermissionType
-import ml.windleaf.wlkitsreforged.core.module.Module
-import ml.windleaf.wlkitsreforged.core.module.ModuleManager
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.core.annotations.Permission
 import ml.windleaf.wlkitsreforged.core.enums.PlayerType
+import ml.windleaf.wlkitsreforged.core.enums.Versions
+import ml.windleaf.wlkitsreforged.core.module.Module
+import ml.windleaf.wlkitsreforged.core.module.ModuleManager
 import ml.windleaf.wlkitsreforged.core.reflect.Reflector
 import ml.windleaf.wlkitsreforged.core.reflect.versions.V1_16_R3
-import ml.windleaf.wlkitsreforged.core.enums.Versions
+import ml.windleaf.wlkitsreforged.internal.PlayerInType
 import ml.windleaf.wlkitsreforged.modules.enums.PlayerAction
 import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil
 import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil.Test
@@ -25,7 +24,6 @@ import java.lang.reflect.Modifier
 import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.jvm.Throws
 
 /**
  * The util object, which includes some useful functions
@@ -174,8 +172,7 @@ object Util {
      * @param boolean the boolean value
      * @return string
      */
-    fun parseBooleanColor(boolean: Boolean) =
-        if (boolean) getModuleMsg("main", "true") else getModuleMsg("main", "false")
+    fun parseBooleanColor(boolean: Boolean) = if (boolean) WLKits.TRUE else WLKits.FALSE
 
     /**
      * A shortcut to register event
