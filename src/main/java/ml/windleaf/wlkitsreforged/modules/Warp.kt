@@ -1,5 +1,6 @@
 package ml.windleaf.wlkitsreforged.modules
 
+import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import ml.windleaf.wlkitsreforged.core.annotations.ModuleInfo
@@ -81,8 +82,8 @@ class Warp : Module {
     override fun load() {
         enabled = Util.isEnabled(getName())
         Companion.enabled = enabled
-        list = warps.getAs("list")!!
-        publics = warps.getAs("public")!!
-        privates = warps.getAs("private")!!
+        list = JSON.toJSON(warps.getAs<ArrayList<*>>("list")!!) as JSONArray
+        publics = JSON.toJSON(warps.getAs<ArrayList<*>>("public")!!) as JSONArray
+        privates = JSON.toJSON(warps.getAs<ArrayList<*>>("private")!!) as JSONArray
     }
 }
