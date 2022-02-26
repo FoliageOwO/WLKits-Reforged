@@ -113,20 +113,6 @@ object Util {
     fun invalidArgs(p: CommandSender) = send(p, getModuleMsg("main", "invalid-args"))
 
     /**
-     * A shortcut to checks if the player has permission
-     *
-     * @param p the player to check
-     * @param name the module which includes the permission
-     * @param type the permission type
-     * @return true if the player has permission
-     * @see PermissionType
-     */
-    @Deprecated("Use Permission to check permission",
-        replaceWith = ReplaceWith("Util.hasPermission(p, Permission(name, type))",
-        imports = ["ml.windleaf.wlkitsreforged.core.annotations.Permission"]))
-    fun hasPermission(p: CommandSender, name: String, type: PermissionType) = p.hasPermission("wlkits.${type.string}.$name")
-
-    /**
      * A shortcut to checks if the command sender has permission
      *
      * @param s the command sender
@@ -225,23 +211,6 @@ object Util {
         var result = s
         pairs.forEach { result = result?.replace("{${it.first}}", it.second) }
         return result
-    }
-
-    /**
-     * Checks if the command sender has permission, else send message to command sender
-     *
-     * @param p the command sender
-     * @param name the module name
-     * @param type the permission type
-     * @see PermissionType
-     */
-    @Deprecated("Use Permission to check permission",
-        replaceWith = ReplaceWith("Util.needPermission(p, Permission(name, type))",
-        imports = ["ml.windleaf.wlkitsreforged.core.annotations.Permission"]))
-    fun needPermission(p: CommandSender, name: String, type: PermissionType): Boolean {
-        if (hasPermission(p, name, type)) return true
-        else send(p, getModuleMsg("main", "no-permission"))
-        return false
     }
 
     /**

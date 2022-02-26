@@ -9,22 +9,6 @@ import org.bukkit.permissions.ServerOperator
  * The PlayerInType class is for parse the player easily
  */
 class PlayerInType(val type: TypeEnum, val player: ServerOperator, val playerType: PlayerType, val value: String = "") {
-    companion object {
-        /**
-         * Gets the PlayerInType instance by uuid or name value
-         *
-         * @param value the uuid or name value
-         * @return the PlayerInType instance, null if the player not found
-         * @see TypeEnum
-         * @see Util.getPlayerBy
-         */
-        @Deprecated("Common way to get",
-            ReplaceWith("Util.getPlayerBy(value)", imports = ["ml.windleaf.wlkitsreforged.utils.Util"]))
-        fun getByValue(value: String): PlayerInType? {
-            return null
-        }
-    }
-
     /**
      * Gets the online player
      *
