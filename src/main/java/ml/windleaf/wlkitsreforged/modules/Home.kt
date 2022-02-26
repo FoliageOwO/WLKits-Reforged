@@ -12,7 +12,7 @@ class Home : Module {
     private var enabled = false
     override fun getEnabled() = enabled
     companion object {
-        val homes = JsonData("homes")
+        lateinit var homes: JsonData
         var enabled by Delegates.notNull<Boolean>()
     }
 
@@ -22,6 +22,7 @@ class Home : Module {
 
     override fun load() {
         enabled = Util.isEnabled(getName())
+        homes = JsonData("homes")
         Companion.enabled = enabled
     }
 }

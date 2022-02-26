@@ -26,7 +26,7 @@ class PlayerTag : Module, Listener, ModuleCommand, ModuleTabCompleter {
     private var enabled = false
     override fun getEnabled() = enabled
     companion object {
-        val playerTags = JsonData("playertags")
+        lateinit var playerTags: JsonData
         var enabled by Delegates.notNull<Boolean>()
         lateinit var scoreboard: Scoreboard
     }
@@ -37,6 +37,7 @@ class PlayerTag : Module, Listener, ModuleCommand, ModuleTabCompleter {
 
     override fun load() {
         enabled = Util.isEnabled(getName())
+        playerTags = JsonData("playertags")
         scoreboard = Bukkit.getScoreboardManager()?.mainScoreboard!!
         Companion.enabled = enabled
         Bukkit.getOnlinePlayers().forEach { setDisplayName(it) }

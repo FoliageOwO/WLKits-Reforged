@@ -27,7 +27,7 @@ class Macro : Module, ModuleCommand {
     companion object {
         var enabled by Delegates.notNull<Boolean>()
         val manager = MacroManager()
-        val authorized = JsonData("macro_authorized")
+        lateinit var authorized: JsonData
         lateinit var authedList: JSONArray
     }
 
@@ -37,6 +37,7 @@ class Macro : Module, ModuleCommand {
 
     override fun load() {
         enabled = Util.isEnabled(getName())
+        authorized = JsonData("macro_authorized")
         authedList = JSON.toJSON(authorized.getAs<ArrayList<*>>("authed")!!) as JSONArray
         Companion.enabled = enabled
     }

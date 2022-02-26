@@ -16,7 +16,7 @@ class Warp : Module {
     private var enabled = false
     override fun getEnabled() = enabled
     companion object {
-        val warps = JsonData("warps")
+        lateinit var warps: JsonData
         var enabled by Delegates.notNull<Boolean>()
         lateinit var list: JSONArray
         lateinit var publics: JSONArray
@@ -81,6 +81,7 @@ class Warp : Module {
 
     override fun load() {
         enabled = Util.isEnabled(getName())
+        warps = JsonData("warps")
         Companion.enabled = enabled
         list = JSON.toJSON(warps.getAs<ArrayList<*>>("list")!!) as JSONArray
         publics = JSON.toJSON(warps.getAs<ArrayList<*>>("public")!!) as JSONArray
