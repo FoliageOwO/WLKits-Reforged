@@ -41,16 +41,40 @@ modules: # 所有的模块
     port: 8080 # 端口
     pool: 10 # 线程池
     token: '' # 固定 Token, 填空代表随机生成
-  mention: # 提到玩家高亮
+
+  # [模块] 提到玩家高亮
+  mention:
+    # 是否开启该模块
+    # 默认 true
     enabled: true
-    prefix: '@' # 前缀
-    to-style: '&6&l' # 给被提到的玩家显示的样式
-    other-style: '&6' # 给其他玩家显示的高亮样式
-    all: true # 是否开启提到全员
-    all-msg: '{prefix}ALL' # 提到全员
-    all-style: '&b&l' # 全员提到的高亮样式
-    all-op: true # 提到全员是否需要 op
-    sound-notice: true # 提到玩家时是否播放声音提醒
+
+    # 玩家消息包含的字符, 触发提到玩家
+    # 可用占位符: [playerName: 玩家名]
+    # 默认 '{playerName}'
+    at-player: '{playerName}'
+
+    # 玩家消息包含的字符, 触发提到全体
+    # 用空字符串 '' 代表关闭提到全体功能
+    # 默认 '@EVERYONE'
+    at-all: '@EVERYONE'
+
+    # 显示给玩家的消息效果, 提到玩家
+    # 可用占位符: [playerName: 玩家名]
+    # 默认 '&a@&2{playerName}'
+    at-player-display: '&a@&2{playerName}'
+
+    # 显示给玩家的消息效果, 提到全体
+    # 默认 '&a@&2EVERYONE'
+    at-all-display: '&b@&3EVERYONE'
+
+    # 是否开启提到全体需要 OP 权限
+    # 默认 true
+    at-all-need-op: true
+
+    # 是否开启提到玩家给玩家声音提醒
+    # 提到全体同时生效
+    # 默认 true
+    sound-notice: true
   wlkitscommands: # WLKits 命令集合
     enabled: true
   macro: # 宏指令
