@@ -3,13 +3,12 @@ package ml.windleaf.wlkitsreforged.utils
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.core.annotations.Permission
 import ml.windleaf.wlkitsreforged.core.enums.PlayerType
-import ml.windleaf.wlkitsreforged.core.enums.Versions
-import ml.windleaf.wlkitsreforged.core.module.Module
-import ml.windleaf.wlkitsreforged.core.module.ModuleManager
+import ml.windleaf.wlkitsreforged.core.enums.Version
+import ml.windleaf.wlkitsreforged.modules.Module
+import ml.windleaf.wlkitsreforged.modules.ModuleManager
 import ml.windleaf.wlkitsreforged.core.reflect.Reflector
 import ml.windleaf.wlkitsreforged.core.reflect.versions.V1_16_R3
-import ml.windleaf.wlkitsreforged.others.PlayerInType
-import ml.windleaf.wlkitsreforged.modules.enums.PlayerAction
+import ml.windleaf.wlkitsreforged.modules.categories.manage.macro.macros.player.PlayerAction
 import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil
 import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil.Test
 import org.bukkit.Bukkit
@@ -246,7 +245,7 @@ object Util {
         }
 
         val result: Reflector = try {
-            Versions.valueOf(nmsVersion.uppercase()).reflector
+            Version.valueOf(nmsVersion.uppercase()).reflector
         } catch (e: IllegalArgumentException) { V1_16_R3() }
 
         WLKits.debug(ref = result, "NMS: $nmsVersion -> $result")
@@ -345,37 +344,37 @@ object Util {
      * @param uuidOrName uuid or name
      * @return the PlayerInType instance, null if player not found
      */
-    fun getPlayerBy(uuidOrName: String): PlayerInType? {
+    fun getPlayerBy(uuidOrName: String): PlayerParser? {
         var playerType: PlayerType = PlayerType.OFFLINE
-        var type: PlayerInType.TypeEnum = PlayerInType.TypeEnum.NAME
+        var type: PlayerParser.TypeEnum = PlayerParser.TypeEnum.NAME
         var temp: OfflinePlayer? = Bukkit.getPlayer(uuidOrName)
 
         catch(IllegalArgumentException::class.java,
             {
                 if (temp == null) {
                     temp = Bukkit.getPlayer(UUID.fromString(uuidOrName))
-                    type = PlayerInType.TypeEnum.UUID
+                    type = PlayerParser.TypeEnum.UUID
                 }
                 playerType = PlayerType.ONLINE
             },
             {
                 temp = null
-                type = PlayerInType.TypeEnum.NAME
+                type = PlayerParser.TypeEnum.NAME
             })
         if (temp == null) {
             Bukkit.getOfflinePlayers().forEach {
                 playerType = PlayerType.OFFLINE
                 type = if (it.name == uuidOrName) {
                     temp = it
-                    PlayerInType.TypeEnum.NAME
+                    PlayerParser.TypeEnum.NAME
                 } else if (it.uniqueId.toString() == uuidOrName) {
                     temp = it
-                    PlayerInType.TypeEnum.UUID
-                } else PlayerInType.TypeEnum.NAME
+                    PlayerParser.TypeEnum.UUID
+                } else PlayerParser.TypeEnum.NAME
             }
             if (temp == null) return null
         }
-        return PlayerInType(type, temp!!, playerType , uuidOrName)
+        return PlayerParser(type, temp!!, playerType , uuidOrName)
     }
 
     /**

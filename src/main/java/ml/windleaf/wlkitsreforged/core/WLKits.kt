@@ -1,9 +1,9 @@
 package ml.windleaf.wlkitsreforged.core
 
-import ml.windleaf.wlkitsreforged.core.module.ModuleManager
-import ml.windleaf.wlkitsreforged.core.module.commanding.Commanding
+import ml.windleaf.wlkitsreforged.modules.ModuleManager
+import ml.windleaf.wlkitsreforged.modules.commanding.Commanding
 import ml.windleaf.wlkitsreforged.core.reflect.Reflector
-import ml.windleaf.wlkitsreforged.others.saving.YamlData
+import ml.windleaf.wlkitsreforged.core.saving.YamlData
 import ml.windleaf.wlkitsreforged.utils.FileUtil
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.plugin.java.JavaPlugin

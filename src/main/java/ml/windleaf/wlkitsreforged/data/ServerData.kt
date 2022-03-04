@@ -5,7 +5,6 @@ import org.bukkit.Server
 /**
  * The server data, saves information of server
  */
-@Suppress("UNUSED")
 data class ServerData(val server: Server, override val T: Class<*> = Server::class.java) : Data {
     private val nmsServer: Class<*>
         get() = server.javaClass.getMethod("getServer").invoke(server).javaClass

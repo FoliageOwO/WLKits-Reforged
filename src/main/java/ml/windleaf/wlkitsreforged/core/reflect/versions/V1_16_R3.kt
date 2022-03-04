@@ -1,7 +1,7 @@
 package ml.windleaf.wlkitsreforged.core.reflect.versions
 
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
-import ml.windleaf.wlkitsreforged.core.module.ModuleManager
+import ml.windleaf.wlkitsreforged.modules.ModuleManager
 import ml.windleaf.wlkitsreforged.core.reflect.Reflector
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.Bukkit

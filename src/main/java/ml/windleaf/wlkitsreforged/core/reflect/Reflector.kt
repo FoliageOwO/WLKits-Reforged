@@ -1,7 +1,7 @@
 package ml.windleaf.wlkitsreforged.core.reflect
 
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
-import ml.windleaf.wlkitsreforged.core.enums.Versions
+import ml.windleaf.wlkitsreforged.core.enums.Version
 import org.bukkit.ChatColor
 import org.bukkit.event.Listener
 import org.bukkit.event.world.WorldLoadEvent
@@ -30,7 +30,7 @@ interface Reflector : Listener {
      * @param message the message that send to console
      */
     fun sendConsole(@NotNull message: String) {
-        Versions.V1_16_R3.reflector.sendConsole(message)
+        Version.V1_16_R3.reflector.sendConsole(message)
     }
 
     /**
@@ -39,6 +39,6 @@ interface Reflector : Listener {
      * *Listening to [WorldLoadEvent].*
      */
     fun loadWorldModule(@NotNull e: WorldLoadEvent) {
-        Versions.V1_16_R3.reflector.loadWorldModule(e)
+        Version.V1_16_R3.reflector.loadWorldModule(e)
     }
 }

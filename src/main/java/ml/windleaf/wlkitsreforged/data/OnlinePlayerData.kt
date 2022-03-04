@@ -1,6 +1,6 @@
 package ml.windleaf.wlkitsreforged.data
 
-import ml.windleaf.wlkitsreforged.others.saving.JsonData
+import ml.windleaf.wlkitsreforged.core.saving.JsonData
 import ml.windleaf.wlkitsreforged.utils.Util
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
@@ -8,7 +8,6 @@ import org.bukkit.entity.Player
 /**
  * The online player data, only for online players
  */
-@Suppress("UNUSED")
 data class OnlinePlayerData(val p: Player,
                             override val T: Class<*> = Player::class.java) : Data {
     /**
