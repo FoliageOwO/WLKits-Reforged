@@ -4,7 +4,7 @@ import ml.windleaf.wlkitsreforged.core.enums.LoadType
 import ml.windleaf.wlkitsreforged.modules.Module
 import ml.windleaf.wlkitsreforged.core.WLKits
 import ml.windleaf.wlkitsreforged.modules.ModuleInfo
-import ml.windleaf.wlkitsreforged.core.annotations.Permission
+import ml.windleaf.wlkitsreforged.modules.annotations.Permission
 import ml.windleaf.wlkitsreforged.core.enums.PermissionType
 import ml.windleaf.wlkitsreforged.modules.categories.Category
 import ml.windleaf.wlkitsreforged.utils.GuiUtil

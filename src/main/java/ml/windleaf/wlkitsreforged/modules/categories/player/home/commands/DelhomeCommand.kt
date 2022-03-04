@@ -1,8 +1,8 @@
 package ml.windleaf.wlkitsreforged.modules.categories.player.home.commands
 
 import ml.windleaf.wlkitsreforged.modules.CommandInfo
-import ml.windleaf.wlkitsreforged.core.annotations.MustPlayer
-import ml.windleaf.wlkitsreforged.core.annotations.Permission
+import ml.windleaf.wlkitsreforged.modules.annotations.MustPlayer
+import ml.windleaf.wlkitsreforged.modules.annotations.Permission
 import ml.windleaf.wlkitsreforged.modules.commanding.ModuleCommand
 import ml.windleaf.wlkitsreforged.modules.categories.player.Home
 import ml.windleaf.wlkitsreforged.utils.Util

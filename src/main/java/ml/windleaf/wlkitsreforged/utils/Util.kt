@@ -1,7 +1,7 @@
 package ml.windleaf.wlkitsreforged.utils
 
 import ml.windleaf.wlkitsreforged.core.WLKits
-import ml.windleaf.wlkitsreforged.core.annotations.Permission
+import ml.windleaf.wlkitsreforged.modules.annotations.Permission
 import ml.windleaf.wlkitsreforged.core.enums.PlayerType
 import ml.windleaf.wlkitsreforged.core.enums.Version
 import ml.windleaf.wlkitsreforged.modules.Module

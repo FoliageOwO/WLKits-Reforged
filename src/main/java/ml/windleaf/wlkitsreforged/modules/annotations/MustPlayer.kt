@@ -1,4 +1,4 @@
-package ml.windleaf.wlkitsreforged.core.annotations
+package ml.windleaf.wlkitsreforged.modules.annotations
 
 /**
  * Marks a method as requiring a player to run the command

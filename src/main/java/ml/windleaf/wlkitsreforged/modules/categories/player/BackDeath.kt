@@ -2,8 +2,8 @@ package ml.windleaf.wlkitsreforged.modules.categories.player
 
 import ml.windleaf.wlkitsreforged.modules.CommandInfo
 import ml.windleaf.wlkitsreforged.modules.ModuleInfo
-import ml.windleaf.wlkitsreforged.core.annotations.MustPlayer
-import ml.windleaf.wlkitsreforged.core.annotations.Permission
+import ml.windleaf.wlkitsreforged.modules.annotations.MustPlayer
+import ml.windleaf.wlkitsreforged.modules.annotations.Permission
 import ml.windleaf.wlkitsreforged.core.enums.LoadType
 import ml.windleaf.wlkitsreforged.modules.Module
 import ml.windleaf.wlkitsreforged.modules.categories.Category

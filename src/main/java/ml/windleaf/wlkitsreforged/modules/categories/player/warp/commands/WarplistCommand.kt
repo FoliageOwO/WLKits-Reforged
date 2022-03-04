@@ -1,7 +1,7 @@
 package ml.windleaf.wlkitsreforged.modules.categories.player.warp.commands
 
 import ml.windleaf.wlkitsreforged.modules.CommandInfo
-import ml.windleaf.wlkitsreforged.core.annotations.Permission
+import ml.windleaf.wlkitsreforged.modules.annotations.Permission
 import ml.windleaf.wlkitsreforged.modules.commanding.ModuleCommand
 import ml.windleaf.wlkitsreforged.modules.categories.player.Warp
 import ml.windleaf.wlkitsreforged.utils.Util

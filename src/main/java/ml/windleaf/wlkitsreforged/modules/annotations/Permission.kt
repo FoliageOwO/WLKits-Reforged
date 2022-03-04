@@ -1,4 +1,4 @@
-package ml.windleaf.wlkitsreforged.core.annotations
+package ml.windleaf.wlkitsreforged.modules.annotations
 
 import ml.windleaf.wlkitsreforged.core.enums.PermissionType
 
