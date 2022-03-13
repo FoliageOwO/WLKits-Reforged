@@ -32,7 +32,7 @@ class ItemShow : Module, ModuleCommand {
     override fun load() {
         enabled = Util.isEnabled(getName())
         showMsg = Util.translateColorCode(Util.getModuleMsg(getName(), "show-msg"))!!
-        itemDisplay = Util.translateColorCode(Util.getModuleMsg(getName(), "item-display"))!!
+        itemDisplay = Util.translateColorCode(Util.getModuleConfig(getName(), "item-display") as String)!!
         showAllInfo = Util.getModuleConfig(getName(), "show-all-info") as Boolean
     }
 
