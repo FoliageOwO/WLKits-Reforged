@@ -193,3 +193,20 @@ modules:
     # 是否启用该模块
     # 默认 true
     enabled: true
+
+  # [模块] 物品展示
+  itemshow:
+    # 是否启用该模块
+    # 默认 true
+    enabled: true
+
+    # 聊天栏显示物品名
+    # 可用占位符: [displayName: 物品名]
+    # 默认 '[{displayName}]'
+    item-display: '[{displayName}]'
+
+    # 是否在展示时显示物品的全部信息
+    # 如附魔, 耐久, 数量等
+    # 当玩家鼠标放在聊天栏的物品名上时显示
+    # 默认 true
+    show-all-info: true

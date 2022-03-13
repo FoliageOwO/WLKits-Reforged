@@ -48,7 +48,7 @@ class Mention : Module, Listener {
             Bukkit.getScheduler().scheduleSyncDelayedTask(WLKits.instance) {
                 val s = e.player
                 var msg = e.message
-                var msgCopy = msg.plus("")
+                val msgCopy = msg.plus("")
                 val pref = "<${s.displayName}> "
                 val end = Util.translateColorCode("&r")
                 if (Util.hasPermission(s, Permission("wlkits.action.mention", PermissionType.ACTION))) {

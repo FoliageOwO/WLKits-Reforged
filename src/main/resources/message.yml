@@ -265,3 +265,10 @@ macro:
   # 宏运行无结果
   # 即上面的运行结果
   no-result: '&8<无结果>'
+
+# [模块] 物品展示
+itemshow:
+  # 展示信息
+  # item 对应 config.yml 中的 item-display
+  # 可用占位符: [playerName: 玩家名]
+  show-msg: '&b展示了一个物品: '
