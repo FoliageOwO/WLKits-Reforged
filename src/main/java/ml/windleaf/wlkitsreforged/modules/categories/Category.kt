@@ -1,9 +1,9 @@
-package ml.windleaf.wlkitsreforged.modules.categories;
+package ml.windleaf.wlkitsreforged.modules.categories
 
 /**
  * The categories of modules
  */
-public enum Category {
+enum class Category {
     /**
      * The modules for server
      */
