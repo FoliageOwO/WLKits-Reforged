@@ -9,65 +9,68 @@ website: https://windleaf.ml/
 commands:
   backdeath:
     aliases: [ backd, bd ]
-    description: Back to last death location
+    description: 'Back to last death location'
     permission: wlkits.cmd.backdeath
   back:
-    description: Back to last location
+    description: 'Back to last location'
     permission: wlkits.cmd.back
   sethome:
-    description: Set location as home
+    description: 'Set location as home'
     permission: wlkits.cmd.home
   home:
-    description: Back to home
+    description: 'Back to home'
     permission: wlkits.cmd.home
   delhome:
-    description: Delete home location
+    description: 'Delete home location'
     permission: wlkits.cmd.home
   suicide:
-    description: Kill yourself
+    description: 'Kill yourself'
     permission: wlkits.cmd.suicide
   tpa:
-    description: Send teleport request
+    description: 'Send teleport request'
     permission: wlkits.cmd.tpa
   tpaccept:
     aliases: [ tpac ]
-    description: Accept the teleport request
+    description: 'Accept the teleport request'
     permission: wlkits.cmd.tpa
   tpadeny:
     aliases: [ tpad ]
-    description: Deny the teleport request
+    description: 'Deny the teleport request'
     permission: wlkits.cmd.tpa
   tpacancel:
-    description: Cancel the teleport request
+    description: 'Cancel the teleport request'
     permission: wlkits.cmd.tpa
   tpahelp:
-    description: Show the help of tpa module
+    description: 'Show the help of tpa module'
     permission: wlkits.cmd.tpa
   setwarp:
-    description: Set warp
+    description: 'Set warp'
     permission: wlkits.cmd.warp
   warp:
-    description: Teleport to warp
+    description: 'Teleport to warp'
     permission: wlkits.cmd.warp
   delwarp:
-    description: Delete the warp
+    description: 'Delete the warp'
     permission: wlkits.cmd.warp
   warphelp:
-    description: Show the help of warp module
+    description: 'Show the help of warp module'
     permission: wlkits.cmd.warp
   warplist:
-    description: Show all warps
+    description: 'Show all warps'
     permission: wlkits.cmd.warplist
   playertag:
     aliases: [ ptag ]
-    description: Manage player tag
+    description: 'Manage player tag'
     permission: wlkits.cmd.playertag
   wlkits:
-    description: WLKits plugin commands
+    description: 'WLKits plugin commands'
     permission: wlkits.cmd.wlkits
   macro:
-    description: The macro system of WLKits plugin
+    description: 'The macro system of WLKits plugin'
     permission: wlkits.cmd.macro
+  show:
+    description: 'Shows your item on the chat'
+    permission: wlkits.cmd.show
 
 permissions:
   wlkits.*:
@@ -91,6 +94,7 @@ permissions:
       - wlkits.cmd.playertag
       - wlkits.cmd.wlkits
       - wlkits.cmd.macro
+      - wlkits.cmd.show
 
   wlkits.cmd.backdeath:
     default: true
@@ -121,6 +125,9 @@ permissions:
 
   wlkits.cmd.macro:
     default: op
+
+  wlkits.cmd.show:
+    default: true
 
   wlkits.action.*:
     description: 'The global action permission of WLKits plugin'
